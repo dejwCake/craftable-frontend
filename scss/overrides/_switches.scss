@@ -1,3 +1,5 @@
+@use "../variables" as *;
+
 .switch-success .switch-input:checked + .switch-slider,
 .switch-success > .switch-input:checked ~ .switch-label {
   background: $success !important;

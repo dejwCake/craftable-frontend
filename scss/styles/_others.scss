@@ -1,3 +1,6 @@
+@use "../variables" as *;
+@use "../images" as *;
+
 // Uncategorised styles, will refactor if it gets bigger
 .avatar-initials {
     background-color: $primary;

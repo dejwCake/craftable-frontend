@@ -1,3 +1,5 @@
+@use "../variables" as *;
+
 /* Base for label styling */
 [type="checkbox"]:not(:checked),
 [type="checkbox"]:checked {

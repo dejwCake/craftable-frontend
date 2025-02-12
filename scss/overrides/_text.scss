@@ -1,3 +1,5 @@
+@use "../variables" as *;
+
 .text-success {
     color: $success !important;
 }

@@ -1,3 +1,6 @@
+@use "../variables" as *;
+@use "../images" as *;
+
 // Write (or import) your styles here
 .trumbowyg-editor table.table td {
   min-width: unset;

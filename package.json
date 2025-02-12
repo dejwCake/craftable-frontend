@@ -1,6 +1,6 @@
 {
-  "name": "craftable",
-  "version": "2.1.6",
+  "name": "@dejwcake/craftable",
+  "version": "0.1.6",
   "description": "This is a frontend dependency for Craftable. Craftable is a Laravel-based open-source toolkit for building administration interfaces.",
   "main": "./dist/index.js",
   "scripts": {
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BRACKETS-by-TRIAD/craftable-frontend.git"
+    "url": "git+https://github.com/dejwCake/craftable-frontend.git"
   },
   "author": "Brackets",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/BRACKETS-by-TRIAD/craftable-frontend/issues"
+    "url": "https://github.com/dejwCake/craftable-frontend/issues"
   },
-  "homepage": "https://github.com/BRACKETS-by-TRIAD/craftable-frontend#readme",
+  "homepage": "https://github.com/dejwCake/craftable-frontend#readme",
   "dependencies": {
     "@coreui/coreui": "^2.1.1",
     "@coreui/icons": "^0.3.0",
@@ -50,7 +50,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "cpx": "^1.5.0",
-    "node-sass": "^5.0.0",
+    "sass": "^1.49.9",
     "sass-loader": "^8.0.2",
     "postcss-cli": "^8.3.1",
     "vue-loader": "^15.9.6",

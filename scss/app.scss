@@ -1,9 +1,9 @@
 // Variables
-@import "variables";
+@use 'variables' as *;
 
 // Vendor
-@import "vendor/index";
+@use 'vendor/index' as *;
 
 // Own styles and overrides
-@import "overrides/index";
-@import "styles/index";
+@use 'overrides/index' as *;
+@use 'styles/index' as *;

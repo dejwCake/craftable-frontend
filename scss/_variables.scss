@@ -1,5 +1,5 @@
 // Loaders and icons
-@import "images";
+@use "images" as *;
 
 // Colors
 $primary: #4273FA !default;

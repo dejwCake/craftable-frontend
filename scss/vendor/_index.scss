@@ -1,4 +1,4 @@
-@import '~@coreui/icons/css/coreui-icons.min.css';
-@import '~font-awesome/scss/font-awesome.scss';
-@import '~simple-line-icons/scss/simple-line-icons.scss';
-@import "~@coreui/coreui/scss/coreui";
+@use "@coreui/icons/css/coreui-icons.min.css" as *;
+@use "font-awesome/scss/font-awesome.scss" as *;
+@use "simple-line-icons/scss/simple-line-icons.scss" as *;
+@use "@coreui/coreui/scss/coreui" as *;
