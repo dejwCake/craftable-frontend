@@ -157,6 +157,9 @@ const BaseForm = {
           upload: {
             // https://alex-d.github.io/Trumbowyg/documentation/plugins/#plugin-upload
             serverPath: '/admin/wysiwyg-media',
+            headers: {
+                'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
             imageWidthModalEdit: true,
             success(data, trumbowyg, $modal, values) {
               that.wysiwygMedia.push(data.mediaId);

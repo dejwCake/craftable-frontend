@@ -1,0 +1,9 @@
+services:
+  node:
+    image: dejwcake/node18:1
+    user: node
+    volumes:
+      - .:/var/www/html:delegated
+
+networks:
+    default:
