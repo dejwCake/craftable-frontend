@@ -81,27 +81,11 @@ const BaseUpload = {
 
       if (this.uploadedMedia.length === 0) {
         _.each(this.uploadedImages, (file, key) => {
-          files.push({
-            id: file.id,
-            collection_name: this.collection,
-            name: file.custom_properties?.name ?? file.file_name ?? file.name,
-            type: file.mime_type ?? file.type,
-            size: file.size,
-            url: file.original_url ?? file.url,
-            thumb_url: file.thumb_url ?? file.original_url ?? file.url,
-          });
+          files.push(this.getFileObj(file));
         });
       } else {
         _.each(this.uploadedMedia, (file, key) => {
-          files.push({
-            id: file.id,
-            collection_name: this.collection,
-            name: file.custom_properties?.name ?? file.file_name ?? file.name,
-            type: file.mime_type ?? file.type,
-            size: file.size,
-            url: file.original_url ?? file.url,
-            thumb_url: file.thumb_url ?? file.original_url ?? file.url,
-          });
+          files.push(this.getFileObj(file));
         });
       }
 
@@ -247,6 +231,18 @@ const BaseUpload = {
                   <div class="dz-error-mark"><i class="fa fa-close"></i></div>
               </div>
           `;
+    },
+
+    getFileObj: function (file) {
+      return {
+        id: file.id,
+        collection_name: this.collection,
+        name: file.custom_properties?.name ?? file.file_name ?? file.name,
+        type: file.mime_type ?? file.type,
+        size: file.size,
+        url: file.original_url ?? file.url,
+        thumb_url: file.thumb_url ?? file.original_url ?? file.url,
+      };
     }
   }
 }
