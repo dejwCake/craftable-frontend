@@ -10,15 +10,15 @@ const BaseUpload = {
       required: true
     },
     collection: {
-    	type: String,
+      type: String,
       required: true
     },
-    maxNumberOfFiles:{
+    maxNumberOfFiles: {
       type: Number,
       required: false,
       default: 1
     },
-    maxFileSizeInMb:{
+    maxFileSizeInMb: {
       type: Number,
       required: false,
       default: 2
@@ -32,19 +32,28 @@ const BaseUpload = {
       required: false,
       default: 200
     },
-    uploadedImages : {
+    uploadedImages: {
       type: Array,
       required: false,
-      default: function () { return [] }
+      default: function _default() {
+        return [];
+      }
     },
+    uploadedMedia: {
+      type: Array,
+      required: false,
+      default: function _default() {
+        return [];
+      }
+    }
   },
-  data: function () { 
+  data: function data() {
     return {
-      mutableUploadedImages: this.uploadedImages,
+      mutableUploadedMedia: this.getMutableUploadedMedia(),
       headers: {
         'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').getAttribute('content')
       }
-    }
+    };
   },
   template: `<dropzone :id="collection" 
                        :url="url" 
@@ -67,127 +76,158 @@ const BaseUpload = {
     this.attachAlreadyUploadedMedia();
   },
   methods: {
-    onSuccess: function (file, response) {
-      if(!file.type.includes('image')) {
-        setTimeout(function() {
-            //FIXME jquery
-            $(file.previewElement).removeClass('dz-file-preview');
+    getMutableUploadedMedia: function () {
+      var files = [];
+
+      if (this.uploadedMedia.length === 0) {
+        _.each(this.uploadedImages, (file, key) => {
+          files.push({
+            id: file.id,
+            collection_name: this.collection,
+            name: file.custom_properties?.name ?? file.file_name ?? file.name,
+            type: file.mime_type ?? file.type,
+            size: file.size,
+            url: file.original_url ?? file.url,
+            thumb_url: file.thumb_url ?? file.original_url ?? file.url,
+          });
+        });
+      } else {
+        _.each(this.uploadedMedia, (file, key) => {
+          files.push({
+            id: file.id,
+            collection_name: this.collection,
+            name: file.custom_properties?.name ?? file.file_name ?? file.name,
+            type: file.mime_type ?? file.type,
+            size: file.size,
+            url: file.original_url ?? file.url,
+            thumb_url: file.thumb_url ?? file.original_url ?? file.url,
+          });
+        });
+      }
+
+      return files;
+    },
+
+    attachAlreadyUploadedMedia: function attachAlreadyUploadedMedia() {
+      this.$nextTick(() => {
+        if (this.mutableUploadedMedia) {
+          _.each(this.mutableUploadedMedia, (file, key) => {
+            this.$refs[this.collection].manuallyAddFile(
+                {
+                  name: file.name,
+                  size: file.size,
+                  type: file.type,
+                  url: file.url,
+                },
+                file.thumb_url,
+                false,
+                false,
+                {
+                  dontSubstractMaxFiles: false,
+                  addToFiles: true
+                }
+            );
+          });
+        }
+      });
+    },
+
+    onSuccess: function onSuccess(file, response) {
+      if (!file.type.includes('image')) {
+        setTimeout(function () {
+          file.previewElement.classList.remove('dz-file-preview');
         }, 3000);
       }
     },
 
-    onUploadError: function (file, error) {
+    onUploadError: function onUploadError(file, error) {
       let errorMessage = typeof error == 'string' ? error : error.message;
-      this.$notify({ type: 'error', title: 'Error!', text: errorMessage});
-      $(file.previewElement).find('.dz-error-message span').text(errorMessage);
+      this.$notify({ type: 'error', title: 'Error!', text: errorMessage });
+      file.previewElement.querySelector('.dz-error-message span').textContent = errorMessage;
     },
 
-    onFileAdded: function(file) {
+    onFileAdded: function onFileAdded(file) {
       this.placeIcon(file);
     },
 
     onFileDelete: function (file, error, xhr) {
-      var deletedFileIndex = _.findIndex(this.mutableUploadedImages, {url: file.url});
-      if(this.mutableUploadedImages[deletedFileIndex]) {
-        this.mutableUploadedImages[deletedFileIndex]['deleted'] = true;
+      let deletedFileIndex = _.findIndex(this.mutableUploadedMedia, (e) => e.url === file.url);
+      if (!deletedFileIndex || !file.url) {
+        deletedFileIndex = _.findIndex(this.mutableUploadedMedia, (e) => e.name === file.name);
+      }
+      if(this.mutableUploadedMedia[deletedFileIndex]) {
+        this.mutableUploadedMedia[deletedFileIndex]['deleted'] = true;
 
         //dontSubstractMaxFiles fix
-        var currentMax = this.$refs[this.collection].dropzone.options.maxFiles;
+        let currentMax = this.$refs[this.collection].dropzone.options.maxFiles;
         this.$refs[this.collection].setOption('maxFiles', currentMax + 1);
       }
     },
 
-    attachAlreadyUploadedMedia: function() {
-      this.$nextTick( () => {
-        if(this.mutableUploadedImages) {
-          _.each(this.mutableUploadedImages, (file, key) => {
+    getFiles: function getFiles() {
+      let files = [];
 
-            this.$refs[this.collection].manuallyAddFile({ name: file['name'], 
-                                                          size: file['size'], 
-                                                          type: file['type'], 
-                                                          url: file['url'],
-                                                        }, 
-                                                        file['thumb_url'], 
-                                                        false,
-                                                        false,
-                                                        {
-                                                          dontSubstractMaxFiles: false,
-                                                          addToFiles: true
-                                                        });
-          });
-        } 
-      })
-    },
-
-    getFiles: function() {
-      var files = []; 
-
-      _.each(this.mutableUploadedImages, (file, key) => {
-        if(file.deleted) {
+      _.each(this.mutableUploadedMedia, (file, key) => {
+        if (file.deleted) {
           files.push({
-              id: file.id,
-              collection_name: this.collection,
-              action: 'delete',
+            id: file.id,
+            collection_name: this.collection,
+            action: 'delete'
           });
         }
       });
 
-      _.each(this.$refs[this.collection].getAcceptedFiles(), (file, key) => {
-        var response = JSON.parse(file.xhr.response);
+      _.each(this.$refs[this.collection].getAcceptedFiles(),(file, key) => {
+        let response = JSON.parse(file.xhr.response);
 
-        if(response.path) {
+        if (response.path) {
           files.push({
-              id: file.id,
-              collection_name: this.collection,
-              path: response.path,
-              action: file.deleted ? 'delete' : 'add', //TODO: update ie. meta_data.name
-              meta_data: {
-                name: file.name,  //TODO: editable in the future
-                file_name: file.name,
-                width: file.width,
-                height: file.height,
-              }
+            id: file.id,
+            collection_name: this.collection,
+            path: response.path,
+            action: file.deleted ? 'delete' : 'add', //TODO: update ie. meta_data.name
+            meta_data: {
+              name: file.name, //TODO: editable in the future
+              file_name: file.name,
+              width: file.width,
+              height: file.height
+            }
           });
         }
       });
 
-    	return files;
+      return files;
     },
 
-    placeIcon: function(file) {
-      //FIXME cele to je jqueryoidne, asi si budeme musiet spravit vlastny vue wrapper, tento je zbugovany
-      var $previewElement = $(file.previewElement);
+    placeIcon: function (file) {
+      let previewElement = file.previewElement;
 
-      if(file.url) {
-        $previewElement.find('.dz-filename').html('<a href="'+file.url+'" target="_BLANK" class="dz-btn dz-custom-download">'+file.name+'</a>');
+      if (file.url) {
+        previewElement.querySelector('.dz-filename').innerHTML = '<a href="' + file.url + '" target="_BLANK" class="dz-btn dz-custom-download">' + file.name + '</a>';
       }
 
-      if(file.type.includes('image')) {
-        //nothing, default thumb
-      }
-      else if(file.type.includes('pdf')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-pdf-o"></i><p>'+file.name+'</p>');
-      }
-      else if(file.type.includes('word')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-word-o"></i><p>'+file.name+'</p>');
-      }
-      else if(file.type.includes('spreadsheet') || file.type.includes('csv')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-excel-o"></i><p>'+file.name+'</p>');
-      }
-      else if(file.type.includes('presentation')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-powerpoint-o"></i><p>'+file.name+'</p>');
-      }
-      else if(file.type.includes('video')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-video-o"></i><p>'+file.name+'</p>');
-      }
-      else if(file.type.includes('text')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-text-o"></i><p>'+file.name+'</p>');
-      }
-      else if(file.type.includes('zip') || file.type.includes('rar')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-archive-o"></i><p>'+file.name+'</p>');
-      }
-      else {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-o"></i><p>'+file.name+'</p>');
+      if (file.type) {
+        if (file.type.includes('image')) {
+          //nothing, default thumb
+        } else if (file.type.includes('pdf')) {
+          previewElement.querySelector('.dz-image').innerHTML = '<i class="fa fa-file-pdf-o"></i><p>' + file.name + '</p>';
+        } else if (file.type.includes('word')) {
+          previewElement.querySelector('.dz-image').innerHTML = '<i class="fa fa-file-word-o"></i><p>' + file.name + '</p>';
+        } else if (file.type.includes('spreadsheet') || file.type.includes('csv')) {
+          previewElement.querySelector('.dz-image').innerHTML = '<i class="fa fa-file-excel-o"></i><p>' + file.name + '</p>';
+        } else if (file.type.includes('presentation')) {
+          previewElement.querySelector('.dz-image').innerHTML = '<i class="fa fa-file-powerpoint-o"></i><p>' + file.name + '</p>';
+        } else if (file.type.includes('video')) {
+          previewElement.querySelector('.dz-image').innerHTML = '<i class="fa fa-file-video-o"></i><p>' + file.name + '</p>';
+        } else if (file.type.includes('text')) {
+          previewElement.querySelector('.dz-image').innerHTML = '<i class="fa fa-file-text-o"></i><p>' + file.name + '</p>';
+        } else if (file.type.includes('zip') || file.type.includes('rar')) {
+          previewElement.querySelector('.dz-image').innerHTML = '<i class="fa fa-file-archive-o"></i><p>' + file.name + '</p>';
+        } else {
+          previewElement.querySelector('.dz-image').innerHTML = '<i class="fa fa-file-o"></i><p>' + file.name + '</p>';
+        }
+      } else {
+        previewElement.querySelector('.dz-image').innerHTML = '<i class="fa fa-file-o"></i><p>' + file.name + '</p>';
       }
     },
 
