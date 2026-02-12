@@ -5,3 +5,8 @@
 .vue-notification {
     box-shadow: 0 0 12px #999;
 }
+
+// vue3-notification compatibility
+.vue-notification-group {
+    margin: 10px;
+}

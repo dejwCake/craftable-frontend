@@ -19,3 +19,7 @@ docker-compose.override.yml
 
 # Build output
 dist/
+
+# AI tools
+.claude
+CLAUDE.md

@@ -1,13 +1,17 @@
-.v--modal-overlay {
+// vue-final-modal overrides
+.vfm {
     z-index: 9999 !important;
+}
+
+.vfm__overlay {
     background-color: rgba(0, 0, 0, .4) !important;
 }
 
-.v--modal-overlay .v--modal-box {
+.vfm__content {
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
 }
 
-.modal--translation .v--modal-box {
+.modal--translation .vfm__content {
     padding: 20px 30px 30px 30px;
 }
 
@@ -21,6 +25,6 @@
     padding: 10px 0;
 }
 
-.loading .v--modal-overlay {
+.loading .vfm {
     display: none;
 }

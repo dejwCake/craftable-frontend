@@ -1,29 +1,27 @@
-import 'popper.js';
-import 'bootstrap';
-import '@coreui/coreui';
+// UI initialization without jQuery
+// Bootstrap 5 and CoreUI 5 handle dropdowns natively
 
-$(function() {
-	// spinner buttons
-	$('.btn-spinner').on('click', function(e){
+export function initUI() {
+  document.addEventListener('DOMContentLoaded', () => {
+    // Spinner buttons
+    document.querySelectorAll('.btn-spinner').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
         if (!(e.shiftKey || e.ctrlKey || e.metaKey)) {
-            $(this).css({'pointer-events':'none'});
-            $(this).find('i').removeClass().addClass('fa fa-spinner');
+          btn.style.pointerEvents = 'none';
+          const icon = btn.querySelector('i');
+          if (icon) {
+            icon.className = 'fa-solid fa-spinner fa-spin';
+          }
         }
-	});
+      });
+    });
 
-	// dropdown Menu
-	$('.dropdown-toggle').on('click', function() {
-		$(this).parent().toggleClass('open');
-	});
-	$('.dropdown-item').on('click', function() {
-		$(this).closest('.open').removeClass('open');
-	});
-	$('.dropdown-menu').on('mouseleave', function(){
-		$(this).parent('.dropdown').removeClass('open');
-	});
-
-	// remove empty nav titles when no children there
-    $('.nav-title').filter(function() {
-        return !$(this).next().hasClass('nav-item');
-    }).hide();
-});
+    // Remove empty nav titles when no children there
+    document.querySelectorAll('.nav-title').forEach((title) => {
+      const next = title.nextElementSibling;
+      if (!next || !next.classList.contains('nav-item')) {
+        title.style.display = 'none';
+      }
+    });
+  });
+}

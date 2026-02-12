@@ -51,12 +51,14 @@
         box-shadow: none;
     }
     &:hover {
-        .fa-trash-o {
+        .fa-trash-can {
             animation: swing 1s;
             transform-origin: top center;
         }
     }
-    i.fa {
+    i.fa,
+    i.fa-solid,
+    i.fa-regular {
         color: white;
     }
 }

@@ -1,4 +1,6 @@
-.form-control.flatpickr {
+// Datepicker compatibility
+.form-control.flatpickr,
+.dp__input {
   background-color: white;
 }
 
@@ -84,25 +86,19 @@ label {
   margin-bottom: 0.5rem;
 }
 
-.flatpickr-day.selected,
-.flatpickr-day.startRange,
-.flatpickr-day.endRange,
-.flatpickr-day.selected.inRange,
-.flatpickr-day.startRange.inRange,
-.flatpickr-day.endRange.inRange,
-.flatpickr-day.selected:focus,
-.flatpickr-day.startRange:focus,
-.flatpickr-day.endRange:focus,
-.flatpickr-day.selected:hover,
-.flatpickr-day.startRange:hover,
-.flatpickr-day.endRange:hover,
-.flatpickr-day.selected.prevMonthDay,
-.flatpickr-day.startRange.prevMonthDay,
-.flatpickr-day.endRange.prevMonthDay,
-.flatpickr-day.selected.nextMonthDay,
-.flatpickr-day.startRange.nextMonthDay,
-.flatpickr-day.endRange.nextMonthDay {
+// Vue Datepicker (@vuepic/vue-datepicker) theme
+.dp__active_date {
   background: $primary !important;
+  border-color: $primary !important;
+}
+
+.dp__range_start,
+.dp__range_end {
+  background: $primary !important;
+  border-color: $primary !important;
+}
+
+.dp__today {
   border-color: $primary !important;
 }
 
@@ -110,7 +106,8 @@ small select {
   margin: 0 10px;
 }
 
-.vue-dropzone.dropzone {
+.dropzone,
+.vue3-dropzone {
   border: 1px solid $mutedText !important;
   &:hover, &.dz-drag-hover {
     border: 1px dashed $primary !important;

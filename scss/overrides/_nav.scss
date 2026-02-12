@@ -60,7 +60,7 @@
     transform: translateY(5px);
 }
 
-.open .dropdown-menu {
+.show > .dropdown-menu {
     display: block;
     opacity: 1;
     pointer-events: all;
