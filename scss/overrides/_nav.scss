@@ -1,25 +1,53 @@
-.header-fixed .app-header {
-    padding-right: 20px;
+.header {
+    padding: 0 20px 0 0;
+    border-bottom: 1px solid #e4e7ea;
+    margin-bottom: 0;
 }
 
-.nav .dropdown-menu {
-    border-radius: 0;
-    margin-top: 13px;
-}
-
-.dropdown-menu {
+.header-toggler {
+    background: none;
     border: none;
+    color: var(--cui-header-color);
+    cursor: pointer;
+    padding: 0.25rem 0.75rem;
+    font-size: 1.25rem;
+}
+
+.dropdown .dropdown-menu {
+    display: block;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin-top: -3px;
+    right: 0;
+    left: auto;
     box-shadow: 0 2px 8px rgba(0, 0, 0, .23);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 200ms ease-in-out, visibility 200ms ease-in-out;
 }
 
 .dropdown-header {
     background: $primary;
     color: white;
     border-bottom: none;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem;
 }
 
 .dropdown-item {
     border-bottom: 1px solid #F0F2F4;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+
+    i {
+        color: #c8ced3;
+        display: inline-block;
+        margin-left: -10px;
+        margin-right: 10px;
+        text-align: center;
+        width: 20px;
+    }
 }
 
 .dropdown-item.active,
@@ -29,9 +57,9 @@
     background-color: white;
 }
 
-.app-header.navbar .navbar-brand {
+.header .navbar-brand {
     padding: 0.5rem 1rem;
-    color: #4273fa;
+    color: $primary;
     font-weight: 600;
     display: inline;
     width: auto;
@@ -45,6 +73,11 @@
     }
 }
 
+.header-nav .nav-link {
+    font-size: 0.875rem;
+    color: #263238;
+}
+
 .dropdown-toggle {
     box-shadow: none !important;
     &:hover {
@@ -52,27 +85,13 @@
     }
 }
 
-.dropdown .dropdown-menu {
-    display: block;
-    transition: all 300ms ease-in-out;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(5px);
-}
-
-.show > .dropdown-menu {
-    display: block;
+.dropdown-menu.show {
     opacity: 1;
-    pointer-events: all;
-    transform: translateY(-5px);
-}
-
-.app-header.navbar {
-    border-bottom: 1px solid #D6DEE3;
+    visibility: visible;
 }
 
 @media (max-width: 991px) {
-    .app-header .navbar-brand {
+    .header .navbar-brand {
         text-align: center;
     }
     .avatar-initials {
@@ -81,7 +100,7 @@
 }
 
 @media (max-width: 600px) {
-    .app-header.navbar .navbar-brand {
+    .header .navbar-brand {
         display: none;
     }
 }

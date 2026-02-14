@@ -1,5 +1,5 @@
-// UI initialization without jQuery
-// Bootstrap 5 and CoreUI 5 handle dropdowns natively
+import Sidebar from '@coreui/coreui/js/dist/sidebar.js';
+import '@coreui/coreui/js/dist/navigation.js';
 
 export function initUI() {
   document.addEventListener('DOMContentLoaded', () => {
@@ -21,6 +21,19 @@ export function initUI() {
       const next = title.nextElementSibling;
       if (!next || !next.classList.contains('nav-item')) {
         title.style.display = 'none';
+      }
+    });
+
+    // Handle external sidebar toggle buttons (outside the sidebar element)
+    document.querySelectorAll('[data-coreui-toggle="sidebar"]').forEach((btn) => {
+      if (!btn.closest('.sidebar')) {
+        btn.addEventListener('click', () => {
+          const sidebar = document.querySelector('.sidebar');
+          if (sidebar) {
+            const instance = Sidebar.getOrCreateInstance(sidebar);
+            instance.toggle();
+          }
+        });
       }
     });
   });

@@ -1,0 +1,84 @@
+.sidebar {
+    --cui-sidebar-bg: #{$sidebar-bg};
+    --cui-sidebar-border-color: transparent;
+    --cui-sidebar-toggler-color: #fff;
+    --cui-sidebar-toggler-hover-color: #fff;
+
+    border-right-color: transparent !important;
+}
+
+.sidebar-toggler {
+    --cui-sidebar-toggler-color: #fff;
+    --cui-sidebar-toggler-hover-color: #fff;
+    --cui-sidebar-toggler-focus-color: #fff;
+}
+
+.sidebar-nav {
+    --cui-sidebar-nav-link-color: #fff;
+    --cui-sidebar-nav-link-icon-color: #{$mutedText};
+    --cui-sidebar-nav-title-color: rgba(255, 255, 255, 0.45);
+    --cui-sidebar-nav-link-hover-bg: #{$primary};
+    --cui-sidebar-nav-link-hover-color: #fff;
+    --cui-sidebar-nav-link-hover-icon-color: #fff;
+    --cui-sidebar-nav-link-active-bg: #{$sidebar-nav-link-active-bg};
+    --cui-sidebar-nav-link-active-color: #{$sidebar-nav-link-active-color};
+    --cui-sidebar-nav-link-active-icon-color: #{$sidebar-nav-link-active-icon-color};
+    --cui-sidebar-nav-link-border-radius: 0;
+    --cui-sidebar-nav-link-padding-x: 0;
+    --cui-sidebar-nav-padding-x: 0;
+
+    padding: 0;
+}
+
+// Wrapper should be pushed by sidebar width
+.wrapper {
+    margin-left: var(--cui-sidebar-occupy-start, 0);
+    transition: margin-left 0.15s;
+}
+
+// When sidebar is narrow-unfoldable (not hovered), push wrapper by narrow width
+@media (min-width: 992px) {
+    .sidebar.sidebar-narrow-unfoldable:not(.hide):not(.sidebar-end) ~ .wrapper {
+        --cui-sidebar-occupy-start: 4rem;
+    }
+}
+
+.sidebar-nav .nav-link {
+    padding: 0.75rem 1rem;
+    border-radius: 0;
+    margin: 0;
+}
+
+.sidebar-nav .nav-title {
+    padding: 0.75rem 1rem 0.25rem;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.sidebar-nav .nav-icon {
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+// In narrow mode, icon should fill the width to hide text and center
+@media (min-width: 992px) {
+    .sidebar-narrow .sidebar-nav .nav-link,
+    .sidebar-narrow-unfoldable:not(:hover) .sidebar-nav .nav-link {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .sidebar-narrow .sidebar-nav .nav-icon,
+    .sidebar-narrow-unfoldable:not(:hover) .sidebar-nav .nav-icon {
+        flex: 0 0 var(--cui-sidebar-narrow-width, 4rem);
+        margin-right: 0;
+    }
+}
+
+.sidebar-footer {
+    background: rgba(0, 0, 0, 0.1);
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
