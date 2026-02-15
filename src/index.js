@@ -17,4 +17,5 @@ export { default as TranslationListing } from './translation/TranslationListing.
 
 // Utilities
 export { formatDate, formatDatetime, formatTime, nowInTimezone, dayjs } from './utils/dateFormatters.js';
+export { mediaCollectionProp, mediaCollectionDefaults } from './utils/mediaProps.js';
 export { initUI } from './ui/index.js';

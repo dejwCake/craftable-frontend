@@ -1,27 +1,22 @@
 <template>
   <div class="base-upload">
-    <vue3-dropzone
-      :id="collection"
-      :ref="setDropzoneRef"
-      :url="url"
-      :max-files="maxNumberOfFiles"
-      :max-file-size="maxFileSizeInMb"
-      :accepted-files="acceptedFileTypes"
-      :thumbnail-width="thumbnailWidth"
-      :headers="headers"
-      @success="onSuccess"
-      @error="onUploadError"
-      @file-added="onFileAdded"
-      @file-removed="onFileDelete"
+    <div
+      v-bind="getRootProps()"
+      class="vue3-dropzone dropzone"
+      :class="{ 'dz-drag-hover': isDragActive }"
     >
+      <input v-bind="getInputProps()" />
       <input type="hidden" name="collection" :value="collection" />
-    </vue3-dropzone>
 
-    <div v-if="mutableUploadedMedia.length > 0" class="uploaded-media-list">
+      <div v-if="visibleUploadedMedia.length === 0 && uploadedFiles.length === 0" class="dz-message">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <p>Drop files here or click to upload</p>
+      </div>
+
       <div
         v-for="(file, index) in mutableUploadedMedia"
-        :key="file.id || index"
-        class="dz-preview dz-file-preview"
+        :key="'existing-' + (file.id || index)"
+        class="dz-preview dz-file-preview dz-existing"
         :class="{ 'dz-deleted': file.deleted }"
       >
         <div class="dz-image">
@@ -33,23 +28,47 @@
         </div>
         <div class="dz-details">
           <div class="dz-filename">
-            <a v-if="file.url" :href="file.url" target="_blank" class="dz-btn dz-custom-download">
+            <a v-if="file.url" :href="file.url" target="_blank" class="dz-btn dz-custom-download" @click.stop>
               {{ file.name }}
             </a>
             <span v-else>{{ file.name }}</span>
           </div>
         </div>
-        <button type="button" class="dz-remove-btn" @click="removeUploadedFile(index)">
-          &times;
-        </button>
+        <div class="dz-hover-overlay" @click.stop="removeUploadedFile(index)">
+          <span class="dz-remove-label">REMOVE</span>
+        </div>
+      </div>
+
+      <div v-for="(entry, index) in uploadedFiles" :key="'new-' + index" class="dz-preview dz-file-preview" :class="{ 'dz-success': entry.showSuccess, 'dz-error': entry.showError }">
+        <div class="dz-image">
+          <img v-if="entry.previewUrl" :src="entry.previewUrl" :alt="entry.file.name" />
+          <div v-else class="dz-file-icon">
+            <i :class="getIconClassFromType(entry.file.type)"></i>
+            <p>{{ entry.file.name }}</p>
+          </div>
+        </div>
+        <div v-if="entry.uploading" class="dz-progress">
+          <span class="dz-upload" :style="{ width: entry.progress + '%' }"></span>
+        </div>
+        <div v-if="entry.showSuccess" class="dz-success-mark">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <div v-if="entry.showError" class="dz-error-mark">
+          <i class="fa-solid fa-xmark"></i>
+        </div>
+        <div v-if="!entry.uploading && !entry.showSuccess" class="dz-hover-overlay" @click.stop="removeNewFile(index)">
+          <span class="dz-remove-label">REMOVE</span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, reactive, computed, onMounted } from 'vue';
+import { useDropzone } from 'vue3-dropzone';
 import { notify } from '@kyvg/vue3-notification';
+import axios from 'axios';
 
 export default defineComponent({
   name: 'BaseUpload',
@@ -78,31 +97,14 @@ export default defineComponent({
       type: Number,
       default: 200,
     },
-    uploadedImages: {
-      type: Array,
-      default: () => [],
-    },
     uploadedMedia: {
       type: Array,
       default: () => [],
     },
   },
   setup(props) {
-    const dropzoneRef = ref(null);
     const uploadedFiles = ref([]);
     const mutableUploadedMedia = ref([]);
-
-    const headers = ref({});
-    const csrfToken = document.head.querySelector('meta[name="csrf-token"]');
-    if (csrfToken) {
-      headers.value = {
-        'X-CSRF-TOKEN': csrfToken.getAttribute('content'),
-      };
-    }
-
-    function setDropzoneRef(el) {
-      dropzoneRef.value = el;
-    }
 
     function getFileObj(file) {
       return {
@@ -118,36 +120,91 @@ export default defineComponent({
 
     function getMutableUploadedMedia() {
       const files = [];
-      const source = props.uploadedMedia.length === 0 ? props.uploadedImages : props.uploadedMedia;
-      source.forEach((file) => {
+      props.uploadedMedia.forEach((file) => {
         files.push(getFileObj(file));
       });
       return files;
     }
 
+    const visibleUploadedMedia = computed(() =>
+      mutableUploadedMedia.value.filter((f) => !f.deleted)
+    );
+
     onMounted(() => {
       mutableUploadedMedia.value = getMutableUploadedMedia();
     });
 
-    function onSuccess(file, response) {
-      uploadedFiles.value.push({ file, response });
+    function uploadFile(file) {
+      const entry = reactive({
+        file,
+        response: null,
+        previewUrl: file.type && file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
+        uploading: true,
+        progress: 0,
+        showSuccess: false,
+        showError: false,
+      });
+
+      uploadedFiles.value.push(entry);
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const csrfToken = document.head.querySelector('meta[name="csrf-token"]');
+
+      axios.post(props.url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken.getAttribute('content') } : {}),
+        },
+        onUploadProgress(progressEvent) {
+          if (progressEvent.total) {
+            entry.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          }
+        },
+      })
+        .then((response) => {
+          entry.response = response.data;
+          entry.uploading = false;
+          entry.showSuccess = true;
+          setTimeout(() => {
+            entry.showSuccess = false;
+          }, 1500);
+        })
+        .catch((error) => {
+          const errorMessage = error.response?.data?.message || error.message || 'Upload failed';
+          notify({ type: 'error', title: 'Error!', text: errorMessage });
+          entry.uploading = false;
+          entry.showError = true;
+          setTimeout(() => {
+            const idx = uploadedFiles.value.indexOf(entry);
+            if (idx !== -1) {
+              uploadedFiles.value.splice(idx, 1);
+            }
+          }, 2000);
+        });
     }
 
-    function onUploadError(file, error) {
-      const errorMessage = typeof error === 'string' ? error : error.message;
-      notify({ type: 'error', title: 'Error!', text: errorMessage });
+    function onDrop(acceptedFiles, fileRejections) {
+      fileRejections.forEach((rejection) => {
+        const messages = rejection.errors.map((e) => e?.message || 'Invalid file').join(', ');
+        notify({ type: 'error', title: 'Error!', text: `${rejection.file.name}: ${messages}` });
+      });
+
+      acceptedFiles.forEach((file) => {
+        uploadFile(file);
+      });
     }
 
-    function onFileAdded(file) {
-      // File added to dropzone
-    }
+    const dropzoneOptions = {
+      onDrop,
+      accept: props.acceptedFileTypes || undefined,
+      maxFiles: props.maxNumberOfFiles,
+      maxSize: props.maxFileSizeInMb * 1024 * 1024,
+      multiple: props.maxNumberOfFiles !== 1,
+    };
 
-    function onFileDelete(file) {
-      const index = uploadedFiles.value.findIndex((f) => f.file === file);
-      if (index !== -1) {
-        uploadedFiles.value.splice(index, 1);
-      }
-    }
+    const { getRootProps, getInputProps, isDragActive } = useDropzone(dropzoneOptions);
 
     function removeUploadedFile(index) {
       if (mutableUploadedMedia.value[index]) {
@@ -155,12 +212,19 @@ export default defineComponent({
       }
     }
 
+    function removeNewFile(index) {
+      uploadedFiles.value.splice(index, 1);
+    }
+
     function isImage(file) {
       return file.type && file.type.includes('image');
     }
 
     function getIconClass(file) {
-      const type = file.type || '';
+      return getIconClassFromType(file.type || '');
+    }
+
+    function getIconClassFromType(type) {
       if (type.includes('pdf')) return 'fa-solid fa-file-pdf';
       if (type.includes('word')) return 'fa-solid fa-file-word';
       if (type.includes('spreadsheet') || type.includes('csv')) return 'fa-solid fa-file-excel';
@@ -184,19 +248,18 @@ export default defineComponent({
         }
       });
 
-      uploadedFiles.value.forEach(({ file, response }) => {
-        const parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
-        if (parsedResponse.path) {
+      uploadedFiles.value.forEach((entry) => {
+        if (entry.response?.path) {
           files.push({
-            id: file.id,
+            id: entry.file.id,
             collection_name: props.collection,
-            path: parsedResponse.path,
+            path: entry.response.path,
             action: 'add',
             meta_data: {
-              name: file.name,
-              file_name: file.name,
-              width: file.width,
-              height: file.height,
+              name: entry.file.name,
+              file_name: entry.file.name,
+              width: entry.file.width,
+              height: entry.file.height,
             },
           });
         }
@@ -206,17 +269,17 @@ export default defineComponent({
     }
 
     return {
-      dropzoneRef,
+      uploadedFiles,
       mutableUploadedMedia,
-      headers,
-      setDropzoneRef,
-      onSuccess,
-      onUploadError,
-      onFileAdded,
-      onFileDelete,
+      visibleUploadedMedia,
+      getRootProps,
+      getInputProps,
+      isDragActive,
       removeUploadedFile,
+      removeNewFile,
       isImage,
       getIconClass,
+      getIconClassFromType,
       getFiles,
     };
   },

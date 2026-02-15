@@ -1,10 +1,11 @@
-import { ref, computed, onBeforeUnmount } from 'vue';
+import { ref, computed, getCurrentInstance, onBeforeUnmount } from 'vue';
 import { useForm } from 'vee-validate';
 import { notify } from '@kyvg/vue3-notification';
 import axios from 'axios';
 import { formatDate, formatDatetime, formatTime } from '../utils/dateFormatters.js';
 
 export function useBaseForm(props, options = {}) {
+  const instance = getCurrentInstance();
   const form = ref(props.data && Object.keys(props.data).length > 0 ? { ...props.data } : {});
   const wysiwygMedia = ref([]);
   const mediaCollections = ref([]);
@@ -72,7 +73,9 @@ export function useBaseForm(props, options = {}) {
   });
 
   // Methods
-  function getPostData(refs) {
+  function getPostData() {
+    const refs = instance?.proxy?.$refs || {};
+    console.log(refs, mediaCollections.value);
     if (mediaCollections.value) {
       mediaCollections.value.forEach((collection) => {
         if (form.value[collection]) {
@@ -83,7 +86,7 @@ export function useBaseForm(props, options = {}) {
           );
         }
 
-        const uploaderRef = refs?.[collection + '_uploader'];
+        const uploaderRef = refs[collection + '_uploader'];
         if (uploaderRef) {
           const uploader = Array.isArray(uploaderRef) ? uploaderRef[0] : uploaderRef;
           if (uploader && typeof uploader.getFiles === 'function') {
@@ -97,7 +100,7 @@ export function useBaseForm(props, options = {}) {
     return form.value;
   }
 
-  async function onSubmit(refs) {
+  async function onSubmit() {
     const { valid } = await validate();
     if (!valid) {
       notify({
@@ -122,7 +125,7 @@ export function useBaseForm(props, options = {}) {
     submiting.value = true;
 
     try {
-      const response = await axios.post(props.action, getPostData(refs));
+      const response = await axios.post(props.action, getPostData());
       onSuccess(response.data);
     } catch (err) {
       onFail(err.response?.data || {});
