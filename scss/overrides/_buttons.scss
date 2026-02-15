@@ -4,6 +4,7 @@
     &-info {
         background-color: $primary;
         border-color: $primary;
+        color: white;
         &:hover {
             background-color: darken($primary, 10);
             border-color: darken($primary, 10);

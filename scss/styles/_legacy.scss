@@ -1,3 +1,8 @@
+// BS5 compatibility: .form-group removed in Bootstrap 5
+.form-group {
+  margin-bottom: 1rem;
+}
+
 .input-group-addon {
   display: flex;
   box-align: center;

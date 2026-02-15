@@ -1,7 +1,8 @@
 import { ref, computed, getCurrentInstance, onBeforeUnmount } from 'vue';
-import { useForm } from 'vee-validate';
+import { useForm, validate as veeValidate } from 'vee-validate';
 import { notify } from '@kyvg/vue3-notification';
-import axios from 'axios';
+// Use the globally configured axios instance (with CSRF token and X-Requested-With header)
+const axios = window.axios;
 import { formatDate, formatDatetime, formatTime } from '../utils/dateFormatters.js';
 
 export function useBaseForm(props, options = {}) {
@@ -14,7 +15,7 @@ export function useBaseForm(props, options = {}) {
   const submiting = ref(false);
   const onSmallScreen = ref(window.innerWidth < (props.responsiveBreakpoint || 850));
 
-  const { validate, setErrors, resetForm, errors } = useForm();
+  const { setErrors, errors } = useForm();
 
   // Date picker configs
   const datePickerConfig = ref({
@@ -100,14 +101,33 @@ export function useBaseForm(props, options = {}) {
   }
 
   async function onSubmit() {
-    const { valid } = await validate();
-    if (!valid) {
-      notify({
-        type: 'error',
-        title: 'Error!',
-        text: 'The form contains invalid fields.',
-      });
-      return false;
+    if (options.validationSchema) {
+      const fieldErrors = {};
+      for (const [field, rules] of Object.entries(options.validationSchema)) {
+        const result = await veeValidate(form.value[field], rules, {
+          name: field,
+          values: form.value,
+        });
+        if (!result.valid) {
+          fieldErrors[field] = result.errors[0];
+        }
+      }
+
+      // Clear all schema field errors, then set only invalid ones
+      const errorState = {};
+      for (const field of Object.keys(options.validationSchema)) {
+        errorState[field] = fieldErrors[field] || undefined;
+      }
+      setErrors(errorState);
+
+      if (Object.keys(fieldErrors).length > 0) {
+        notify({
+          type: 'error',
+          title: 'Error!',
+          text: 'The form contains invalid fields.',
+        });
+        return false;
+      }
     }
 
     let data = form.value;
@@ -189,10 +209,6 @@ export function useBaseForm(props, options = {}) {
     if (container) container.classList.remove('width-auto');
   }
 
-  function validateField(event) {
-    // In vee-validate 4, errors are cleared automatically on revalidation
-    // This is a no-op placeholder for backwards compat
-  }
 
   function shouldShowLangGroup(locale) {
     if (!onSmallScreen.value) {
@@ -233,14 +249,11 @@ export function useBaseForm(props, options = {}) {
     getLocalizedFormDefaults,
     showLocalization,
     hideLocalization,
-    validateField,
     shouldShowLangGroup,
     onResize,
 
     // Vee-validate
-    validate,
     setErrors,
-    resetForm,
 
     // Date formatters (convenience re-exports)
     formatDate,

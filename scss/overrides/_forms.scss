@@ -16,6 +16,7 @@
   }
 }
 
+// BS4 validation (parent div pattern)
 .has-success .form-control {
   background-image: $icon-correct;
 }
@@ -26,6 +27,30 @@
 }
 
 .has-danger .form-control-feedback {
+  color: $danger;
+  font-weight: 500;
+}
+
+// BS5 validation (class on input pattern)
+.form-control.is-valid {
+  background-image: $icon-correct;
+  border-color: $mutedText;
+  &:focus {
+    border-color: $mutedText;
+    box-shadow: none;
+  }
+}
+
+.form-control.is-invalid {
+  background-image: $icon-error;
+  border-color: $danger;
+  &:focus {
+    border-color: $danger;
+    box-shadow: none;
+  }
+}
+
+.invalid-feedback {
   color: $danger;
   font-weight: 500;
 }
