@@ -75,7 +75,6 @@ export function useBaseForm(props, options = {}) {
   // Methods
   function getPostData() {
     const refs = instance?.proxy?.$refs || {};
-    console.log(refs, mediaCollections.value);
     if (mediaCollections.value) {
       mediaCollections.value.forEach((collection) => {
         if (form.value[collection]) {
