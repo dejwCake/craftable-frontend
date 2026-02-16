@@ -153,8 +153,15 @@ export function useBaseForm(props, options = {}) {
 
   function onSuccess(data) {
     submiting.value = false;
+    if (data.message) {
+      notify({ type: 'success', title: 'Success!', text: data.message });
+    }
     if (data.redirect) {
-      window.location.replace(data.redirect);
+      if (data.message) {
+        setTimeout(() => window.location.replace(data.redirect), 2000);
+      } else {
+        window.location.replace(data.redirect);
+      }
     }
   }
 
