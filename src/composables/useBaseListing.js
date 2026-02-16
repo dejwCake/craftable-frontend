@@ -32,15 +32,6 @@ export function useBaseListing(props) {
   const bulkItems = reactive({});
   const bulkCheckingAllLoader = ref(false);
 
-  const datetimePickerConfig = ref({
-    enableTimePicker: true,
-    enableSeconds: true,
-    format: 'yyyy-MM-dd HH:mm:ss',
-    textInput: true,
-    locale: null,
-    inline: true,
-  });
-
   // Update "now" every second
   const nowInterval = setInterval(() => {
     now.value = nowInTimezone(props.timezone || 'UTC');
@@ -289,94 +280,6 @@ export function useBaseListing(props) {
     );
   }
 
-  function publishNow(url, row, trans) {
-    const defaultTrans = {
-      title: 'Warning!',
-      text: 'Do you really want to publish this item now?',
-      yes: 'Yes, publish.',
-      no: 'No, cancel.',
-    };
-    const t = trans || defaultTrans;
-
-    if (!window.confirm(t.text || defaultTrans.text)) return;
-
-    axios.post(url, { publish_now: true }).then(
-      (response) => {
-        row.published_at = response.data.object.published_at;
-        notify({
-          type: 'success',
-          title: 'Success!',
-          text: response.data.message || t.success || 'Item successfully published.',
-        });
-      },
-      (error) => {
-        notify({
-          type: 'error',
-          title: 'Error!',
-          text: error.response?.data?.message || t.error || 'An error has occured.',
-        });
-      }
-    );
-  }
-
-  function unpublishNow(url, row, trans, additionalWarning) {
-    const defaultTrans = {
-      title: 'Warning!',
-      text: 'Do you really want to unpublish this item?',
-      yes: 'Yes, unpublish.',
-      no: 'No, cancel.',
-    };
-    const t = trans || defaultTrans;
-
-    const confirmText = additionalWarning ? t.text + '\n' + additionalWarning : t.text;
-    if (!window.confirm(confirmText)) return;
-
-    axios.post(url, { unpublish_now: true }).then(
-      (response) => {
-        row.published_at = response.data.object.published_at;
-        row.published_to = response.data.object.published_to;
-        notify({
-          type: 'success',
-          title: 'Success!',
-          text: response.data.message || t.success || 'Item successfully unpublished.',
-        });
-      },
-      (error) => {
-        notify({
-          type: 'error',
-          title: 'Error!',
-          text: error.response?.data?.message || t.error || 'An error has occured.',
-        });
-      }
-    );
-  }
-
-  function publishLater(url, row, trans) {
-    const publishedAt = window.prompt(
-      trans?.text || 'Enter publish date (YYYY-MM-DD HH:mm:ss):',
-      row.published_at || ''
-    );
-    if (publishedAt === null) return;
-
-    axios.post(url, { published_at: publishedAt }).then(
-      (response) => {
-        row.published_at = response.data.object.published_at;
-        notify({
-          type: 'success',
-          title: 'Success!',
-          text: response.data.message || trans?.success || 'Item successfully scheduled.',
-        });
-      },
-      (error) => {
-        notify({
-          type: 'error',
-          title: 'Error!',
-          text: error.response?.data?.message || trans?.error || 'An error has occured.',
-        });
-      }
-    );
-  }
-
   return {
     // State
     pagination,
@@ -387,7 +290,6 @@ export function useBaseListing(props) {
     now,
     bulkItems,
     bulkCheckingAllLoader,
-    datetimePickerConfig,
 
     // Computed
     isClickedAll,
@@ -406,9 +308,6 @@ export function useBaseListing(props) {
     populateCurrentStateAndData,
     deleteItem,
     toggleSwitch,
-    publishNow,
-    unpublishNow,
-    publishLater,
 
     // Date formatters (convenience re-exports)
     formatDate,
