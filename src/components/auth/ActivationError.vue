@@ -15,12 +15,9 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: 'ActivationError',
-    props: {
-        translations: { type: Object, default: () => ({}) },
-        serverErrors: { type: Array, default: () => [] },
-    },
-};
+<script setup>
+defineProps({
+    translations: { type: Object, default: () => ({}) },
+    serverErrors: { type: Array, default: () => [] },
+});
 </script>

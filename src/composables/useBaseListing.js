@@ -1,8 +1,8 @@
 import { ref, reactive, computed, onBeforeUnmount } from 'vue';
-import { notify } from '@kyvg/vue3-notification';
 import { useCookies } from 'vue3-cookies';
 import axios from 'axios';
 import { formatDate, formatDatetime, formatTime, nowInTimezone } from '../utils/dateFormatters.js';
+import { notifySuccess, notifyError } from '../utils/notify.js';
 
 export function useBaseListing(props) {
   const { cookies } = useCookies();
@@ -103,11 +103,7 @@ export function useBaseListing(props) {
         checkAllItems(response.data.bulkItems);
       })
       .catch((error) => {
-        notify({
-          type: 'error',
-          title: 'Error!',
-          text: error.response?.data?.message || 'An error has occured.',
-        });
+        notifyError(error.response?.data?.message);
       })
       .finally(() => {
         bulkCheckingAllLoader.value = false;
@@ -166,18 +162,10 @@ export function useBaseListing(props) {
       .then((response) => {
         Object.keys(bulkItems).forEach((key) => delete bulkItems[key]);
         loadData();
-        notify({
-          type: 'success',
-          title: 'Success!',
-          text: response.data.message || 'Item successfully deleted.',
-        });
+        notifySuccess(response.data.message);
       })
       .catch((error) => {
-        notify({
-          type: 'error',
-          title: 'Error!',
-          text: error.response?.data?.message || 'An error has occured.',
-        });
+        notifyError(error.response?.data?.message);
       });
   }
 
@@ -199,8 +187,8 @@ export function useBaseListing(props) {
 
     axios.get(props.url, options).then(
       (response) => populateCurrentStateAndData(response.data.data),
-      () => {
-        // TODO handle error
+      (error) => {
+        notifyError(error.response?.data?.message);
       }
     );
   }
@@ -230,25 +218,25 @@ export function useBaseListing(props) {
     pagination.state.from = object.from;
   }
 
-
-  function toggleSwitch(url, col, row) {
-    axios.post(url, row).then(
+  function getAction(url) {
+    return axios.get(url).then(
       (response) => {
-        notify({
-          type: 'success',
-          title: 'Success!',
-          text: response.data.message || 'Item successfully changed.',
-        });
+        if (response.data.message) {
+          notifySuccess(response.data.message);
+        } else if (response.data.redirect) {
+          window.location.replace(response.data.redirect);
+        } else if (response.data.data?.path) {
+          window.location.replace(response.data.data.path);
+        }
       },
       (error) => {
-        row[col] = !row[col];
-        notify({
-          type: 'error',
-          title: 'Error!',
-          text: error.response?.data?.message || 'An error has occured.',
-        });
+        notifyError(error.response?.data?.message);
       }
     );
+  }
+
+  function resolveUrl(template, item) {
+    return template.replace(':id', item.id);
   }
 
   return {
@@ -276,8 +264,9 @@ export function useBaseListing(props) {
     bulkDelete,
     loadData,
     filter,
+    resolveUrl,
     populateCurrentStateAndData,
-    toggleSwitch,
+    getAction,
 
     // Date formatters (convenience re-exports)
     formatDate,

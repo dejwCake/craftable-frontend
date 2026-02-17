@@ -64,224 +64,207 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref, reactive, computed, onMounted } from 'vue';
+<script setup>
+import { ref, reactive, computed, onMounted } from 'vue';
 import { useDropzone } from 'vue3-dropzone';
 import { notify } from '@kyvg/vue3-notification';
 import axios from 'axios';
 
-export default defineComponent({
-  name: 'BaseUpload',
-  props: {
-    url: {
-      type: String,
-      required: true,
-    },
-    collection: {
-      type: String,
-      required: true,
-    },
-    maxNumberOfFiles: {
-      type: Number,
-      default: 1,
-    },
-    maxFileSizeInMb: {
-      type: Number,
-      default: 2,
-    },
-    acceptedFileTypes: {
-      type: String,
-      default: undefined,
-    },
-    thumbnailWidth: {
-      type: Number,
-      default: 200,
-    },
-    uploadedMedia: {
-      type: Array,
-      default: () => [],
-    },
+const props = defineProps({
+  url: {
+    type: String,
+    required: true,
   },
-  setup(props) {
-    const uploadedFiles = ref([]);
-    const mutableUploadedMedia = ref([]);
-
-    function getFileObj(file) {
-      return {
-        id: file.id,
-        collection_name: props.collection,
-        name: file.custom_properties?.name ?? file.file_name ?? file.name,
-        type: file.mime_type ?? file.type,
-        size: file.size,
-        url: file.original_url ?? file.url,
-        thumb_url: file.thumb_url ?? file.original_url ?? file.url,
-      };
-    }
-
-    function getMutableUploadedMedia() {
-      const files = [];
-      props.uploadedMedia.forEach((file) => {
-        files.push(getFileObj(file));
-      });
-      return files;
-    }
-
-    const visibleUploadedMedia = computed(() =>
-      mutableUploadedMedia.value.filter((f) => !f.deleted)
-    );
-
-    onMounted(() => {
-      mutableUploadedMedia.value = getMutableUploadedMedia();
-    });
-
-    function uploadFile(file) {
-      const entry = reactive({
-        file,
-        response: null,
-        previewUrl: file.type && file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
-        uploading: true,
-        progress: 0,
-        showSuccess: false,
-        showError: false,
-      });
-
-      uploadedFiles.value.push(entry);
-
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const csrfToken = document.head.querySelector('meta[name="csrf-token"]');
-
-      axios.post(props.url, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken.getAttribute('content') } : {}),
-        },
-        onUploadProgress(progressEvent) {
-          if (progressEvent.total) {
-            entry.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          }
-        },
-      })
-        .then((response) => {
-          entry.response = response.data;
-          entry.uploading = false;
-          entry.showSuccess = true;
-          setTimeout(() => {
-            entry.showSuccess = false;
-          }, 1500);
-        })
-        .catch((error) => {
-          const errorMessage = error.response?.data?.message || error.message || 'Upload failed';
-          notify({ type: 'error', title: 'Error!', text: errorMessage });
-          entry.uploading = false;
-          entry.showError = true;
-          setTimeout(() => {
-            const idx = uploadedFiles.value.indexOf(entry);
-            if (idx !== -1) {
-              uploadedFiles.value.splice(idx, 1);
-            }
-          }, 2000);
-        });
-    }
-
-    function onDrop(acceptedFiles, fileRejections) {
-      fileRejections.forEach((rejection) => {
-        const messages = rejection.errors.map((e) => e?.message || 'Invalid file').join(', ');
-        notify({ type: 'error', title: 'Error!', text: `${rejection.file.name}: ${messages}` });
-      });
-
-      acceptedFiles.forEach((file) => {
-        uploadFile(file);
-      });
-    }
-
-    const dropzoneOptions = {
-      onDrop,
-      accept: props.acceptedFileTypes || undefined,
-      maxFiles: props.maxNumberOfFiles,
-      maxSize: props.maxFileSizeInMb * 1024 * 1024,
-      multiple: props.maxNumberOfFiles !== 1,
-    };
-
-    const { getRootProps, getInputProps, isDragActive } = useDropzone(dropzoneOptions);
-
-    function removeUploadedFile(index) {
-      if (mutableUploadedMedia.value[index]) {
-        mutableUploadedMedia.value[index].deleted = true;
-      }
-    }
-
-    function removeNewFile(index) {
-      uploadedFiles.value.splice(index, 1);
-    }
-
-    function isImage(file) {
-      return file.type && file.type.includes('image');
-    }
-
-    function getIconClass(file) {
-      return getIconClassFromType(file.type || '');
-    }
-
-    function getIconClassFromType(type) {
-      if (type.includes('pdf')) return 'fa-solid fa-file-pdf';
-      if (type.includes('word')) return 'fa-solid fa-file-word';
-      if (type.includes('spreadsheet') || type.includes('csv')) return 'fa-solid fa-file-excel';
-      if (type.includes('presentation')) return 'fa-solid fa-file-powerpoint';
-      if (type.includes('video')) return 'fa-solid fa-file-video';
-      if (type.includes('text')) return 'fa-solid fa-file-lines';
-      if (type.includes('zip') || type.includes('rar')) return 'fa-solid fa-file-zipper';
-      return 'fa-solid fa-file';
-    }
-
-    function getFiles() {
-      const files = [];
-
-      mutableUploadedMedia.value.forEach((file) => {
-        if (file.deleted) {
-          files.push({
-            id: file.id,
-            collection_name: props.collection,
-            action: 'delete',
-          });
-        }
-      });
-
-      uploadedFiles.value.forEach((entry) => {
-        if (entry.response?.path) {
-          files.push({
-            id: entry.file.id,
-            collection_name: props.collection,
-            path: entry.response.path,
-            action: 'add',
-            meta_data: {
-              name: entry.file.name,
-              file_name: entry.file.name,
-              width: entry.file.width,
-              height: entry.file.height,
-            },
-          });
-        }
-      });
-
-      return files;
-    }
-
-    return {
-      uploadedFiles,
-      mutableUploadedMedia,
-      visibleUploadedMedia,
-      getRootProps,
-      getInputProps,
-      isDragActive,
-      removeUploadedFile,
-      removeNewFile,
-      isImage,
-      getIconClass,
-      getIconClassFromType,
-      getFiles,
-    };
+  collection: {
+    type: String,
+    required: true,
+  },
+  maxNumberOfFiles: {
+    type: Number,
+    default: 1,
+  },
+  maxFileSizeInMb: {
+    type: Number,
+    default: 2,
+  },
+  acceptedFileTypes: {
+    type: String,
+    default: undefined,
+  },
+  thumbnailWidth: {
+    type: Number,
+    default: 200,
+  },
+  uploadedMedia: {
+    type: Array,
+    default: () => [],
   },
 });
+
+const uploadedFiles = ref([]);
+const mutableUploadedMedia = ref([]);
+
+function getFileObj(file) {
+  return {
+    id: file.id,
+    collection_name: props.collection,
+    name: file.custom_properties?.name ?? file.file_name ?? file.name,
+    type: file.mime_type ?? file.type,
+    size: file.size,
+    url: file.original_url ?? file.url,
+    thumb_url: file.thumb_url ?? file.original_url ?? file.url,
+  };
+}
+
+function getMutableUploadedMedia() {
+  const files = [];
+  props.uploadedMedia.forEach((file) => {
+    files.push(getFileObj(file));
+  });
+  return files;
+}
+
+const visibleUploadedMedia = computed(() =>
+  mutableUploadedMedia.value.filter((f) => !f.deleted)
+);
+
+onMounted(() => {
+  mutableUploadedMedia.value = getMutableUploadedMedia();
+});
+
+function uploadFile(file) {
+  const entry = reactive({
+    file,
+    response: null,
+    previewUrl: file.type && file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
+    uploading: true,
+    progress: 0,
+    showSuccess: false,
+    showError: false,
+  });
+
+  uploadedFiles.value.push(entry);
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const csrfToken = document.head.querySelector('meta[name="csrf-token"]');
+
+  axios.post(props.url, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken.getAttribute('content') } : {}),
+    },
+    onUploadProgress(progressEvent) {
+      if (progressEvent.total) {
+        entry.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+      }
+    },
+  })
+    .then((response) => {
+      entry.response = response.data;
+      entry.uploading = false;
+      entry.showSuccess = true;
+      setTimeout(() => {
+        entry.showSuccess = false;
+      }, 1500);
+    })
+    .catch((error) => {
+      const errorMessage = error.response?.data?.message || error.message || 'Upload failed';
+      notify({ type: 'error', title: 'Error!', text: errorMessage });
+      entry.uploading = false;
+      entry.showError = true;
+      setTimeout(() => {
+        const idx = uploadedFiles.value.indexOf(entry);
+        if (idx !== -1) {
+          uploadedFiles.value.splice(idx, 1);
+        }
+      }, 2000);
+    });
+}
+
+function onDrop(acceptedFiles, fileRejections) {
+  fileRejections.forEach((rejection) => {
+    const messages = rejection.errors.map((e) => e?.message || 'Invalid file').join(', ');
+    notify({ type: 'error', title: 'Error!', text: `${rejection.file.name}: ${messages}` });
+  });
+
+  acceptedFiles.forEach((file) => {
+    uploadFile(file);
+  });
+}
+
+const dropzoneOptions = {
+  onDrop,
+  accept: props.acceptedFileTypes || undefined,
+  maxFiles: props.maxNumberOfFiles,
+  maxSize: props.maxFileSizeInMb * 1024 * 1024,
+  multiple: props.maxNumberOfFiles !== 1,
+};
+
+const { getRootProps, getInputProps, isDragActive } = useDropzone(dropzoneOptions);
+
+function removeUploadedFile(index) {
+  if (mutableUploadedMedia.value[index]) {
+    mutableUploadedMedia.value[index].deleted = true;
+  }
+}
+
+function removeNewFile(index) {
+  uploadedFiles.value.splice(index, 1);
+}
+
+function isImage(file) {
+  return file.type && file.type.includes('image');
+}
+
+function getIconClass(file) {
+  return getIconClassFromType(file.type || '');
+}
+
+function getIconClassFromType(type) {
+  if (type.includes('pdf')) return 'fa-solid fa-file-pdf';
+  if (type.includes('word')) return 'fa-solid fa-file-word';
+  if (type.includes('spreadsheet') || type.includes('csv')) return 'fa-solid fa-file-excel';
+  if (type.includes('presentation')) return 'fa-solid fa-file-powerpoint';
+  if (type.includes('video')) return 'fa-solid fa-file-video';
+  if (type.includes('text')) return 'fa-solid fa-file-lines';
+  if (type.includes('zip') || type.includes('rar')) return 'fa-solid fa-file-zipper';
+  return 'fa-solid fa-file';
+}
+
+function getFiles() {
+  const files = [];
+
+  mutableUploadedMedia.value.forEach((file) => {
+    if (file.deleted) {
+      files.push({
+        id: file.id,
+        collection_name: props.collection,
+        action: 'delete',
+      });
+    }
+  });
+
+  uploadedFiles.value.forEach((entry) => {
+    if (entry.response?.path) {
+      files.push({
+        id: entry.file.id,
+        collection_name: props.collection,
+        path: entry.response.path,
+        action: 'add',
+        meta_data: {
+          name: entry.file.name,
+          file_name: entry.file.name,
+          width: entry.file.width,
+          height: entry.file.height,
+        },
+      });
+    }
+  });
+
+  return files;
+}
+
+defineExpose({ getFiles });
 </script>

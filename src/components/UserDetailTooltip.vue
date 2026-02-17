@@ -52,53 +52,44 @@
   </VDropdown>
 </template>
 
-<script>
-import { defineComponent, computed } from 'vue';
+<script setup>
+import { computed } from 'vue';
 import { Dropdown as VDropdown } from 'floating-vue';
 
-export default defineComponent({
-  name: 'UserDetailTooltip',
-  components: {
-    VDropdown,
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true,
   },
-  props: {
-    user: {
-      type: Object,
-      required: true,
-    },
-    userText: {
-      type: String,
-      default: '',
-    },
-    text: {
-      type: String,
-      default: '',
-    },
-    options: {
-      type: Object,
-      default: () => ({
-        showFullNameLabel: true,
-      }),
-    },
-    placement: {
-      type: String,
-      default: 'top',
-    },
-    edit: {
-      type: Boolean,
-      default: false,
-    },
-    datetime: {
-      type: String,
-      default: '',
-    },
+  userText: {
+    type: String,
+    default: '',
   },
-  setup(props) {
-    const abbr = computed(() => {
-      return `${props.user.first_name.slice(0, 1)}${props.user.last_name.slice(0, 1)}`;
-    });
+  text: {
+    type: String,
+    default: '',
+  },
+  options: {
+    type: Object,
+    default: () => ({
+      showFullNameLabel: true,
+    }),
+  },
+  placement: {
+    type: String,
+    default: 'top',
+  },
+  edit: {
+    type: Boolean,
+    default: false,
+  },
+  datetime: {
+    type: String,
+    default: '',
+  },
+});
 
-    return { abbr };
-  },
+const abbr = computed(() => {
+  return `${props.user.first_name.slice(0, 1)}${props.user.last_name.slice(0, 1)}`;
 });
 </script>

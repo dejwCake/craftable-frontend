@@ -5,7 +5,7 @@
       :placeholder="translations.search_placeholder"
       :value="search"
       @input="$emit('update:search', $event.target.value)"
-      @keyup.enter="filterFn('search', $event.target.value)"
+      @keyup.enter="doSearch"
     />
     <button
       v-if="search"
@@ -18,7 +18,7 @@
     <button
       type="button"
       class="btn btn-primary"
-      @click="filterFn('search', search)"
+      @click="doSearch"
     >
       <i class="fa fa-search"></i>&nbsp; {{ translations.search_btn }}
     </button>
@@ -36,6 +36,10 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:search']);
+
+function doSearch() {
+  props.filterFn('search', props.search);
+}
 
 function clearSearch() {
   emit('update:search', '');

@@ -1,6 +1,6 @@
 /* Base for label styling */
-[type="checkbox"]:not(:checked),
-[type="checkbox"]:checked {
+[type="checkbox"]:not(:checked):not([role="switch"]),
+[type="checkbox"]:checked:not([role="switch"]) {
   position: absolute;
   left: -9999px;
 }

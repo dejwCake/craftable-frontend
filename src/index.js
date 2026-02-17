@@ -22,6 +22,7 @@ export { default as PublishedAtColumn } from './components/listing/PublishedAtCo
 export { default as ListingHeader } from './components/listing/ListingHeader.vue';
 export { default as EditButton } from './components/listing/EditButton.vue';
 export { default as DeleteButton } from './components/listing/DeleteButton.vue';
+export { default as ToggleSwitch } from './components/listing/ToggleSwitch.vue';
 
 // Form components
 export { default as FormInput } from './components/form/FormInput.vue';
@@ -50,4 +51,5 @@ export { default as TranslationListing } from './translation/TranslationListing.
 // Utilities
 export { formatDate, formatDatetime, formatTime, nowInTimezone, dayjs } from './utils/dateFormatters.js';
 export { mediaCollectionProp, mediaCollectionDefaults } from './utils/mediaProps.js';
+export { notifySuccess, notifyError } from './utils/notify.js';
 export { initUI } from './ui/index.js';

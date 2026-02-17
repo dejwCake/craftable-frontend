@@ -56,8 +56,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, onBeforeUnmount, watch } from 'vue';
+<script setup>
+import { onBeforeUnmount, watch } from 'vue';
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
@@ -67,109 +67,96 @@ import TableRow from '@tiptap/extension-table-row';
 import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 
-export default defineComponent({
-  name: 'TiptapEditor',
-  components: {
-    EditorContent,
+const props = defineProps({
+  modelValue: {
+    type: String,
+    default: '',
   },
-  props: {
-    modelValue: {
-      type: String,
-      default: '',
-    },
-    config: {
-      type: Object,
-      default: () => ({}),
-    },
-    showTableControls: {
-      type: Boolean,
-      default: true,
-    },
-    uploadUrl: {
-      type: String,
-      default: '/admin/wysiwyg-media',
-    },
+  config: {
+    type: Object,
+    default: () => ({}),
   },
-  emits: ['update:modelValue', 'media-uploaded'],
-  setup(props, { emit }) {
-    const extensions = [
-      StarterKit,
-      Image.configure({
-        HTMLAttributes: {
-          class: 'tiptap-image',
-        },
-      }),
-      Link.configure({
-        openOnClick: false,
-      }),
-      Table.configure({
-        resizable: true,
-      }),
-      TableRow,
-      TableCell,
-      TableHeader,
-      ...(props.config.extensions || []),
-    ];
-
-    const editor = useEditor({
-      content: props.modelValue,
-      extensions,
-      onUpdate: ({ editor: ed }) => {
-        emit('update:modelValue', ed.getHTML());
-      },
-    });
-
-    watch(
-      () => props.modelValue,
-      (value) => {
-        if (editor.value && editor.value.getHTML() !== value) {
-          editor.value.commands.setContent(value, false);
-        }
-      }
-    );
-
-    onBeforeUnmount(() => {
-      if (editor.value) {
-        editor.value.destroy();
-      }
-    });
-
-    function setHeading(event) {
-      const level = parseInt(event.target.value);
-      if (level === 0) {
-        editor.value.chain().focus().setParagraph().run();
-      } else {
-        editor.value.chain().focus().toggleHeading({ level }).run();
-      }
-    }
-
-    function setLink() {
-      const previousUrl = editor.value.getAttributes('link').href;
-      const url = window.prompt('URL', previousUrl);
-
-      if (url === null) return;
-
-      if (url === '') {
-        editor.value.chain().focus().extendMarkRange('link').unsetLink().run();
-        return;
-      }
-
-      editor.value.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
-    }
-
-    function addImage() {
-      const url = window.prompt('Image URL');
-      if (url) {
-        editor.value.chain().focus().setImage({ src: url }).run();
-      }
-    }
-
-    return {
-      editor,
-      setHeading,
-      setLink,
-      addImage,
-    };
+  showTableControls: {
+    type: Boolean,
+    default: true,
+  },
+  uploadUrl: {
+    type: String,
+    default: '/admin/wysiwyg-media',
   },
 });
+
+const emit = defineEmits(['update:modelValue', 'media-uploaded']);
+
+const extensions = [
+  StarterKit,
+  Image.configure({
+    HTMLAttributes: {
+      class: 'tiptap-image',
+    },
+  }),
+  Link.configure({
+    openOnClick: false,
+  }),
+  Table.configure({
+    resizable: true,
+  }),
+  TableRow,
+  TableCell,
+  TableHeader,
+  ...(props.config.extensions || []),
+];
+
+const editor = useEditor({
+  content: props.modelValue,
+  extensions,
+  onUpdate: ({ editor: ed }) => {
+    emit('update:modelValue', ed.getHTML());
+  },
+});
+
+watch(
+  () => props.modelValue,
+  (value) => {
+    if (editor.value && editor.value.getHTML() !== value) {
+      editor.value.commands.setContent(value, false);
+    }
+  }
+);
+
+onBeforeUnmount(() => {
+  if (editor.value) {
+    editor.value.destroy();
+  }
+});
+
+function setHeading(event) {
+  const level = parseInt(event.target.value);
+  if (level === 0) {
+    editor.value.chain().focus().setParagraph().run();
+  } else {
+    editor.value.chain().focus().toggleHeading({ level }).run();
+  }
+}
+
+function setLink() {
+  const previousUrl = editor.value.getAttributes('link').href;
+  const url = window.prompt('URL', previousUrl);
+
+  if (url === null) return;
+
+  if (url === '') {
+    editor.value.chain().focus().extendMarkRange('link').unsetLink().run();
+    return;
+  }
+
+  editor.value.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+}
+
+function addImage() {
+  const url = window.prompt('Image URL');
+  if (url) {
+    editor.value.chain().focus().setImage({ src: url }).run();
+  }
+}
 </script>

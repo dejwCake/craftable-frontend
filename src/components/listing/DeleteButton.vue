@@ -11,7 +11,7 @@
 
 <script setup>
 import axios from 'axios';
-import { notify } from '@kyvg/vue3-notification';
+import { notifySuccess, notifyError } from '../../utils/notify.js';
 
 const props = defineProps({
   url: { type: String, required: true },
@@ -31,19 +31,11 @@ function onDelete() {
 
   axios.delete(props.url).then(
     (response) => {
-      notify({
-        type: 'success',
-        title: 'Success!',
-        text: response.data.message || 'Item successfully deleted.',
-      });
+      notifySuccess(response.data.message);
       emit('deleted');
     },
     (error) => {
-      notify({
-        type: 'error',
-        title: 'Error!',
-        text: error.response?.data?.message || 'An error has occured.',
-      });
+      notifyError(error.response?.data?.message);
     }
   );
 }

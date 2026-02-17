@@ -1,5 +1,32 @@
 // Write your project specific styles here
 
+// Colored toggle switches
+.form-check-input.form-switch-success:checked {
+  background-color: var(--cui-success, #2eb85c);
+  border-color: var(--cui-success, #2eb85c);
+}
+
+.form-check-input.form-switch-danger:checked {
+  background-color: var(--cui-danger, #e55353);
+  border-color: var(--cui-danger, #e55353);
+}
+
+.form-check-input.form-switch-success,
+.form-check-input.form-switch-danger {
+  width: 2em;
+  height: 1.2em;
+  border-radius: 2em;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%288, 10, 12, 0.25%29'/%3e%3c/svg%3e");
+  background-position: left center;
+  cursor: pointer;
+  transition: background-position .15s ease-in-out;
+
+  &:checked {
+    background-position: right center;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%28255, 255, 255, 0.87%29'/%3e%3c/svg%3e");
+  }
+}
+
 .publish-later-backdrop {
   position: fixed;
   inset: 0;

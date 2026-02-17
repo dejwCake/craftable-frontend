@@ -78,13 +78,14 @@
 <script setup>
 import { ref } from 'vue';
 import { VueDatePicker } from '@vuepic/vue-datepicker';
-import { notify } from '@kyvg/vue3-notification';
+import { notifySuccess, notifyError } from '../../utils/notify.js';
 // Use the globally configured axios instance (with CSRF token and X-Requested-With header)
 const axios = window.axios;
 import { formatDatetime } from '../../utils/dateFormatters.js';
 
 const props = defineProps({
   item: { type: Object, required: true },
+  url: {type: String, required: true},
   now: { type: String, required: true },
   datetimeFormat: { type: String, default: 'DD.MM.YYYY, HH:mm' },
   translations: {
@@ -113,22 +114,14 @@ function savePublishLater() {
   if (!publishDate.value) return;
   submitting.value = true;
 
-  axios.post(props.item.resource_url, { published_at: publishDate.value }).then(
+  axios.post(props.url, { published_at: publishDate.value }).then(
     (response) => {
       props.item.published_at = response.data.object.published_at;
       editing.value = false;
-      notify({
-        type: 'success',
-        title: 'Success!',
-        text: response.data.message || 'Item successfully scheduled.',
-      });
+      notifySuccess(response.data.message);
     },
     (error) => {
-      notify({
-        type: 'error',
-        title: 'Error!',
-        text: error.response?.data?.message || 'An error has occured.',
-      });
+      notifyError(error.response?.data?.message);
     }
   ).finally(() => {
     submitting.value = false;
@@ -139,21 +132,13 @@ function publishNow() {
   if (!window.confirm(props.translations.confirm_publish_now)) return;
   submitting.value = true;
 
-  axios.post(props.item.resource_url, { publish_now: true }).then(
+  axios.post(props.url, { publish_now: true }).then(
     (response) => {
       props.item.published_at = response.data.object.published_at;
-      notify({
-        type: 'success',
-        title: 'Success!',
-        text: response.data.message || 'Item successfully published.',
-      });
+      notifySuccess(response.data.message);
     },
     (error) => {
-      notify({
-        type: 'error',
-        title: 'Error!',
-        text: error.response?.data?.message || 'An error has occured.',
-      });
+      notifyError(error.response?.data?.message);
     }
   ).finally(() => {
     submitting.value = false;
@@ -164,22 +149,14 @@ function unpublishNow() {
   if (!window.confirm(props.translations.confirm_unpublish_now)) return;
   submitting.value = true;
 
-  axios.post(props.item.resource_url, { unpublish_now: true }).then(
+  axios.post(props.url, { unpublish_now: true }).then(
     (response) => {
       props.item.published_at = response.data.object.published_at;
       props.item.published_to = response.data.object.published_to;
-      notify({
-        type: 'success',
-        title: 'Success!',
-        text: response.data.message || 'Item successfully unpublished.',
-      });
+      notifySuccess(response.data.message);
     },
     (error) => {
-      notify({
-        type: 'error',
-        title: 'Error!',
-        text: error.response?.data?.message || 'An error has occured.',
-      });
+      notifyError(error.response?.data?.message);
     }
   ).finally(() => {
     submitting.value = false;
