@@ -18,6 +18,13 @@
 defineProps({
   show: { type: Boolean, default: true },
   createUrl: { type: String, default: '' },
-  translations: { type: Object, required: true },
+  translations: {
+    type: Object,
+    default: () => ({
+      no_items: 'Could not find any items',
+      try_changing_items: 'Try changing the filters or add a new one',
+      create_btn: 'New',
+    }),
+  },
 });
 </script>

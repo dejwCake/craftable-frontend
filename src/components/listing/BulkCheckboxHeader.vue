@@ -1,17 +1,15 @@
 <template>
-  <th class="bulk-checkbox">
-    <input
-      class="form-check-input"
-      id="enabled"
-      type="checkbox"
-      :checked="isClickedAll"
-      name="enabled_fake_element"
-      @click="onToggleAll()"
-    />
-    <label class="form-check-label" for="enabled">
-      #
-    </label>
-  </th>
+  <input
+    class="form-check-input"
+    id="enabled"
+    type="checkbox"
+    :checked="isClickedAll"
+    name="enabled_fake_element"
+    @click="onToggleAll()"
+  />
+  <label class="form-check-label" for="enabled">
+    #
+  </label>
 </template>
 
 <script setup>

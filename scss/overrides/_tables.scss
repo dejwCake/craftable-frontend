@@ -20,8 +20,8 @@ table th a:not([href]) {
   vertical-align: middle;
 }
 
+.table-listing .d-flex .btn,
 .table-listing .row.no-gutters .btn {
-  margin-right: 10px;
   @media (max-width: 1319px) {
     margin-bottom: 10px;
   }
@@ -29,8 +29,8 @@ table th a:not([href]) {
 
 .table-listing td:last-of-type {
   min-width: 95px;
-  display: flex;
-  justify-content: flex-end;
+  text-align: end;
+  white-space: nowrap;
 }
 
 td > .switch {

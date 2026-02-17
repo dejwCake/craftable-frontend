@@ -13,17 +13,27 @@
     &-danger {
         background-color: $danger;
         border-color: $danger;
+        color: white;
         &:hover {
             background-color: darken($danger, 10);
             border-color: darken($danger, 10);
+            color: white;
         }
     }
     &-success {
         background-color: $success;
         border-color: $success;
+        color: white;
         &:hover {
             background-color: darken($success, 10);
             border-color: darken($success, 10);
+            color: white;
+        }
+    }
+    &-warning {
+        color: white;
+        &:hover {
+            color: white;
         }
     }
     &-secondary {
@@ -44,11 +54,18 @@
         justify-content: center;
         align-items: center;
     }
+    &:not([class*="btn-outline-"]) {
+        &:hover,
+        &:active,
+        &:focus,
+        &:visited {
+            color: white;
+        }
+    }
     &:hover,
     &:active,
     &:focus,
     &:visited {
-        color: white;
         box-shadow: none;
     }
     &:hover {
@@ -57,9 +74,11 @@
             transform-origin: top center;
         }
     }
-    i.fa,
-    i.fa-solid,
-    i.fa-regular {
-        color: white;
+    &:not(.btn-outline-secondary) {
+        i.fa,
+        i.fa-solid,
+        i.fa-regular {
+            color: white;
+        }
     }
 }

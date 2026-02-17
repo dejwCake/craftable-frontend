@@ -1,5 +1,4 @@
 <template>
-  <td class="text-center text-nowrap">
     <span v-if="item.published_at <= now">
       {{ formatDatetime(item.published_at, datetimeFormat) }}
     </span>
@@ -49,10 +48,14 @@
         </button>
       </form>
     </div>
-    <div v-if="editing" class="publish-later-picker mt-1">
+    <div v-if="editing" class="publish-later-backdrop" @click.self="editing = false"></div>
+    <div v-if="editing" class="publish-later-modal">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <strong>{{ translations.publish_later }}</strong>
+        <button type="button" class="btn-close btn-close-sm" @click="editing = false" aria-label="Close"></button>
+      </div>
       <VueDatePicker
-        :model-value="publishDate"
-        @update:model-value="onDateSelected"
+        v-model="publishDate"
         model-type="yyyy-MM-dd HH:mm:ss"
         :enable-time-picker="true"
         :enable-seconds="true"
@@ -60,13 +63,16 @@
         :inline="true"
         auto-apply
       />
-      <div class="mt-1">
-        <button class="btn btn-sm btn-secondary" @click="editing = false" :disabled="submitting">
-          <i class="fa fa-times"></i>
+      <div class="mt-2 text-end">
+        <button
+          class="btn btn-sm btn-primary text-white"
+          @click="savePublishLater()"
+          :disabled="submitting || !publishDate"
+        >
+          Save
         </button>
       </div>
     </div>
-  </td>
 </template>
 
 <script setup>
@@ -81,7 +87,17 @@ const props = defineProps({
   item: { type: Object, required: true },
   now: { type: String, required: true },
   datetimeFormat: { type: String, default: 'DD.MM.YYYY, HH:mm' },
-  translations: { type: Object, default: () => ({}) },
+  translations: {
+    type: Object,
+    default: () => ({
+      publish_now: 'Publish now',
+      unpublish_now: 'Unpublish now',
+      publish_later: 'Publish later',
+      will_be_published: 'This item will be published at',
+      confirm_publish_now: 'Do you really want to publish this item now?',
+      confirm_unpublish_now: 'Do you really want to unpublish this item?',
+    }),
+  },
 });
 
 const editing = ref(false);
@@ -93,12 +109,11 @@ function openPublishLater() {
   editing.value = true;
 }
 
-function onDateSelected(value) {
-  publishDate.value = value;
-  if (!value) return;
+function savePublishLater() {
+  if (!publishDate.value) return;
   submitting.value = true;
 
-  axios.post(props.item.resource_url, { published_at: value }).then(
+  axios.post(props.item.resource_url, { published_at: publishDate.value }).then(
     (response) => {
       props.item.published_at = response.data.object.published_at;
       editing.value = false;
@@ -121,7 +136,7 @@ function onDateSelected(value) {
 }
 
 function publishNow() {
-  if (!window.confirm(props.translations.confirm_publish_now || 'Do you really want to publish this item now?')) return;
+  if (!window.confirm(props.translations.confirm_publish_now)) return;
   submitting.value = true;
 
   axios.post(props.item.resource_url, { publish_now: true }).then(
@@ -146,7 +161,7 @@ function publishNow() {
 }
 
 function unpublishNow() {
-  if (!window.confirm(props.translations.confirm_unpublish_now || 'Do you really want to unpublish this item?')) return;
+  if (!window.confirm(props.translations.confirm_unpublish_now)) return;
   submitting.value = true;
 
   axios.post(props.item.resource_url, { unpublish_now: true }).then(

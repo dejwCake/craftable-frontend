@@ -13,11 +13,15 @@ export { default as UserDetailTooltip } from './components/UserDetailTooltip.vue
 export { default as Pagination } from './components/listing/Pagination.vue';
 export { default as Sortable } from './components/listing/Sortable.vue';
 export { default as Search } from './components/listing/Search.vue';
+export { default as PerPage } from './components/listing/PerPage.vue';
 export { default as EmptyState } from './components/listing/EmptyState.vue';
 export { default as BulkCheckboxHeader } from './components/listing/BulkCheckboxHeader.vue';
 export { default as BulkCheckboxRow } from './components/listing/BulkCheckboxRow.vue';
 export { default as BulkOperationsBar } from './components/listing/BulkOperationsBar.vue';
 export { default as PublishedAtColumn } from './components/listing/PublishedAtColumn.vue';
+export { default as ListingHeader } from './components/listing/ListingHeader.vue';
+export { default as EditButton } from './components/listing/EditButton.vue';
+export { default as DeleteButton } from './components/listing/DeleteButton.vue';
 
 // Form components
 export { default as FormInput } from './components/form/FormInput.vue';

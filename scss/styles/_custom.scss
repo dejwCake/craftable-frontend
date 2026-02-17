@@ -1,1 +1,17 @@
 // Write your project specific styles here
+
+.publish-later-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1049;
+}
+
+.publish-later-modal {
+  position: absolute;
+  z-index: 1050;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  padding: 0.75rem;
+}

@@ -230,35 +230,6 @@ export function useBaseListing(props) {
     pagination.state.from = object.from;
   }
 
-  function deleteItem(url, trans) {
-    const defaultTrans = {
-      title: 'Warning!',
-      text: 'Do you really want to delete this item?',
-      yes: 'Yes, delete.',
-      no: 'No, cancel.',
-    };
-    const t = trans || defaultTrans;
-
-    if (!window.confirm(t.text || defaultTrans.text)) return;
-
-    axios.delete(url).then(
-      (response) => {
-        loadData();
-        notify({
-          type: 'success',
-          title: 'Success!',
-          text: response.data.message || 'Item successfully deleted.',
-        });
-      },
-      (error) => {
-        notify({
-          type: 'error',
-          title: 'Error!',
-          text: error.response?.data?.message || 'An error has occured.',
-        });
-      }
-    );
-  }
 
   function toggleSwitch(url, col, row) {
     axios.post(url, row).then(
@@ -306,7 +277,6 @@ export function useBaseListing(props) {
     loadData,
     filter,
     populateCurrentStateAndData,
-    deleteItem,
     toggleSwitch,
 
     // Date formatters (convenience re-exports)

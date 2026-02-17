@@ -13,38 +13,21 @@
   </th>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'CraftableSortable',
-  props: {
-    column: {
-      type: String,
-      required: true,
-    },
-    orderBy: {
-      type: Object,
-      required: true,
-    },
-    callback: {
-      type: Function,
-      required: true,
-    },
-  },
-  setup(props) {
-    function sort(column) {
-      if (props.orderBy.column === column) {
-        props.orderBy.direction = props.orderBy.direction === 'asc' ? 'desc' : 'asc';
-      } else {
-        props.orderBy.column = column;
-        props.orderBy.direction = 'asc';
-      }
-
-      props.callback();
-    }
-
-    return { sort };
-  },
+<script setup>
+const props = defineProps({
+  column: { type: String, required: true },
+  orderBy: { type: Object, required: true },
+  callback: { type: Function, required: true },
 });
+
+function sort(column) {
+  if (props.orderBy.column === column) {
+    props.orderBy.direction = props.orderBy.direction === 'asc' ? 'desc' : 'asc';
+  } else {
+    props.orderBy.column = column;
+    props.orderBy.direction = 'asc';
+  }
+
+  props.callback();
+}
 </script>

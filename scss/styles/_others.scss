@@ -711,10 +711,13 @@
     display: inline !important;
 }
 
-.bg-bulk {
-    background: #edf3fe;
+.table tr.bg-bulk > td,
+.table tr.bg-bulk > th {
+    background-color: #e8eef8;
 }
 
-.bg-bulk-info {
-    background: $mutedText;
+.table td.bg-bulk-info {
+    background-color: #c9d4e8;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
 }
