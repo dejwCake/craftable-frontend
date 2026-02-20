@@ -32,6 +32,17 @@ export function useBaseListing(props) {
   const bulkItems = reactive({});
   const bulkCheckingAllLoader = ref(false);
 
+  const confirmModal = reactive({
+    show: false,
+    onConfirm: null,
+    translations: {
+      confirm_title: 'Warning!',
+      confirm_text: 'Are you sure?',
+      confirm_btn: 'Yes, confirm',
+      cancel_btn: 'Cancel',
+    },
+  });
+
   // Update "now" every second
   const nowInterval = setInterval(() => {
     now.value = nowInTimezone(props.timezone || 'UTC');
@@ -141,32 +152,33 @@ export function useBaseListing(props) {
     }
   }
 
-  function bulkDelete(url, trans) {
+  function bulkDelete(url, trans = {}) {
     const itemsToDelete = Object.keys(bulkItems).filter((key) => bulkItems[key]);
-    const defaultTrans = {
-      title: 'Warning!',
-      text: `Do you really want to delete ${clickedBulkItemsCount.value} selected items ?`,
-      yes: 'Yes, delete.',
-      no: 'No, cancel.',
+
+    confirmModal.translations = {
+      ...confirmModal.translations,
+      ...trans,
+      confirm_text: (trans.confirm_text || 'Do you really want to delete :number selected items?')
+        .replace(':number', clickedBulkItemsCount.value),
     };
-    const t = trans || defaultTrans;
-
-    if (!window.confirm(t.text || defaultTrans.text)) return;
-
-    axios
-      .post(url, {
-        data: {
-          ids: itemsToDelete,
-        },
-      })
-      .then((response) => {
-        Object.keys(bulkItems).forEach((key) => delete bulkItems[key]);
-        loadData();
-        notifySuccess(response.data.message);
-      })
-      .catch((error) => {
-        notifyError(error.response?.data?.message);
-      });
+    confirmModal.onConfirm = () => {
+      confirmModal.show = false;
+      axios
+        .post(url, {
+          data: {
+            ids: itemsToDelete,
+          },
+        })
+        .then((response) => {
+          Object.keys(bulkItems).forEach((key) => delete bulkItems[key]);
+          loadData();
+          notifySuccess(response.data.message);
+        })
+        .catch((error) => {
+          notifyError(error.response?.data?.message);
+        });
+    };
+    confirmModal.show = true;
   }
 
   function loadData(resetCurrentPage) {
@@ -249,6 +261,7 @@ export function useBaseListing(props) {
     now,
     bulkItems,
     bulkCheckingAllLoader,
+    confirmModal,
 
     // Computed
     isClickedAll,

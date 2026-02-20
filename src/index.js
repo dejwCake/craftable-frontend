@@ -22,10 +22,12 @@ export { default as PublishedAtColumn } from './components/listing/PublishedAtCo
 export { default as ListingHeader } from './components/listing/ListingHeader.vue';
 export { default as EditButton } from './components/listing/EditButton.vue';
 export { default as DeleteButton } from './components/listing/DeleteButton.vue';
+export { default as ConfirmModal } from './components/ConfirmModal.vue';
 export { default as ToggleSwitch } from './components/listing/ToggleSwitch.vue';
 
 // Form components
 export { default as FormInput } from './components/form/FormInput.vue';
+export { default as FormEmail } from './components/form/FormEmail.vue';
 export { default as FormTextarea } from './components/form/FormTextarea.vue';
 export { default as FormCheckbox } from './components/form/FormCheckbox.vue';
 export { default as FormDatePicker } from './components/form/FormDatePicker.vue';

@@ -3,15 +3,24 @@
     type="button"
     class="btn btn-sm btn-danger"
     :title="translations.delete_btn"
-    @click="onDelete"
+    @click="showConfirm = true"
   >
     <i class="fa fa-trash"></i>
   </button>
+
+  <ConfirmModal
+    :show="showConfirm"
+    :translations="translations"
+    @confirm="onConfirm"
+    @cancel="showConfirm = false"
+  />
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import axios from 'axios';
 import { notifySuccess, notifyError } from '../../utils/notify.js';
+import ConfirmModal from '../ConfirmModal.vue';
 
 const props = defineProps({
   url: { type: String, required: true },
@@ -19,15 +28,20 @@ const props = defineProps({
     type: Object,
     default: () => ({
       delete_btn: 'Delete',
+      confirm_title: 'Warning!',
       confirm_text: 'Do you really want to delete this item?',
+      confirm_btn: 'Delete',
+      cancel_btn: 'Cancel',
     }),
   },
 });
 
 const emit = defineEmits(['deleted']);
 
-function onDelete() {
-  if (!window.confirm(props.translations.confirm_text)) return;
+const showConfirm = ref(false);
+
+function onConfirm() {
+  showConfirm.value = false;
 
   axios.delete(props.url).then(
     (response) => {
