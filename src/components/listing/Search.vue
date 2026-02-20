@@ -1,5 +1,6 @@
 <template>
   <div class="input-group">
+    <slot name="prepend" />
     <input
       class="form-control"
       :placeholder="translations.search_placeholder"

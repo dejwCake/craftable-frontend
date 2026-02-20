@@ -1,6 +1,6 @@
 import { ref, computed, getCurrentInstance, onBeforeUnmount } from 'vue';
 import { useForm, validate as veeValidate } from 'vee-validate';
-import { notify } from '@kyvg/vue3-notification';
+import { notifySuccess, notifyError } from '../utils/notify.js';
 // Use the globally configured axios instance (with CSRF token and X-Requested-With header)
 const axios = window.axios;
 import { formatDate, formatDatetime, formatTime } from '../utils/dateFormatters.js';
@@ -97,6 +97,10 @@ export function useBaseForm(props, options = {}) {
     }
     form.value['wysiwygMedia'] = wysiwygMedia.value;
 
+    if (typeof options.transformData === 'function') {
+      return options.transformData({ ...form.value });
+    }
+
     return form.value;
   }
 
@@ -121,11 +125,7 @@ export function useBaseForm(props, options = {}) {
       setErrors(errorState);
 
       if (Object.keys(fieldErrors).length > 0) {
-        notify({
-          type: 'error',
-          title: 'Error!',
-          text: 'The form contains invalid fields.',
-        });
+        notifyError('The form contains invalid fields.');
         return false;
       }
     }
@@ -154,7 +154,7 @@ export function useBaseForm(props, options = {}) {
   function onSuccess(data) {
     submiting.value = false;
     if (data.message) {
-      notify({ type: 'success', title: 'Success!', text: data.message });
+      notifySuccess(data.message);
     }
     if (data.redirect) {
       if (data.message) {
@@ -179,19 +179,11 @@ export function useBaseForm(props, options = {}) {
       });
       setErrors(fieldErrors);
       if (data.message === undefined) {
-        notify({
-          type: 'error',
-          title: 'Error!',
-          text: 'The form contains invalid fields.',
-        });
+        notifyError('The form contains invalid fields.');
       }
     }
     if (data.message !== undefined) {
-      notify({
-        type: 'error',
-        title: 'Error!',
-        text: data.message,
-      });
+      notifyError(data.message);
     }
   }
 

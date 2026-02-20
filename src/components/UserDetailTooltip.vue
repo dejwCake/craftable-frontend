@@ -1,4 +1,5 @@
 <template>
+  <label v-if="label" class="col-form-label col">{{ label }} :</label>
   <VDropdown
     class="avatar-tooltip-trigger"
     :triggers="['click']"
@@ -46,7 +47,7 @@
         </h3>
         <a v-if="user.email" :href="'mailto:' + user.email">{{ user.email }}</a>
 
-        <slot></slot>
+        <p v-if="datetimeText">{{ datetimeText }}</p>
       </div>
     </template>
   </VDropdown>
@@ -66,6 +67,14 @@ const props = defineProps({
     default: '',
   },
   text: {
+    type: String,
+    default: '',
+  },
+  label: {
+    type: String,
+    default: '',
+  },
+  datetimeText: {
     type: String,
     default: '',
   },

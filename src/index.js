@@ -45,7 +45,6 @@ export { default as ActivationForm } from './components/auth/ActivationForm.vue'
 export { default as ActivationError } from './components/auth/ActivationError.vue';
 
 // Page components
-export { default as TranslationForm } from './translation/TranslationForm.vue';
 export { default as TranslationListing } from './translation/TranslationListing.vue';
 
 // Utilities

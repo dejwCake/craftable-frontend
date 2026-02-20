@@ -67,7 +67,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useDropzone } from 'vue3-dropzone';
-import { notify } from '@kyvg/vue3-notification';
+import { notifyError } from '../utils/notify.js';
 import axios from 'axios';
 
 const props = defineProps({
@@ -171,7 +171,7 @@ function uploadFile(file) {
     })
     .catch((error) => {
       const errorMessage = error.response?.data?.message || error.message || 'Upload failed';
-      notify({ type: 'error', title: 'Error!', text: errorMessage });
+      notifyError(errorMessage);
       entry.uploading = false;
       entry.showError = true;
       setTimeout(() => {
@@ -186,7 +186,7 @@ function uploadFile(file) {
 function onDrop(acceptedFiles, fileRejections) {
   fileRejections.forEach((rejection) => {
     const messages = rejection.errors.map((e) => e?.message || 'Invalid file').join(', ');
-    notify({ type: 'error', title: 'Error!', text: `${rejection.file.name}: ${messages}` });
+    notifyError(`${rejection.file.name}: ${messages}`);
   });
 
   acceptedFiles.forEach((file) => {
