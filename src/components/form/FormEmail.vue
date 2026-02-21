@@ -11,7 +11,6 @@ defineProps({
     label: { type: String, required: true },
     error: { type: String, default: '' },
     placeholder: { type: String, default: '' },
-    isFormLocalized: { type: Boolean, default: false },
 });
 
 defineEmits(['update:modelValue']);

@@ -1,8 +1,8 @@
 <template>
     <div class="form-group row align-items-center">
         <label :for="name" class="col-form-label text-md-end"
-               :class="isFormLocalized ? 'col-md-4' : 'col-md-3'">{{ label }}</label>
-        <div :class="isFormLocalized ? 'col-md-4' : 'col-md-9 col-xl-7'">
+               :class="'col-md-3'">{{ label }}</label>
+        <div :class="'col-md-9 col-xl-8'">
             <input :type="type" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
                    class="form-control" :class="{'is-invalid': error}"
                    :id="name" :name="name" :placeholder="placeholder || label">
@@ -19,7 +19,6 @@ defineProps({
     error: { type: String, default: '' },
     type: { type: String, default: 'text' },
     placeholder: { type: String, default: '' },
-    isFormLocalized: { type: Boolean, default: false },
 });
 
 defineEmits(['update:modelValue']);

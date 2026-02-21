@@ -57,9 +57,10 @@
       <VueDatePicker
         v-model="publishDate"
         model-type="yyyy-MM-dd HH:mm:ss"
+        :format="'dd.MM.yyyy HH:mm'"
+        :format-locale="dateFnsLocale"
         :enable-time-picker="true"
-        :enable-seconds="true"
-        :format="'yyyy-MM-dd HH:mm:ss'"
+        :enable-seconds="false"
         :inline="true"
         auto-apply
       />
@@ -82,12 +83,15 @@ import { notifySuccess, notifyError } from '../../utils/notify.js';
 // Use the globally configured axios instance (with CSRF token and X-Requested-With header)
 const axios = window.axios;
 import { formatDatetime } from '../../utils/dateFormatters.js';
+import { getDateFnsLocale } from '../../utils/dateFnsLocale.js';
+
+const dateFnsLocale = getDateFnsLocale();
 
 const props = defineProps({
   item: { type: Object, required: true },
   url: {type: String, required: true},
   now: { type: String, required: true },
-  datetimeFormat: { type: String, default: 'DD.MM.YYYY, HH:mm' },
+  datetimeFormat: { type: String, default: 'DD.MM.YYYY HH:mm' },
   translations: {
     type: Object,
     default: () => ({

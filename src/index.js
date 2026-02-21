@@ -38,6 +38,7 @@ export { default as FormLocalizedWysiwyg } from './components/form/FormLocalized
 export { default as FormSelect } from './components/form/FormSelect.vue';
 export { default as FormPasswordConfirm } from './components/form/FormPasswordConfirm.vue';
 export { default as FormSubmit } from './components/form/FormSubmit.vue';
+export { default as LocalizationBar } from './components/form/LocalizationBar.vue';
 
 // Auth components
 export { default as LoginForm } from './components/auth/LoginForm.vue';
@@ -53,4 +54,5 @@ export { default as TranslationListing } from './translation/TranslationListing.
 export { formatDate, formatDatetime, formatTime, nowInTimezone, dayjs } from './utils/dateFormatters.js';
 export { mediaCollectionProp, mediaCollectionDefaults } from './utils/mediaProps.js';
 export { notifySuccess, notifyError } from './utils/notify.js';
+export { getDateFnsLocale, initDateFnsLocale } from './utils/dateFnsLocale.js';
 export { initUI } from './ui/index.js';

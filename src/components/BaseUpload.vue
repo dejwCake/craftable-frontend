@@ -1,5 +1,9 @@
 <template>
   <div class="base-upload">
+    <label v-if="label" class="form-label fw-semibold">
+      <i :class="labelIcon" class="me-1"></i>{{ label }}
+      <small v-if="constraintsText" class="text-body-secondary ms-1">({{ constraintsText }})</small>
+    </label>
     <div
       v-bind="getRootProps()"
       class="vue3-dropzone dropzone"
@@ -79,6 +83,10 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  label: {
+    type: String,
+    default: '',
+  },
   maxNumberOfFiles: {
     type: Number,
     default: 1,
@@ -99,6 +107,22 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+});
+
+const labelIcon = computed(() => {
+  if (!props.acceptedFileTypes) return 'fa fa-file';
+  return props.acceptedFileTypes.includes('image') ? 'fa fa-file-image' : 'fa fa-file';
+});
+
+const constraintsText = computed(() => {
+  const parts = [];
+  if (props.maxNumberOfFiles > 0) {
+    parts.push(`max. ${props.maxNumberOfFiles} file${props.maxNumberOfFiles > 1 ? 's' : ''}`);
+  }
+  if (props.maxFileSizeInMb > 0) {
+    parts.push(`max. ${props.maxFileSizeInMb} MB`);
+  }
+  return parts.join(', ');
 });
 
 const uploadedFiles = ref([]);

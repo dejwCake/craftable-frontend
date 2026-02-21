@@ -7,17 +7,17 @@ dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export function formatDate(date, format = 'YYYY-MM-DD') {
+export function formatDate(date, format = 'DD.MM.YYYY') {
   const d = dayjs(date);
   return d.isValid() ? d.format(format) : '';
 }
 
-export function formatDatetime(datetime, format = 'YYYY-MM-DD HH:mm:ss') {
+export function formatDatetime(datetime, format = 'DD.MM.YYYY HH:mm') {
   const d = dayjs(datetime);
   return d.isValid() ? d.format(format) : '';
 }
 
-export function formatTime(time, format = 'HH:mm:ss') {
+export function formatTime(time, format = 'HH:mm') {
   // '2000-01-01' is here just because dayjs needs a date
   const d = dayjs('2000-01-01 ' + time);
   return d.isValid() ? d.format(format) : '';

@@ -1,14 +1,14 @@
 <template>
     <div class="form-group row align-items-center">
         <label :for="name" class="col-form-label text-md-end"
-               :class="isFormLocalized ? 'col-md-4' : 'col-md-3'">{{ label }}</label>
-        <div :class="isFormLocalized ? 'col-md-4' : 'col-md-9 col-xl-7'">
+               :class="'col-md-3'">{{ label }}</label>
+        <div :class="'col-md-9 col-xl-8'">
             <Multiselect :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)"
                          :class="{'is-invalid': error}"
                          :placeholder="placeholder" :options="options"
                          :multiple="true" :label="optionLabel" :track-by="trackBy"
                          open-direction="bottom"></Multiselect>
-            <div v-if="error" class="invalid-feedback form-text" style="display: block">{{ error }}</div>
+            <div v-if="error" class="invalid-feedback d-block form-text">{{ error }}</div>
         </div>
     </div>
 </template>
@@ -25,7 +25,6 @@ defineProps({
     placeholder: { type: String, default: '' },
     trackBy: { type: String, default: 'id' },
     optionLabel: { type: String, default: 'name' },
-    isFormLocalized: { type: Boolean, default: false },
 });
 
 defineEmits(['update:modelValue']);

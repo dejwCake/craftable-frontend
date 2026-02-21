@@ -4,6 +4,7 @@ import { notifySuccess, notifyError } from '../utils/notify.js';
 // Use the globally configured axios instance (with CSRF token and X-Requested-With header)
 const axios = window.axios;
 import { formatDate, formatDatetime, formatTime } from '../utils/dateFormatters.js';
+import { getDateFnsLocale } from '../utils/dateFnsLocale.js';
 
 export function useBaseForm(props, options = {}) {
   const instance = getCurrentInstance();
@@ -19,26 +20,28 @@ export function useBaseForm(props, options = {}) {
 
   // Date picker configs
   const datePickerConfig = ref({
-    format: 'yyyy-MM-dd HH:mm:ss',
-    textInput: true,
-    locale: null,
-    altFormat: 'd.m.Y',
+    enableTimePicker: false,
+    enableSeconds: false,
+    modelType: 'yyyy-MM-dd HH:mm:ss',
+    format: 'dd.MM.yyyy',
+    locale: getDateFnsLocale(),
   });
 
   const timePickerConfig = ref({
     timePicker: true,
-    enableSeconds: true,
-    format: 'HH:mm:ss',
-    textInput: true,
-    locale: null,
+    enableTimePicker: true,
+    enableSeconds: false,
+    modelType: 'HH:mm:ss',
+    format: 'HH:mm',
+    locale: getDateFnsLocale(),
   });
 
   const datetimePickerConfig = ref({
     enableTimePicker: true,
-    enableSeconds: true,
-    format: 'yyyy-MM-dd HH:mm:ss',
-    textInput: true,
-    locale: null,
+    enableSeconds: false,
+    modelType: 'yyyy-MM-dd HH:mm:ss',
+    format: 'dd.MM.yyyy HH:mm',
+    locale: getDateFnsLocale(),
   });
 
   // Localization
