@@ -131,15 +131,28 @@ label {
   border-color: $primary !important;
 }
 
+.base-upload {
+  margin-bottom: 1rem;
+}
+
+.upload-label-title {
+  color: $primary;
+}
+
 small select {
   margin: 0 10px;
 }
 
 .dropzone,
 .vue3-dropzone {
-  border: 1px solid $mutedText !important;
+  border: 2px dashed #b8c4ce !important;
+  min-height: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
   &:hover, &.dz-drag-hover {
-    border: 1px dashed $primary !important;
+    border: 2px dashed $primary !important;
   }
 
   i {
@@ -149,6 +162,12 @@ small select {
   }
 
   .dz-message {
+    width: 100%;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     color: $mutedText !important;
   }
 
@@ -159,6 +178,16 @@ small select {
   }
 
   .dz-preview {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    margin: 8px;
+
+    &.dz-deleted {
+      display: none;
+    }
+
     .dz-image {
       width: 200px !important;
       height: 200px !important;
@@ -166,47 +195,131 @@ small select {
       img {
         width: 100%;
         height: 100%;
-        -webkit-object-fit: cover;
         object-fit: cover;
       }
 
-      i {
+      .dz-file-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         width: 100%;
         height: 100%;
-        line-height: 200px;
-        font-size: 70px !important;
-        text-align: center;
-        margin-bottom: 10px;
+        background: #f0f3f5;
 
-        &+p {
-          position: absolute;
-          bottom: 0px;
+        i {
+          font-size: 60px !important;
+          color: #b8c4ce !important;
+          margin-bottom: 8px;
+          line-height: 1;
+        }
+
+        p {
           width: 100%;
           text-align: center;
-          height: 20px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
           font-size: 12px;
           line-height: 1.2;
-          padding: 0 15px;
+          padding: 0 12px;
+          margin: 0;
+          color: $mutedText;
         }
       }
     }
 
-    .dz-details {
-      .dz-filename {
-        a {
-          cursor: pointer;
-          color:white;
+    .dz-hover-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba($primary, 0.85);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+
+      .dz-file-size {
+        color: white;
+        font-weight: 700;
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+
+      .dz-file-name {
+        color: white;
+        font-size: 13px;
+        text-align: center;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 100%;
+        margin-bottom: 16px;
+      }
+
+      .dz-remove-btn {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+        padding: 6px 20px;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: background 0.15s ease, color 0.15s ease;
+
+        &:hover {
+          background: white;
+          color: $primary;
         }
       }
     }
 
-    //fixes https://github.com/rowanwins/vue-dropzone/issues/127
+    &:hover .dz-hover-overlay {
+      opacity: 1;
+    }
+
+    .dz-success-mark,
     .dz-error-mark {
-      text-align: center;
-      top: 25%!important;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: dz-fade-in 0.3s ease;
+
+      i {
+        color: white !important;
+        font-size: 50px !important;
+        animation: dz-check-pop 0.4s ease;
+        margin-bottom: 0;
+      }
+    }
+
+    .dz-success-mark {
+      background: rgba(40, 167, 69, 0.6);
+    }
+
+    .dz-error-mark {
+      background: rgba(220, 53, 69, 0.7);
+    }
+
+    .dz-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: rgba(0, 0, 0, 0.2);
+
+      .dz-upload {
+        display: block;
+        height: 100%;
+        background: white;
+        transition: width 0.2s ease;
+      }
     }
   }
 }

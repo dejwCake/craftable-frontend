@@ -12,7 +12,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">
-              <i class="fa fa-triangle-exclamation text-warning me-2"></i>
+              <i :class="iconClass" class="me-2"></i>
               {{ translations.confirm_title }}
             </h5>
             <button type="button" class="btn-close" @click="$emit('cancel')"></button>
@@ -24,7 +24,7 @@
             <button type="button" class="btn btn-secondary" @click="$emit('cancel')">
               {{ translations.cancel_btn }}
             </button>
-            <button type="button" class="btn btn-danger" @click="$emit('confirm')">
+            <button type="button" :class="btnClass" @click="$emit('confirm')">
               {{ translations.confirm_btn }}
             </button>
           </div>
@@ -35,8 +35,15 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed } from 'vue';
+
+const props = defineProps({
   show: { type: Boolean, default: false },
+  variant: {
+    type: String,
+    default: 'danger',
+    validator: (v) => ['danger', 'success', 'primary', 'warning'].includes(v),
+  },
   translations: {
     type: Object,
     default: () => ({
@@ -46,6 +53,18 @@ defineProps({
         cancel_btn: 'Cancel',
     }),
   },
+});
+
+const btnClass = computed(() => {
+  const base = `btn btn-${props.variant}`;
+  return ['success', 'primary'].includes(props.variant) ? `${base} text-white` : base;
+});
+
+const iconClass = computed(() => {
+  if (props.variant === 'danger') return 'fa fa-triangle-exclamation text-danger';
+  if (props.variant === 'warning') return 'fa fa-triangle-exclamation text-warning';
+  if (props.variant === 'success') return 'fa fa-circle-check text-success';
+  return 'fa fa-circle-question text-primary';
 });
 
 defineEmits(['confirm', 'cancel']);

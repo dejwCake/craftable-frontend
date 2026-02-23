@@ -74,6 +74,13 @@
         </button>
       </div>
     </div>
+    <ConfirmModal
+      :show="showConfirm"
+      :translations="confirmTranslations"
+      :variant="confirmVariant"
+      @confirm="onConfirm"
+      @cancel="onCancelConfirm"
+    />
 </template>
 
 <script setup>
@@ -84,6 +91,7 @@ import { notifySuccess, notifyError } from '../../utils/notify.js';
 const axios = window.axios;
 import { formatDatetime } from '../../utils/dateFormatters.js';
 import { getDateFnsLocale } from '../../utils/dateFnsLocale.js';
+import ConfirmModal from '../ConfirmModal.vue';
 
 const dateFnsLocale = getDateFnsLocale();
 
@@ -108,6 +116,10 @@ const props = defineProps({
 const editing = ref(false);
 const publishDate = ref(null);
 const submitting = ref(false);
+const showConfirm = ref(false);
+const pendingAction = ref(null);
+const confirmTranslations = ref({});
+const confirmVariant = ref('danger');
 
 function openPublishLater() {
   publishDate.value = props.item.published_at || null;
@@ -133,9 +145,46 @@ function savePublishLater() {
 }
 
 function publishNow() {
-  if (!window.confirm(props.translations.confirm_publish_now)) return;
-  submitting.value = true;
+  pendingAction.value = 'publish';
+  confirmVariant.value = 'success';
+  confirmTranslations.value = {
+    confirm_title: props.translations.publish_now,
+    confirm_text: props.translations.confirm_publish_now,
+    confirm_btn: props.translations.publish_now,
+    cancel_btn: 'Cancel',
+  };
+  showConfirm.value = true;
+}
 
+function unpublishNow() {
+  pendingAction.value = 'unpublish';
+  confirmVariant.value = 'danger';
+  confirmTranslations.value = {
+    confirm_title: props.translations.unpublish_now,
+    confirm_text: props.translations.confirm_unpublish_now,
+    confirm_btn: props.translations.unpublish_now,
+    cancel_btn: 'Cancel',
+  };
+  showConfirm.value = true;
+}
+
+function onConfirm() {
+  showConfirm.value = false;
+  if (pendingAction.value === 'publish') {
+    doPublishNow();
+  } else if (pendingAction.value === 'unpublish') {
+    doUnpublishNow();
+  }
+  pendingAction.value = null;
+}
+
+function onCancelConfirm() {
+  showConfirm.value = false;
+  pendingAction.value = null;
+}
+
+function doPublishNow() {
+  submitting.value = true;
   axios.post(props.url, { publish_now: true }).then(
     (response) => {
       props.item.published_at = response.data.object.published_at;
@@ -149,10 +198,8 @@ function publishNow() {
   });
 }
 
-function unpublishNow() {
-  if (!window.confirm(props.translations.confirm_unpublish_now)) return;
+function doUnpublishNow() {
   submitting.value = true;
-
   axios.post(props.url, { unpublish_now: true }).then(
     (response) => {
       props.item.published_at = response.data.object.published_at;

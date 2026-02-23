@@ -13,7 +13,7 @@ const externalPackages = [
   '@tiptap/extension-table-cell',
   '@tiptap/extension-table-header',
   '@tiptap/extension-link',
-  'floating-vue',
+  'vue3-popper',
   'vue-final-modal',
   '@kyvg/vue3-notification',
   'vue3-cookies',
@@ -51,6 +51,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '@dejwcake/craftable': resolve(__dirname, 'src/index.js'),
       '@': resolve(__dirname, 'src'),
     },
   },

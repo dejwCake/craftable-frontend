@@ -5,7 +5,7 @@ export { useBaseListing } from './composables/useBaseListing.js';
 export { useAdmin } from './composables/useAdmin.js';
 
 // Components
-export { default as BaseUpload } from './components/BaseUpload.vue';
+export { default as MediaUpload } from './components/MediaUpload.vue';
 export { default as TiptapEditor } from './components/TiptapEditor.vue';
 export { default as UserDetailTooltip } from './components/UserDetailTooltip.vue';
 

@@ -1,8 +1,10 @@
 <template>
   <div class="base-upload">
-    <label v-if="label" class="form-label fw-semibold">
-      <i :class="labelIcon" class="me-1"></i>{{ label }}
-      <small v-if="constraintsText" class="text-body-secondary ms-1">({{ constraintsText }})</small>
+    <label v-if="label" class="form-label d-flex align-items-center">
+      <i :class="labelIcon" class="me-1 text-body-secondary"></i>
+      <span class="fw-semibold upload-label-title">{{ label }}</span>
+      <small v-for="(c, i) in constraintParts" :key="i" class="text-body-secondary fw-light ms-1">({{ c }})</small>
+      <i v-if="isPrivate" class="fa fa-lock ms-auto text-body-secondary"></i>
     </label>
     <div
       v-bind="getRootProps()"
@@ -30,16 +32,10 @@
             <p>{{ file.name }}</p>
           </div>
         </div>
-        <div class="dz-details">
-          <div class="dz-filename">
-            <a v-if="file.url" :href="file.url" target="_blank" class="dz-btn dz-custom-download" @click.stop>
-              {{ file.name }}
-            </a>
-            <span v-else>{{ file.name }}</span>
-          </div>
-        </div>
-        <div class="dz-hover-overlay" @click.stop="removeUploadedFile(index)">
-          <span class="dz-remove-label">REMOVE</span>
+        <div class="dz-hover-overlay" @click.stop>
+          <span class="dz-file-size">{{ formatSize(file.size) }}</span>
+          <span class="dz-file-name">{{ file.name }}</span>
+          <button type="button" class="dz-remove-btn" @click.stop="removeUploadedFile(index)">REMOVE</button>
         </div>
       </div>
 
@@ -60,8 +56,10 @@
         <div v-if="entry.showError" class="dz-error-mark">
           <i class="fa-solid fa-xmark"></i>
         </div>
-        <div v-if="!entry.uploading && !entry.showSuccess" class="dz-hover-overlay" @click.stop="removeNewFile(index)">
-          <span class="dz-remove-label">REMOVE</span>
+        <div v-if="!entry.uploading && !entry.showSuccess" class="dz-hover-overlay" @click.stop>
+          <span class="dz-file-size">{{ formatSize(entry.file.size) }}</span>
+          <span class="dz-file-name">{{ entry.file.name }}</span>
+          <button type="button" class="dz-remove-btn" @click.stop="removeNewFile(index)">REMOVE</button>
         </div>
       </div>
     </div>
@@ -99,6 +97,10 @@ const props = defineProps({
     type: String,
     default: undefined,
   },
+  isPrivate: {
+    type: Boolean,
+    default: false,
+  },
   thumbnailWidth: {
     type: Number,
     default: 200,
@@ -114,15 +116,15 @@ const labelIcon = computed(() => {
   return props.acceptedFileTypes.includes('image') ? 'fa fa-file-image' : 'fa fa-file';
 });
 
-const constraintsText = computed(() => {
+const constraintParts = computed(() => {
   const parts = [];
   if (props.maxNumberOfFiles > 0) {
     parts.push(`max. ${props.maxNumberOfFiles} file${props.maxNumberOfFiles > 1 ? 's' : ''}`);
   }
   if (props.maxFileSizeInMb > 0) {
-    parts.push(`max. ${props.maxFileSizeInMb} MB`);
+    parts.push(`max. ${props.maxFileSizeInMb.toFixed(2)} MB`);
   }
-  return parts.join(', ');
+  return parts;
 });
 
 const uploadedFiles = ref([]);
@@ -213,6 +215,19 @@ function onDrop(acceptedFiles, fileRejections) {
     notifyError(`${rejection.file.name}: ${messages}`);
   });
 
+  if (props.maxNumberOfFiles > 0) {
+    const currentCount = visibleUploadedMedia.value.length + uploadedFiles.value.length;
+    const available = props.maxNumberOfFiles - currentCount;
+    if (available <= 0) {
+      notifyError(`Maximum ${props.maxNumberOfFiles} file${props.maxNumberOfFiles > 1 ? 's' : ''} allowed`);
+      return;
+    }
+    if (acceptedFiles.length > available) {
+      notifyError(`Only ${available} more file${available > 1 ? 's' : ''} can be added`);
+      acceptedFiles = acceptedFiles.slice(0, available);
+    }
+  }
+
   acceptedFiles.forEach((file) => {
     uploadFile(file);
   });
@@ -220,9 +235,8 @@ function onDrop(acceptedFiles, fileRejections) {
 
 const dropzoneOptions = {
   onDrop,
-  accept: props.acceptedFileTypes || undefined,
-  maxFiles: props.maxNumberOfFiles,
-  maxSize: props.maxFileSizeInMb * 1024 * 1024,
+  accept: props.acceptedFileTypes ? props.acceptedFileTypes.split(',').map((t) => t.trim()) : undefined,
+  maxSize: props.maxFileSizeInMb > 0 ? props.maxFileSizeInMb * 1024 * 1024 : Infinity,
   multiple: props.maxNumberOfFiles !== 1,
 };
 
@@ -236,6 +250,13 @@ function removeUploadedFile(index) {
 
 function removeNewFile(index) {
   uploadedFiles.value.splice(index, 1);
+}
+
+function formatSize(bytes) {
+  if (!bytes) return '';
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
 }
 
 function isImage(file) {
