@@ -69,7 +69,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useDropzone } from 'vue3-dropzone';
-import { notifyError } from '../utils/notify.js';
+import { notifyError } from '../../utils/notify.js';
 import axios from 'axios';
 
 const props = defineProps({

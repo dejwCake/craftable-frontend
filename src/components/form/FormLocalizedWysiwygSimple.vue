@@ -5,11 +5,10 @@
             <div :class="{'d-flex gap-2': isFormLocalized}">
                 <div v-for="locale in locales" :key="locale" v-show="shouldShowLangGroup(locale)"
                      :class="{'flex-fill localized-editor': isFormLocalized}">
-                    <CkeditorEditor :model-value="modelValue[locale]"
+                    <TiptapEditor :model-value="modelValue[locale]"
                         @update:model-value="onInput(locale, $event)"
                         :id="name + '_' + locale" :name="name + '_' + locale"
-                        :upload-url="uploadUrl"
-                        v-bind="config ? { config } : {}"></CkeditorEditor>
+                        v-bind="config ? { config } : {}"></TiptapEditor>
                     <div v-if="errors[name + '_' + locale]" class="invalid-feedback d-block form-text">
                         {{ errors[name + '_' + locale] }}
                     </div>
@@ -20,7 +19,7 @@
 </template>
 
 <script setup>
-import CkeditorEditor from './CkeditorEditor.vue';
+import TiptapEditor from './TiptapEditor.vue';
 
 const props = defineProps({
     modelValue: { type: Object, required: true },

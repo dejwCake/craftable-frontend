@@ -5,8 +5,9 @@ export { useBaseListing } from './composables/useBaseListing.js';
 export { useAdmin } from './composables/useAdmin.js';
 
 // Components
-export { default as MediaUpload } from './components/MediaUpload.vue';
-export { default as TiptapEditor } from './components/TiptapEditor.vue';
+export { default as MediaUpload } from './components/form/MediaUpload.vue';
+export { default as TiptapEditor } from './components/form/TiptapEditor.vue';
+export { default as CkeditorEditor } from './components/form/CkeditorEditor.vue';
 export { default as UserDetailTooltip } from './components/UserDetailTooltip.vue';
 
 // Listing components
@@ -35,17 +36,19 @@ export { default as FormWysiwyg } from './components/form/FormWysiwyg.vue';
 export { default as FormMultiSelect } from './components/form/FormMultiSelect.vue';
 export { default as FormLocalizedInput } from './components/form/FormLocalizedInput.vue';
 export { default as FormLocalizedWysiwyg } from './components/form/FormLocalizedWysiwyg.vue';
+export { default as FormWysiwygSimple } from './components/form/FormWysiwygSimple.vue';
+export { default as FormLocalizedWysiwygSimple } from './components/form/FormLocalizedWysiwygSimple.vue';
 export { default as FormSelect } from './components/form/FormSelect.vue';
 export { default as FormPasswordConfirm } from './components/form/FormPasswordConfirm.vue';
 export { default as FormSubmit } from './components/form/FormSubmit.vue';
 export { default as LocalizationBar } from './components/form/LocalizationBar.vue';
 
 // Auth components
-export { default as LoginForm } from './components/auth/LoginForm.vue';
-export { default as ForgotPasswordForm } from './components/auth/ForgotPasswordForm.vue';
-export { default as ResetPasswordForm } from './components/auth/ResetPasswordForm.vue';
-export { default as ActivationForm } from './components/auth/ActivationForm.vue';
-export { default as ActivationError } from './components/auth/ActivationError.vue';
+export { default as LoginForm } from './auth/LoginForm.vue';
+export { default as ForgotPasswordForm } from './auth/ForgotPasswordForm.vue';
+export { default as ResetPasswordForm } from './auth/ResetPasswordForm.vue';
+export { default as ActivationForm } from './auth/ActivationForm.vue';
+export { default as ActivationError } from './auth/ActivationError.vue';
 
 // Page components
 export { default as TranslationListing } from './translation/TranslationListing.vue';

@@ -161,3 +161,22 @@
 .tiptap-heading-select {
   margin-right: 4px;
 }
+
+// CKEditor 5 overrides
+.ck-editor {
+  border: 1px solid $mutedText;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ck-editor__editable {
+  min-height: 200px;
+}
+
+.has-success .ck-editor {
+  border-color: $success;
+}
+
+.has-danger .ck-editor {
+  border-color: $danger;
+}

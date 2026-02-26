@@ -3,16 +3,15 @@
         <label :for="name" class="col-form-label text-md-end"
                :class="'col-md-3'">{{ label }}</label>
         <div :class="'col-md-9 col-xl-8'">
-            <CkeditorEditor :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)"
-                :id="name" :name="name" :upload-url="uploadUrl"
-                v-bind="config ? { config } : {}"></CkeditorEditor>
+            <TiptapEditor :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)"
+                :id="name" :name="name" v-bind="config ? { config } : {}"></TiptapEditor>
             <div v-if="error" class="invalid-feedback d-block form-text">{{ error }}</div>
         </div>
     </div>
 </template>
 
 <script setup>
-import CkeditorEditor from './CkeditorEditor.vue';
+import TiptapEditor from './TiptapEditor.vue';
 
 defineProps({
     modelValue: { type: String, default: '' },

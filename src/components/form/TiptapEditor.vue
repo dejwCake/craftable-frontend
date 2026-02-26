@@ -32,9 +32,13 @@
       <button type="button" @click="setLink" title="Link">
         &#128279;
       </button>
-      <button type="button" @click="addImage" title="Image">
+      <button type="button" @click="uploadImage" title="Upload Image">
+        &#128228;
+      </button>
+      <button type="button" @click="addImageByUrl" title="Image URL">
         &#128247;
       </button>
+      <input ref="fileInput" type="file" accept="image/*" style="display: none" @change="onFileSelected">
 
       <span v-if="showTableControls" class="tiptap-toolbar-divider"></span>
 
@@ -57,7 +61,9 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, watch } from 'vue';
+import { ref, onBeforeUnmount, watch } from 'vue';
+import axios from 'axios';
+import { notifyError } from '../../utils/notify.js';
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
@@ -153,10 +159,43 @@ function setLink() {
   editor.value.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
 }
 
-function addImage() {
+const fileInput = ref(null);
+
+function addImageByUrl() {
   const url = window.prompt('Image URL');
   if (url) {
     editor.value.chain().focus().setImage({ src: url }).run();
   }
+}
+
+function uploadImage() {
+  fileInput.value.click();
+}
+
+function onFileSelected(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append('fileToUpload', file);
+
+  const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+  axios.post(props.uploadUrl, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      ...(token ? { 'X-CSRF-TOKEN': token } : {}),
+    },
+  }).then(
+    (response) => {
+      editor.value.chain().focus().setImage({ src: response.data.file }).run();
+      emit('media-uploaded', response.data);
+    },
+    (error) => {
+      notifyError(error.response?.data?.error);
+    },
+  ).finally(() => {
+    fileInput.value.value = '';
+  });
 }
 </script>

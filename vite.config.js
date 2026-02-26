@@ -24,6 +24,8 @@ const externalPackages = [
   '@vee-validate/rules',
   '@vee-validate/i18n',
   'vue-multiselect',
+  'ckeditor5',
+  '@ckeditor/ckeditor5-vue',
 ];
 
 export default defineConfig({
