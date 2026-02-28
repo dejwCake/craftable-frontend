@@ -113,6 +113,8 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(['update:item']);
+
 const editing = ref(false);
 const publishDate = ref(null);
 const submitting = ref(false);
@@ -132,7 +134,7 @@ function savePublishLater() {
 
   axios.post(props.url, { published_at: publishDate.value }).then(
     (response) => {
-      props.item.published_at = response.data.object.published_at;
+      emit('update:item', { ...props.item, published_at: response.data.object.published_at });
       editing.value = false;
       notifySuccess(response.data.message);
     },
@@ -187,7 +189,7 @@ function doPublishNow() {
   submitting.value = true;
   axios.post(props.url, { publish_now: true }).then(
     (response) => {
-      props.item.published_at = response.data.object.published_at;
+      emit('update:item', { ...props.item, published_at: response.data.object.published_at });
       notifySuccess(response.data.message);
     },
     (error) => {
@@ -202,8 +204,11 @@ function doUnpublishNow() {
   submitting.value = true;
   axios.post(props.url, { unpublish_now: true }).then(
     (response) => {
-      props.item.published_at = response.data.object.published_at;
-      props.item.published_to = response.data.object.published_to;
+      emit('update:item', {
+        ...props.item,
+        published_at: response.data.object.published_at,
+        published_to: response.data.object.published_to,
+      });
       notifySuccess(response.data.message);
     },
     (error) => {

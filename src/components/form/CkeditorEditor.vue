@@ -1,11 +1,11 @@
 <template>
     <div class="ck-editor-wrapper">
-        <ckeditor :editor="ClassicEditor" v-model="content" :config="editorConfig" @ready="onReady" />
+        <ckeditor :editor="ClassicEditor" v-model="content" :config="editorConfig" />
     </div>
 </template>
 
 <script setup>
-import { ref, computed, watch, toRaw } from 'vue';
+import { ref, computed, toRaw } from 'vue';
 import { ClassicEditor, Essentials, Bold, Italic, Underline, Strikethrough,
     Heading, Paragraph, Alignment, List, Link, AutoLink,
     Image, ImageToolbar, ImageCaption, ImageStyle, ImageResize, ImageInsert, ImageInsertViaUrl, ImageUpload,
@@ -156,7 +156,4 @@ function deepMerge(target, source) {
     return result;
 }
 
-function onReady(editor) {
-    // Editor is ready
-}
 </script>

@@ -75,6 +75,5 @@ export function useBaseAuth(props, options = {}) {
     submitting,
     successMessage,
     submit,
-    setErrors,
   };
 }

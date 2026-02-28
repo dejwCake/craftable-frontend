@@ -13,7 +13,7 @@ export function useBaseForm(props, options = {}) {
   const mediaCollections = ref([]);
   const isFormLocalized = ref(false);
   const currentLocale = ref('');
-  const submiting = ref(false);
+  const submitting = ref(false);
   const onSmallScreen = ref(window.innerWidth < (props.responsiveBreakpoint || 850));
 
   const { setErrors, errors } = useForm();
@@ -133,21 +133,21 @@ export function useBaseForm(props, options = {}) {
       }
     }
 
-    let data = form.value;
+    submitting.value = true;
+
+    let postData = getPostData();
     if (!props.sendEmptyLocales && props.sendEmptyLocales !== undefined) {
       const filtered = {};
-      for (const [key, value] of Object.entries(form.value)) {
+      for (const [key, value] of Object.entries(postData)) {
         if (!locales.value.includes(key) || (value && Object.keys(value).length > 0)) {
           filtered[key] = value;
         }
       }
-      data = filtered;
+      postData = filtered;
     }
 
-    submiting.value = true;
-
     try {
-      const response = await axios.post(props.action, getPostData());
+      const response = await axios.post(props.action, postData);
       onSuccess(response.data);
     } catch (err) {
       onFail(err.response?.data || {});
@@ -155,7 +155,7 @@ export function useBaseForm(props, options = {}) {
   }
 
   function onSuccess(data) {
-    submiting.value = false;
+    submitting.value = false;
     if (data.message) {
       notifySuccess(data.message);
     }
@@ -169,7 +169,7 @@ export function useBaseForm(props, options = {}) {
   }
 
   function onFail(data) {
-    submiting.value = false;
+    submitting.value = false;
     if (data.errors !== undefined) {
       const fieldErrors = {};
       Object.keys(data.errors).forEach((key) => {
@@ -228,7 +228,7 @@ export function useBaseForm(props, options = {}) {
     mediaCollections,
     isFormLocalized,
     currentLocale,
-    submiting,
+    submitting,
     onSmallScreen,
     errors,
 
@@ -252,7 +252,6 @@ export function useBaseForm(props, options = {}) {
     showLocalization,
     hideLocalization,
     shouldShowLangGroup,
-    onResize,
 
     // Vee-validate
     setErrors,

@@ -251,6 +251,23 @@ export function useBaseListing(props) {
     return template.replace(':id', item.id);
   }
 
+  function onSort({ column, direction }) {
+    orderBy.column = column;
+    orderBy.direction = direction;
+  }
+
+  function onPageChange(page) {
+    pagination.state.current_page = page;
+  }
+
+  function onUpdateItem(updatedItem) {
+    if (!collection.value) return;
+    const index = collection.value.findIndex((item) => item.id === updatedItem.id);
+    if (index !== -1) {
+      collection.value[index] = updatedItem;
+    }
+  }
+
   return {
     // State
     pagination,
@@ -268,18 +285,18 @@ export function useBaseListing(props) {
     clickedBulkItemsCount,
 
     // Methods
-    allClickedItemsAreSame,
     onBulkItemClicked,
     onBulkItemsClickedAll,
     onBulkItemsClickedAllWithPagination,
-    checkAllItems,
     onBulkItemsClickedAllUncheck,
     bulkDelete,
     loadData,
     filter,
     resolveUrl,
-    populateCurrentStateAndData,
     getAction,
+    onSort,
+    onPageChange,
+    onUpdateItem,
 
     // Date formatters (convenience re-exports)
     formatDate,

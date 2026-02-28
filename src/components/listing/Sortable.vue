@@ -20,14 +20,15 @@ const props = defineProps({
   callback: { type: Function, required: true },
 });
 
-function sort(column) {
-  if (props.orderBy.column === column) {
-    props.orderBy.direction = props.orderBy.direction === 'asc' ? 'desc' : 'asc';
-  } else {
-    props.orderBy.column = column;
-    props.orderBy.direction = 'asc';
-  }
+const emit = defineEmits(['sort']);
 
+function sort(column) {
+  const direction =
+    props.orderBy.column === column
+      ? props.orderBy.direction === 'asc' ? 'desc' : 'asc'
+      : 'asc';
+
+  emit('sort', { column, direction });
   props.callback();
 }
 </script>

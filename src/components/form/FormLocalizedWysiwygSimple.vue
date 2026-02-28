@@ -8,7 +8,7 @@
                     <TiptapEditor :model-value="modelValue[locale]"
                         @update:model-value="onInput(locale, $event)"
                         :id="name + '_' + locale" :name="name + '_' + locale"
-                        v-bind="config ? { config } : {}"></TiptapEditor>
+                        :upload-url="uploadUrl" v-bind="config ? { config } : {}"></TiptapEditor>
                     <div v-if="errors[name + '_' + locale]" class="invalid-feedback d-block form-text">
                         {{ errors[name + '_' + locale] }}
                     </div>

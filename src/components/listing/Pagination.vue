@@ -75,6 +75,7 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(['page-change']);
 const { cookies } = useCookies();
 
 const overview = computed(() => {
@@ -150,7 +151,7 @@ function changePage(page) {
     return;
   }
 
-  props.pagination.current_page = page;
+  emit('page-change', page);
   props.callback();
 }
 </script>
