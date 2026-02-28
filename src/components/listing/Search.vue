@@ -1,13 +1,15 @@
 <template>
   <div class="input-group">
     <slot name="prepend" />
-    <div class="search-wrapper form-control d-flex align-items-center p-0">
+    <div class="form-control d-flex align-items-center p-0">
       <input
-        class="search-input border-0 shadow-none ps-3"
+        ref="inputRef"
+        class="border-0 shadow-none ps-3 flex-grow-1"
+        style="outline: none; min-width: 0"
         :placeholder="translations.search_placeholder"
         :value="search"
-        @input="$emit('update:search', $event.target.value)"
-        @keyup.enter="doSearch"
+        @input="onInput"
+        @keyup.enter="onEnter"
       />
       <button
         v-if="search"
@@ -29,8 +31,11 @@
 </template>
 
 <script setup>
+import { ref, onBeforeUnmount } from 'vue';
+
 const props = defineProps({
   search: { type: String, default: '' },
+  debounce: { type: Number, default: 400 },
   filterFn: { type: Function, required: true },
   translations: {
     type: Object,
@@ -39,28 +44,47 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:search']);
+const inputRef = ref(null);
+let debounceTimer = null;
+
+function cancelDebounce() {
+  if (debounceTimer) {
+    clearTimeout(debounceTimer);
+    debounceTimer = null;
+  }
+}
+
+function onInput(event) {
+  const value = event.target.value;
+  emit('update:search', value);
+  cancelDebounce();
+  debounceTimer = setTimeout(() => {
+    props.filterFn('search', value);
+  }, props.debounce);
+}
 
 function doSearch() {
+  cancelDebounce();
   props.filterFn('search', props.search);
 }
 
+function onEnter() {
+  cancelDebounce();
+  const value = inputRef.value?.value ?? props.search;
+  emit('update:search', value);
+  props.filterFn('search', value);
+}
+
 function clearSearch() {
+  cancelDebounce();
   emit('update:search', '');
   props.filterFn('search', '');
 }
+
+onBeforeUnmount(cancelDebounce);
 </script>
 
 <style scoped>
-.search-wrapper {
-  padding-right: 0 !important;
-}
-
-.search-input {
-  outline: none;
-  min-width: 0;
-  flex: 1 1 0;
-}
-
 .search-clear {
   color: #e55353;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="form-check form-switch">
+  <div class="form-check form-switch form-switch-inline">
     <input
       class="form-check-input"
       :class="switchClass"

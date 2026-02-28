@@ -37,6 +37,18 @@ td > .switch {
   top: 4px;
 }
 
+.table-listing td .form-switch.form-switch-inline {
+  display: flex;
+  justify-content: center;
+  padding-left: 0;
+  min-width: 2.5em;
+}
+
+.table-listing td .form-switch.form-switch-inline .form-check-input {
+  margin-left: 0;
+  float: none;
+}
+
 @media (max-width: 991px) {
   .table-listing {
     th,

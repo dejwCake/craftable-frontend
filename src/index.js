@@ -3,6 +3,7 @@ export { useBaseForm } from './composables/useBaseForm.js';
 export { useBaseAuth } from './composables/useBaseAuth.js';
 export { useBaseListing } from './composables/useBaseListing.js';
 export { useAdmin } from './composables/useAdmin.js';
+export { useResponsiveColumns } from './composables/useResponsiveColumns.js';
 
 // Components
 export { default as MediaUpload } from './components/form/MediaUpload.vue';
