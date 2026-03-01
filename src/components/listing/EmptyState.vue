@@ -1,6 +1,6 @@
 <template>
   <div class="no-items-found" v-if="show">
-    <i class="icon-magnifier"></i>
+    <i class="fa fa-magnifying-glass"></i>
     <h3>{{ translations.no_items }}</h3>
     <p>{{ translations.try_changing_items }}</p>
     <a

@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group row align-items-center">
+    <div class="mb-3 row align-items-center">
         <label :for="name" class="col-form-label text-md-end"
                :class="'col-md-3'">{{ label }}</label>
         <div :class="'col-md-9 col-xl-8'">

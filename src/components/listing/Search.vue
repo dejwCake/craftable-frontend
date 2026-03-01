@@ -14,7 +14,7 @@
       <button
         v-if="search"
         type="button"
-        class="search-clear border-0 bg-transparent pe-1 ps-0 flex-shrink-0"
+        class="border-0 bg-transparent pe-1 ps-0 flex-shrink-0 text-danger"
         @click="clearSearch"
       >
         <i class="fa fa-times"></i>
@@ -84,8 +84,3 @@ function clearSearch() {
 onBeforeUnmount(cancelDebounce);
 </script>
 
-<style scoped>
-.search-clear {
-  color: #e55353;
-}
-</style>

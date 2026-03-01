@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group row align-items-center">
+    <div class="mb-3 row align-items-center">
         <label :for="name + '_' + locales[0]" class="col-md-3 col-form-label text-md-end">{{ label }}</label>
         <div class="col-md-9 col-xl-8">
             <div :class="{'d-flex gap-2': isFormLocalized}">

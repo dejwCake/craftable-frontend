@@ -46,7 +46,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row justify-content-md-between mb-3">
-                        <div class="col col-lg-7 col-xl-5 form-group">
+                        <div class="col col-lg-7 col-xl-5 mb-3">
                             <Search
                                 v-model:search="search"
                                 :filterFn="filter"
@@ -69,7 +69,7 @@
                                 </template>
                             </Search>
                         </div>
-                        <div class="col-sm-auto form-group">
+                        <div class="col-sm-auto mb-3">
                             <PerPage v-model="pagination.state.per_page" />
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                     />
 
                     <div class="no-items-found" v-if="!collection?.length">
-                        <i class="icon-magnifier"></i>
+                        <i class="fa fa-magnifying-glass"></i>
                         <h3>{{ translations.no_items }}</h3>
                         <p>{{ translations.try_changing_items }}</p>
                         <a class="btn btn-primary" href="#" @click.prevent="rescan" role="button">

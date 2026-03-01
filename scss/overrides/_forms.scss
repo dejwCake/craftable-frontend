@@ -16,21 +16,6 @@
   }
 }
 
-// BS4 validation (parent div pattern)
-.has-success .form-control {
-  background-image: $icon-correct;
-}
-
-.has-danger .form-control {
-  background-image: $icon-error;
-  border-color: $danger;
-}
-
-.has-danger .form-control-feedback {
-  color: $danger;
-  font-weight: 500;
-}
-
 // BS5 validation (class on input pattern)
 .form-control.is-valid {
   background-image: $icon-correct;
@@ -63,26 +48,6 @@ label {
   color: #3e515b;
 }
 
-.input-group--custom {
-  .input-group-addon {
-    background-color: white;
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
-    i.fa {
-      color: #c7c7c7;
-    }
-  }
-  .form-control {
-    border-left: none;
-    padding-left: 0;
-  }
-}
-
-.has-danger .input-group--custom {
-  .input-group-addon {
-    border-color: $danger;
-  }
-}
 
 .input-icon {
   display: inline-block;
@@ -332,11 +297,6 @@ small select {
   }
   span, a {
     display: none;
-  }
-  &.has-error {
-    small {
-      color: $danger;
-    }
   }
 }
 

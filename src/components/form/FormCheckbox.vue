@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group row align-items-center">
+    <div class="mb-3 row align-items-center">
         <div :class="'col-md-9 col-xl-8 offset-md-3'">
             <div class="form-check">
                 <input class="form-check-input" :id="name" type="checkbox"

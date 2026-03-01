@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group row align-items-center">
+    <div class="mb-3 row align-items-center">
         <label for="password" class="col-form-label text-md-end"
                :class="'col-md-3'">{{ translations.password }}</label>
         <div :class="'col-md-9 col-xl-8'">
@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div class="form-group row align-items-center">
+    <div class="mb-3 row align-items-center">
         <label for="password_confirmation" class="col-form-label text-md-end"
                :class="'col-md-3'">{{ translations.password_repeat }}</label>
         <div :class="'col-md-9 col-xl-8'">

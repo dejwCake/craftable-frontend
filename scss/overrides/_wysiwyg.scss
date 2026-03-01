@@ -150,14 +150,6 @@
   }
 }
 
-.has-success .tiptap-editor {
-  border-color: $success;
-}
-
-.has-danger .tiptap-editor {
-  border-color: $danger;
-}
-
 .tiptap-heading-select {
   margin-right: 4px;
 }
@@ -173,10 +165,3 @@
   min-height: 200px;
 }
 
-.has-success .ck-editor {
-  border-color: $success;
-}
-
-.has-danger .ck-editor {
-  border-color: $danger;
-}

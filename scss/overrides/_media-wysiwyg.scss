@@ -10,20 +10,3 @@
   display: block;
   margin: 0.5em 0;
 }
-
-.has-danger {
-  .tiptap-editor {
-    border: 1px solid $danger;
-    &:after {
-      background-image: $icon-error;
-    }
-  }
-}
-
-.has-success {
-  .tiptap-editor {
-    &:after {
-      background-image: $icon-correct;
-    }
-  }
-}

@@ -1,11 +1,11 @@
 <template>
-    <div class="row form-group localization-bar" v-if="locales.length > 0">
+    <div class="row mb-3 localization-bar" v-if="locales.length > 0">
         <div :class="{'col-xl-10 col-md-11 text-end': !isFormLocalized, 'col text-center': isFormLocalized, 'd-none': onSmallScreen }">
             <small>{{ currentlyEditingText }}<span v-if="!isFormLocalized && otherLocales.length > 1"> {{ moreCanBeManagedText }}</span><span v-if="!isFormLocalized"> | <a href="#" @click.prevent="$emit('show-localization')">{{ translations.manage_translations }}</a></span></small>
             <i class="localization-error" v-if="!isFormLocalized && showLocalizedValidationError"></i>
         </div>
 
-        <div class="col text-center" :class="{'language-mobile': onSmallScreen, 'has-error': !isFormLocalized && showLocalizedValidationError}" v-if="isFormLocalized || onSmallScreen">
+        <div class="col text-center" :class="{'language-mobile': onSmallScreen, 'text-danger': !isFormLocalized && showLocalizedValidationError}" v-if="isFormLocalized || onSmallScreen">
             <small>{{ translations.choose_translation_to_edit }}
                 <Multiselect
                     :model-value="currentLocale"

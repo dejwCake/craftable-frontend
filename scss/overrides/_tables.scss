@@ -20,8 +20,7 @@ table th a:not([href]) {
   vertical-align: middle;
 }
 
-.table-listing .d-flex .btn,
-.table-listing .row.no-gutters .btn {
+.table-listing .d-flex .btn {
   @media (max-width: 1319px) {
     margin-bottom: 10px;
   }
