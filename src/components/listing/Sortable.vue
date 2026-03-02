@@ -28,6 +28,8 @@ function sort(column) {
       ? props.orderBy.direction === 'asc' ? 'desc' : 'asc'
       : 'asc';
 
+  props.orderBy.column = column;
+  props.orderBy.direction = direction;
   emit('sort', { column, direction });
   props.callback();
 }

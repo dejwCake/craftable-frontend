@@ -1,7 +1,7 @@
 // Tiptap WYSIWYG editor styles
 .tiptap-editor {
   border: 1px solid $mutedText;
-  border-radius: 4px;
+  border-radius: $border-radius;
   overflow: hidden;
 }
 
@@ -157,7 +157,7 @@
 // CKEditor 5 overrides
 .ck-editor {
   border: 1px solid $mutedText;
-  border-radius: 4px;
+  border-radius: $border-radius;
   overflow: hidden;
 }
 

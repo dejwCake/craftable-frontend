@@ -13,6 +13,7 @@
                         enableSeconds: config.enableSeconds ?? false,
                     }"
                     :formats="{ input: config.format }" auto-apply :locale="config.locale"
+                    :input-attrs="{ hideInputIcon: true, clearable: false }"
                 ></VueDatePicker>
             </div>
             <div v-if="error" class="invalid-feedback d-block form-text">{{ error }}</div>

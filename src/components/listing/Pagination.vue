@@ -151,6 +151,7 @@ function changePage(page) {
     return;
   }
 
+  props.pagination.current_page = page;
   emit('page-change', page);
   props.callback();
 }

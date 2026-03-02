@@ -4,9 +4,13 @@
   background-color: white;
 }
 
+// Datepicker inside input-group: zero left radius (prepend icon), keep right radius
+.input-group .dp__input {
+  border-radius: 0 $border-radius $border-radius 0;
+}
+
 .form-control {
   border: 1px solid $mutedText;
-  border-radius: 0;
   padding-right: 2.2rem !important;
   background-repeat: no-repeat;
   background-position: center right 0.52344rem;
@@ -111,6 +115,7 @@ small select {
 .dropzone,
 .vue3-dropzone {
   border: 2px dashed #b8c4ce !important;
+  border-radius: $border-radius;
   min-height: 200px;
   display: flex;
   flex-wrap: wrap;
