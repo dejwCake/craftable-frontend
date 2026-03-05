@@ -1,8 +1,8 @@
-import Sidebar from '@coreui/coreui/js/dist/sidebar.js';
-import '@coreui/coreui/js/dist/navigation.js';
-
 export function initUI() {
   document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.getElementById('sidebar');
+    let backdrop = null;
+
     // Spinner buttons
     document.querySelectorAll('.btn-spinner').forEach((btn) => {
       btn.addEventListener('click', (e) => {
@@ -24,17 +24,70 @@ export function initUI() {
       }
     });
 
-    // Handle external sidebar toggle buttons (outside the sidebar element)
+    // Sidebar: mobile show/hide toggle
+    function closeSidebar() {
+      if (!sidebar) return;
+      sidebar.classList.add('hide');
+      if (backdrop) {
+        backdrop.remove();
+        backdrop = null;
+      }
+    }
+
     document.querySelectorAll('[data-coreui-toggle="sidebar"]').forEach((btn) => {
-      if (!btn.closest('.sidebar')) {
-        btn.addEventListener('click', () => {
-          const sidebar = document.querySelector('.sidebar');
-          if (sidebar) {
-            const instance = Sidebar.getOrCreateInstance(sidebar);
-            instance.toggle();
-          }
-        });
+      btn.addEventListener('click', () => {
+        if (!sidebar) return;
+        const isHidden = sidebar.classList.contains('hide');
+        if (isHidden) {
+          sidebar.classList.remove('hide');
+          // Create backdrop for mobile
+          backdrop = document.createElement('div');
+          backdrop.className = 'sidebar-backdrop fade show';
+          backdrop.addEventListener('click', closeSidebar);
+          document.body.appendChild(backdrop);
+        } else {
+          closeSidebar();
+        }
+      });
+    });
+
+    // Sidebar: desktop unfoldable (narrow) toggle
+    document.querySelectorAll('[data-coreui-toggle="unfoldable"]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (!sidebar) return;
+        sidebar.classList.toggle('sidebar-narrow-unfoldable');
+      });
+    });
+
+    // Dropdowns
+    document.querySelectorAll('[data-coreui-toggle="dropdown"]').forEach((toggle) => {
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const dropdown = toggle.closest('.dropdown');
+        if (!dropdown) return;
+        const menu = dropdown.querySelector('.dropdown-menu');
+        if (!menu) return;
+        const isOpen = menu.classList.contains('show');
+
+        // Close all other open dropdowns
+        document.querySelectorAll('.dropdown-menu.show').forEach((m) => m.classList.remove('show'));
+
+        if (!isOpen) {
+          menu.classList.add('show');
+        }
+      });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown-menu.show').forEach((m) => m.classList.remove('show'));
       }
     });
+
+    // On mobile, sidebar starts hidden
+    if (sidebar && window.innerWidth < 992) {
+      sidebar.classList.add('hide');
+    }
   });
 }

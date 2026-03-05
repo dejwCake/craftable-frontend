@@ -44,6 +44,10 @@
                             {{ translations.button }}
                         </button>
                     </div>
+
+                    <div v-if="loginUrl" class="text-center">
+                        <a :href="loginUrl" class="auth-ghost-link">{{ translations.backToLogin }}</a>
+                    </div>
                 </div>
             </form>
         </div>
@@ -55,6 +59,7 @@ import { useBaseAuth } from '@dejwcake/craftable';
 
 const props = defineProps({
     action: { type: String, required: true },
+    loginUrl: { type: String, default: '' },
     translations: { type: Object, default: () => ({}) },
     statusMessage: { type: String, default: '' },
     serverErrors: { type: Array, default: () => [] },
