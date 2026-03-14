@@ -151,6 +151,9 @@ function resetState() {
     importLanguageObj.value = null;
     onlyMissing.value = false;
     translationsToImport.value = null;
+    if (fileInput.value) {
+        fileInput.value.value = '';
+    }
 }
 
 function handleFileUpload(e) {
