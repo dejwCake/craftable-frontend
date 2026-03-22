@@ -4,7 +4,6 @@ import { resolve } from 'path';
 
 const externalPackages = [
   'vue',
-  'axios',
   '@tiptap/vue-3',
   '@tiptap/starter-kit',
   '@tiptap/extension-image',

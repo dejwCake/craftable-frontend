@@ -11,7 +11,7 @@
                         class="form-control" :class="{'is-invalid': errors[name + '_' + locale]}"
                         :id="name + '_' + locale" :name="name + '_' + locale"
                         :placeholder="isFormLocalized ? locale.toUpperCase() : label">
-                    <div v-if="errors[name + '_' + locale]" class="invalid-feedback form-text">
+                    <div v-if="errors[name + '_' + locale]" class="invalid-feedback d-block form-text">
                         {{ errors[name + '_' + locale] }}
                     </div>
                 </div>

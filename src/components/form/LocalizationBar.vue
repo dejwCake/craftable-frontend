@@ -39,6 +39,7 @@
 
 <script setup>
 import { computed } from 'vue';
+import Multiselect from 'vue-multiselect';
 
 const props = defineProps({
     translations: { type: Object, required: true },

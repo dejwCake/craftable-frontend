@@ -9,7 +9,7 @@ export function useBaseAuth(props, options = {}) {
 
   const { setErrors, errors } = useForm();
 
-  async function submit() {
+  async function onSubmit() {
     if (options.validationSchema) {
       const fieldErrors = {};
       for (const [field, rules] of Object.entries(options.validationSchema)) {
@@ -36,12 +36,13 @@ export function useBaseAuth(props, options = {}) {
     submitting.value = true;
     successMessage.value = '';
 
-    try {
-      const response = await axios.post(props.action, form.value);
-      onSuccess(response.data);
-    } catch (err) {
-      onFail(err.response?.data || {});
-    }
+    axios.post(props.action, form.value)
+      .then((response) => {
+        onSuccess(response.data);
+      })
+      .catch((err) => {
+        onFail(err.response?.data || {});
+      });
   }
 
   function onSuccess(data) {
@@ -74,6 +75,6 @@ export function useBaseAuth(props, options = {}) {
     errors,
     submitting,
     successMessage,
-    submit,
+    onSubmit,
   };
 }

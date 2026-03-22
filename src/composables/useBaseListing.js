@@ -1,6 +1,6 @@
 import { ref, reactive, computed, onBeforeUnmount } from 'vue';
 import { useCookies } from 'vue3-cookies';
-import axios from 'axios';
+const axios = window.axios;
 import { formatDate, formatDatetime, formatTime, nowInTimezone } from '../utils/dateFormatters.js';
 import { notifySuccess, notifyError } from '../utils/notify.js';
 
@@ -197,12 +197,13 @@ export function useBaseListing(props) {
 
     Object.assign(options.params, filters);
 
-    axios.get(props.url, options).then(
-      (response) => populateCurrentStateAndData(response.data.data),
-      (error) => {
+    axios.get(props.url, options)
+      .then((response) => {
+        populateCurrentStateAndData(response.data.data);
+      })
+      .catch((error) => {
         notifyError(error.response?.data?.message);
-      }
-    );
+      });
   }
 
   function filter(column, value) {
@@ -231,8 +232,8 @@ export function useBaseListing(props) {
   }
 
   function getAction(url) {
-    return axios.get(url).then(
-      (response) => {
+    return axios.get(url)
+      .then((response) => {
         if (response.data.message) {
           notifySuccess(response.data.message);
         } else if (response.data.redirect) {
@@ -240,11 +241,10 @@ export function useBaseListing(props) {
         } else if (response.data.data?.path) {
           window.location.replace(response.data.data.path);
         }
-      },
-      (error) => {
+      })
+      .catch((error) => {
         notifyError(error.response?.data?.message);
-      }
-    );
+      });
   }
 
   function resolveUrl(template, item) {

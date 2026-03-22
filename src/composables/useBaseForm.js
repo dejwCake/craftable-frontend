@@ -146,12 +146,13 @@ export function useBaseForm(props, options = {}) {
       postData = filtered;
     }
 
-    try {
-      const response = await axios.post(props.action, postData);
-      onSuccess(response.data);
-    } catch (err) {
-      onFail(err.response?.data || {});
-    }
+    axios.post(props.action, postData)
+      .then((response) => {
+        onSuccess(response.data);
+      })
+      .catch((err) => {
+        onFail(err.response?.data || {});
+      });
   }
 
   function onSuccess(data) {

@@ -1,5 +1,5 @@
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
+const axios = window.axios;
 
 export function useAdmin() {
   const loading = ref(false);

@@ -1,8 +1,7 @@
 <template>
     <div class="mb-3 row align-items-center">
-        <label for="password" class="col-form-label text-md-end"
-               :class="'col-md-3'">{{ translations.password }}</label>
-        <div :class="'col-md-9 col-xl-8'">
+        <label for="password" class="col-md-3 col-form-label text-md-end">{{ translations.password }}</label>
+        <div class="col-md-9 col-xl-8">
             <input type="password" :value="password" @input="$emit('update:password', $event.target.value)"
                    class="form-control" :class="{'is-invalid': passwordError}"
                    id="password" name="password" :placeholder="translations.password">
@@ -11,9 +10,8 @@
     </div>
 
     <div class="mb-3 row align-items-center">
-        <label for="password_confirmation" class="col-form-label text-md-end"
-               :class="'col-md-3'">{{ translations.password_repeat }}</label>
-        <div :class="'col-md-9 col-xl-8'">
+        <label for="password_confirmation" class="col-md-3 col-form-label text-md-end">{{ translations.password_repeat }}</label>
+        <div class="col-md-9 col-xl-8">
             <input type="password" :value="passwordConfirmation" @input="$emit('update:passwordConfirmation', $event.target.value)"
                    class="form-control" :class="{'is-invalid': confirmationError}"
                    id="password_confirmation" name="password_confirmation" :placeholder="translations.password">

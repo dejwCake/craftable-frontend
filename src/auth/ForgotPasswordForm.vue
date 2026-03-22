@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-body">
-            <form role="form" method="POST" :action="action" novalidate @submit.prevent="submit">
+            <form role="form" method="POST" :action="action" novalidate @submit.prevent="onSubmit">
                 <div class="auth-header">
                     <h1 class="auth-title">{{ translations.title }}</h1>
                     <p class="auth-subtitle">{{ translations.note }}</p>
@@ -33,7 +33,7 @@
                                 :placeholder="translations.email"
                             >
                         </div>
-                        <div v-if="errors.email" class="invalid-feedback d-block">
+                        <div v-if="errors.email" class="invalid-feedback d-block form-text">
                             {{ errors.email }}
                         </div>
                     </div>
@@ -65,30 +65,10 @@ const props = defineProps({
     serverErrors: { type: Array, default: () => [] },
 });
 
-const { form, errors, submitting, successMessage, submit } = useBaseAuth(props, {
+const { form, errors, submitting, successMessage, onSubmit } = useBaseAuth(props, {
     formDefaults: { email: '' },
     validationSchema: {
         email: 'required|email',
     },
 });
 </script>
-
-<style scoped>
-.submit-btn {
-    display: block;
-    width: 100%;
-    padding: 1rem;
-    font-size: 16px;
-    color: #fff;
-}
-
-.submit-btn:hover,
-.submit-btn:focus,
-.submit-btn:disabled {
-    color: #fff;
-}
-
-label {
-    font-size: .875rem;
-}
-</style>

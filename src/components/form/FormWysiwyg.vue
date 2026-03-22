@@ -1,8 +1,7 @@
 <template>
     <div class="mb-3 row align-items-center">
-        <label :for="name" class="col-form-label text-md-end"
-               :class="'col-md-3'">{{ label }}</label>
-        <div :class="'col-md-9 col-xl-8'">
+        <label :for="name" class="col-md-3 col-form-label text-md-end">{{ label }}</label>
+        <div class="col-md-9 col-xl-8">
             <CkeditorEditor :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)"
                 :id="name" :name="name" :upload-url="uploadUrl"
                 v-bind="config ? { config } : {}"></CkeditorEditor>

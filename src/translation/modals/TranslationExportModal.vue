@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">{{ translations.export }}</h4>
-                    <button type="button" class="btn-close" @click="$emit('close')"></button>
+                    <button type="button" class="btn-close" @click="emit('close')"></button>
                 </div>
                 <div class="modal-body">
                     <form @submit.prevent="onSubmit">
@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    <div class="modal-backdrop fade show" v-if="show" @click="$emit('close')"></div>
+    <div class="modal-backdrop fade show" v-if="show" @click="emit('close')"></div>
 </template>
 
 <script setup>

@@ -12,7 +12,7 @@ import { ClassicEditor, Essentials, Bold, Italic, Underline, Strikethrough,
     Table, TableToolbar, CodeBlock, Code, SourceEditing, BlockQuote,
     HorizontalLine, Indent, GeneralHtmlSupport, Undo, FileRepository } from 'ckeditor5';
 import { Ckeditor } from '@ckeditor/ckeditor5-vue';
-import axios from 'axios';
+const axios = window.axios;
 
 import 'ckeditor5/ckeditor5.css';
 

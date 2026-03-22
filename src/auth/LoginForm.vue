@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-body">
-            <form role="form" method="POST" :action="action" novalidate @submit.prevent="submit">
+            <form role="form" method="POST" :action="action" novalidate @submit.prevent="onSubmit">
                 <div class="auth-header">
                     <h1 class="auth-title">{{ translations.title }}</h1>
                     <p class="auth-subtitle">{{ translations.signInText }}</p>
@@ -30,7 +30,7 @@
                                 :placeholder="translations.email"
                             >
                         </div>
-                        <div v-if="errors.email" class="invalid-feedback d-block">
+                        <div v-if="errors.email" class="invalid-feedback d-block form-text">
                             {{ errors.email }}
                         </div>
                     </div>
@@ -49,14 +49,14 @@
                                 :placeholder="translations.password"
                             >
                         </div>
-                        <div v-if="errors.password" class="invalid-feedback d-block">
+                        <div v-if="errors.password" class="invalid-feedback d-block form-text">
                             {{ errors.password }}
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <input type="hidden" name="remember" value="1">
-                        <button type="submit" class="btn btn-primary login-btn" :disabled="submitting">
+                        <button type="submit" class="btn btn-primary submit-btn" :disabled="submitting">
                             <i v-if="submitting" class="fa fa-spinner fa-spin"></i>
                             {{ translations.button }}
                         </button>
@@ -82,7 +82,7 @@ const props = defineProps({
     serverErrors: { type: Array, default: () => [] },
 });
 
-const { form, errors, submitting, submit } = useBaseAuth(props, {
+const { form, errors, submitting, onSubmit } = useBaseAuth(props, {
     formDefaults: { email: '', password: '' },
     validationSchema: {
         email: 'required|email',
@@ -95,24 +95,6 @@ const { form, errors, submitting, submit } = useBaseAuth(props, {
 </script>
 
 <style scoped>
-.login-btn {
-    display: block;
-    width: 100%;
-    padding: 1rem;
-    font-size: 16px;
-    color: #fff;
-}
-
-.login-btn:hover,
-.login-btn:focus,
-.login-btn:disabled {
-    color: #fff;
-}
-
-label {
-    font-size: .875rem;
-}
-
 .forgot-link {
     text-decoration: none;
 }
