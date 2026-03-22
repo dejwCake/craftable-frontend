@@ -4,10 +4,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">{{ translations.edit }}</h4>
-                    <button type="button" class="btn-close" @click="emit('close')"></button>
+                    <button type="button" class="btn-close" @click="$emit('close')"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="text-center" style="word-wrap: break-word;">
+                    <p class="text-center" style="word-wrap: break-word">
                         <strong>{{ translations.default_text }}:</strong> {{ item?.key }}
                     </p>
                     <form @submit.prevent="onSubmit">
@@ -15,16 +15,18 @@
                             <label class="form-label">{{ locale.toUpperCase() }} {{ translations.translation }}</label>
                             <input
                                 v-if="!translationValues[locale] || translationValues[locale].length < 70"
-                                type="text" class="form-control"
-                                :placeholder="(translations.translation_for || '').replace(':locale', locale)"
                                 v-model="translationValues[locale]"
-                            >
-                            <textarea
-                                v-else
+                                type="text"
                                 class="form-control"
                                 :placeholder="(translations.translation_for || '').replace(':locale', locale)"
+                            />
+                            <textarea
+                                v-else
                                 v-model="translationValues[locale]"
-                                cols="30" rows="4"
+                                class="form-control"
+                                :placeholder="(translations.translation_for || '').replace(':locale', locale)"
+                                cols="30"
+                                rows="4"
                             ></textarea>
                         </div>
                         <div class="text-center">
@@ -37,7 +39,7 @@
             </div>
         </div>
     </div>
-    <div class="modal-backdrop fade show" v-if="show" @click="emit('close')"></div>
+    <div v-if="show" class="modal-backdrop fade show" @click="$emit('close')"></div>
 </template>
 
 <script setup>
@@ -56,18 +58,20 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'saved']);
 
-const localeList = computed(() =>
-    Array.isArray(props.locales) ? props.locales : Object.values(props.locales)
-);
+const localeList = computed(() => (Array.isArray(props.locales) ? props.locales : Object.values(props.locales)));
 
 const translationValues = reactive({});
 
-watch(() => props.item, (item) => {
-    Object.keys(translationValues).forEach(key => delete translationValues[key]);
-    for (const key of Object.keys(item?.text || {})) {
-        translationValues[key] = item.text[key];
-    }
-}, { immediate: true });
+watch(
+    () => props.item,
+    (item) => {
+        Object.keys(translationValues).forEach((key) => delete translationValues[key]);
+        for (const key of Object.keys(item?.text || {})) {
+            translationValues[key] = item.text[key];
+        }
+    },
+    { immediate: true },
+);
 
 async function onSubmit() {
     try {

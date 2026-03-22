@@ -6,8 +6,8 @@ const defaultBreakpoints = [
     { minWidth: 1400, maxPriority: 6 },
     { minWidth: 1200, maxPriority: 4 },
     { minWidth: 1000, maxPriority: 3 },
-    { minWidth: 800,  maxPriority: 2 },
-    { minWidth: 0,    maxPriority: 0 },
+    { minWidth: 800, maxPriority: 2 },
+    { minWidth: 0, maxPriority: 0 },
 ];
 
 export function useResponsiveColumns(containerRef, options = {}) {
@@ -39,9 +39,13 @@ export function useResponsiveColumns(containerRef, options = {}) {
         observer.observe(el);
     }
 
-    watch(containerRef, (el) => {
-        setupObserver(el);
-    }, { immediate: true });
+    watch(
+        containerRef,
+        (el) => {
+            setupObserver(el);
+        },
+        { immediate: true },
+    );
 
     onBeforeUnmount(() => {
         if (observer) {

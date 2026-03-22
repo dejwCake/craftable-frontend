@@ -20,18 +20,20 @@
 .pagination li.active a {
     background-color: $primary;
     border-color: $primary;
+
     &:hover {
         color: white;
     }
 }
 
-@media (max-width: 575px) {
+@media (width <= 575px) {
     .pagination-caption {
         display: block;
         text-align: center;
         margin-bottom: 20px;
         top: 0;
     }
+
     .pagination {
         justify-content: center;
     }

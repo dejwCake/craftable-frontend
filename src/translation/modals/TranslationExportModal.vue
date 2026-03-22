@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">{{ translations.export }}</h4>
-                    <button type="button" class="btn-close" @click="emit('close')"></button>
+                    <button type="button" class="btn-close" @click="$emit('close')"></button>
                 </div>
                 <div class="modal-body">
                     <form @submit.prevent="onSubmit">
@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    <div class="modal-backdrop fade show" v-if="show" @click="emit('close')"></div>
+    <div v-if="show" class="modal-backdrop fade show" @click="$emit('close')"></div>
 </template>
 
 <script setup>
@@ -47,19 +47,19 @@ const props = defineProps({
 
 const emit = defineEmits(['close']);
 
-const localeList = computed(() =>
-    Array.isArray(props.locales) ? props.locales : Object.values(props.locales)
-);
+const localeList = computed(() => (Array.isArray(props.locales) ? props.locales : Object.values(props.locales)));
 
-const localeOptions = computed(() =>
-    localeList.value.map(l => ({ id: l, name: l.toUpperCase() }))
-);
+const localeOptions = computed(() => localeList.value.map((l) => ({ id: l, name: l.toUpperCase() })));
 
 const languagesToExport = ref([]);
 
-watch(localeOptions, (opts) => {
-    languagesToExport.value = [...opts];
-}, { immediate: true });
+watch(
+    localeOptions,
+    (opts) => {
+        languagesToExport.value = [...opts];
+    },
+    { immediate: true },
+);
 
 function onSubmit() {
     if (languagesToExport.value.length === 0) {
@@ -67,7 +67,7 @@ function onSubmit() {
         return;
     }
     const params = new URLSearchParams();
-    languagesToExport.value.forEach(l => params.append('exportLanguages[]', l.id));
+    languagesToExport.value.forEach((l) => params.append('exportLanguages[]', l.id));
     window.location = props.url + '/export?' + params.toString();
     emit('close');
 }

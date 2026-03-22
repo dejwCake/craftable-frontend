@@ -1,12 +1,12 @@
 // Tiptap media wysiwyg overrides
 .tiptap-editor table.table td {
-  min-width: unset;
-  display: table-cell;
+    min-width: unset;
+    display: table-cell;
 }
 
 .tiptap-image {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0.5em 0;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0.5em 0;
 }

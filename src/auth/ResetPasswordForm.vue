@@ -21,14 +21,14 @@
                         <div class="input-group input-group--custom">
                             <span class="input-group-text"><i class="fa fa-envelope"></i></span>
                             <input
-                                type="text"
+                                id="email"
                                 v-model="form.email"
+                                type="text"
                                 class="form-control"
                                 :class="{ 'is-invalid': errors.email }"
-                                id="email"
                                 name="email"
                                 :placeholder="translations.email"
-                            >
+                            />
                         </div>
                         <div v-if="errors.email" class="invalid-feedback d-block form-text">
                             {{ errors.email }}
@@ -40,14 +40,14 @@
                         <div class="input-group input-group--custom">
                             <span class="input-group-text"><i class="fa fa-lock"></i></span>
                             <input
-                                type="password"
+                                id="password"
                                 v-model="form.password"
+                                type="password"
                                 class="form-control"
                                 :class="{ 'is-invalid': errors.password }"
-                                id="password"
                                 name="password"
                                 :placeholder="translations.password"
-                            >
+                            />
                         </div>
                         <div v-if="errors.password" class="invalid-feedback d-block form-text">
                             {{ errors.password }}
@@ -59,14 +59,14 @@
                         <div class="input-group input-group--custom">
                             <span class="input-group-text"><i class="fa fa-lock"></i></span>
                             <input
-                                type="password"
+                                id="password_confirmation"
                                 v-model="form.password_confirmation"
+                                type="password"
                                 class="form-control"
                                 :class="{ 'is-invalid': errors.password_confirmation }"
-                                id="password_confirmation"
                                 name="password_confirmation"
                                 :placeholder="translations.passwordConfirm"
-                            >
+                            />
                         </div>
                         <div v-if="errors.password_confirmation" class="invalid-feedback d-block form-text">
                             {{ errors.password_confirmation }}

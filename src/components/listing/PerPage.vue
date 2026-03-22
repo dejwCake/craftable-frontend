@@ -1,9 +1,5 @@
 <template>
-    <select
-        class="form-select"
-        :value="modelValue"
-        @change="$emit('update:modelValue', +$event.target.value)"
-    >
+    <select class="form-select" :value="modelValue" @change="$emit('update:modelValue', +$event.target.value)">
         <option value="10">10</option>
         <option value="25">25</option>
         <option value="100">100</option>

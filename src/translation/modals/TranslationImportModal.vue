@@ -17,13 +17,21 @@
                                 <label class="btn btn-primary btn-sm w-100 mb-0">
                                     <span v-if="importedFile">{{ importedFile.name }}</span>
                                     <span v-else>{{ translations.choose_file }}</span>
-                                    <input type="file" class="d-none" ref="fileInput" @change="handleFileUpload" accept=".xlsx">
+                                    <input
+                                        ref="fileInput"
+                                        type="file"
+                                        class="d-none"
+                                        accept=".xlsx"
+                                        @change="handleFileUpload"
+                                    />
                                 </label>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4 text-md-end">
-                                <label for="importLanguage" class="col-form-label">{{ translations.language_to_import }}</label>
+                                <label for="importLanguage" class="col-form-label">{{
+                                    translations.language_to_import
+                                }}</label>
                             </div>
                             <div class="col-md-6">
                                 <Multiselect
@@ -40,17 +48,26 @@
                         </div>
                         <div class="offset-md-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" v-model="onlyMissing" id="onlyMissingTranslations">
-                                <label class="form-check-label" for="onlyMissingTranslations">{{ translations.do_not_override }}</label>
+                                <input
+                                    id="onlyMissingTranslations"
+                                    v-model="onlyMissing"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                />
+                                <label class="form-check-label" for="onlyMissingTranslations">{{
+                                    translations.do_not_override
+                                }}</label>
                             </div>
                         </div>
                     </div>
 
                     <div v-show="currentStep === 2">
                         <div class="text-center mb-3">
-                            <p>{{ translations.conflict_found }} {{ numberOfFoundTranslations }}
+                            <p>
+                                {{ translations.conflict_found }} {{ numberOfFoundTranslations }}
                                 {{ translations.conflict_to_import }} {{ numberOfTranslationsToReview }}
-                                {{ translations.conflict_differ }}</p>
+                                {{ translations.conflict_differ }}
+                            </p>
                         </div>
                         <table class="table table-hover">
                             <thead>
@@ -67,16 +84,30 @@
                                         <td style="word-break: break-all">{{ item.group }}</td>
                                         <td style="word-break: break-all">{{ item.default }}</td>
                                         <td style="word-break: break-all">
-                                            <input type="radio" class="form-check-input me-1" :value="true"
+                                            <input
+                                                :id="'current-' + index + '0'"
                                                 v-model="translationsToImport[index].checkedCurrent"
-                                                :id="'current-' + index + '0'" :name="'current-' + index">
-                                            <label class="form-check-label" :for="'current-' + index + '0'">{{ item.current_value }}</label>
+                                                type="radio"
+                                                class="form-check-input me-1"
+                                                :value="true"
+                                                :name="'current-' + index"
+                                            />
+                                            <label class="form-check-label" :for="'current-' + index + '0'">{{
+                                                item.current_value
+                                            }}</label>
                                         </td>
                                         <td style="word-break: break-all">
-                                            <input type="radio" class="form-check-input me-1" :value="false"
+                                            <input
+                                                :id="'current-' + index + '1'"
                                                 v-model="translationsToImport[index].checkedCurrent"
-                                                :id="'current-' + index + '1'" :name="'current-' + index">
-                                            <label class="form-check-label" :for="'current-' + index + '1'">{{ item[importLanguage.toLowerCase()] }}</label>
+                                                type="radio"
+                                                class="form-check-input me-1"
+                                                :value="false"
+                                                :name="'current-' + index"
+                                            />
+                                            <label class="form-check-label" :for="'current-' + index + '1'">{{
+                                                item[importLanguage.toLowerCase()]
+                                            }}</label>
                                         </td>
                                     </tr>
                                 </template>
@@ -86,20 +117,22 @@
 
                     <div v-show="currentStep === 3">
                         <div class="text-center">
-                            <p>{{ numberOfSuccessfullyImportedTranslations }} {{ translations.successfully_imported }}
-                                {{ numberOfSuccessfullyUpdatedTranslations }} {{ translations.successfully_updated }}</p>
+                            <p>
+                                {{ numberOfSuccessfullyImportedTranslations }} {{ translations.successfully_imported }}
+                                {{ numberOfSuccessfullyUpdatedTranslations }} {{ translations.successfully_updated }}
+                            </p>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" v-if="!lastStep" class="btn btn-primary" @click.prevent="nextStep">
+                    <button v-if="!lastStep" type="button" class="btn btn-primary" @click.prevent="nextStep">
                         {{ translations.next }}
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal-backdrop fade show" v-if="show" @click="onClose"></div>
+    <div v-if="show" class="modal-backdrop fade show" @click="onClose"></div>
 </template>
 
 <script setup>
@@ -119,13 +152,9 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'imported']);
 
-const localeList = computed(() =>
-    Array.isArray(props.locales) ? props.locales : Object.values(props.locales)
-);
+const localeList = computed(() => (Array.isArray(props.locales) ? props.locales : Object.values(props.locales)));
 
-const localeOptions = computed(() =>
-    localeList.value.map(l => ({ id: l, name: l.toUpperCase() }))
-);
+const localeOptions = computed(() => localeList.value.map((l) => ({ id: l, name: l.toUpperCase() })));
 
 const fileInput = ref(null);
 const importedFile = ref(null);
@@ -141,9 +170,12 @@ const translationsToImport = ref(null);
 
 const lastStep = computed(() => currentStep.value === props.stepCount);
 
-watch(() => props.show, (val) => {
-    if (!val) resetState();
-});
+watch(
+    () => props.show,
+    (val) => {
+        if (!val) resetState();
+    },
+);
 
 function resetState() {
     currentStep.value = 1;
@@ -190,7 +222,7 @@ async function nextStep() {
                 currentStep.value = 2;
                 translationsToImport.value = response.data;
                 numberOfFoundTranslations.value = Object.keys(response.data).length;
-                numberOfTranslationsToReview.value = translationsToImport.value.filter(i => i.has_conflict).length;
+                numberOfTranslationsToReview.value = translationsToImport.value.filter((i) => i.has_conflict).length;
             }
         } catch (error) {
             const msg = error.response?.data;
@@ -201,7 +233,8 @@ async function nextStep() {
     } else if (currentStep.value === 2) {
         for (let i = 0; i < translationsToImport.value.length; i++) {
             if (translationsToImport.value[i].checkedCurrent) {
-                translationsToImport.value[i][importLanguage.value.toLowerCase()] = translationsToImport.value[i].current_value;
+                translationsToImport.value[i][importLanguage.value.toLowerCase()] =
+                    translationsToImport.value[i].current_value;
             }
         }
 

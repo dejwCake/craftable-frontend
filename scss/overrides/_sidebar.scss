@@ -16,7 +16,7 @@
 .sidebar-nav {
     --cui-sidebar-nav-link-color: #fff;
     --cui-sidebar-nav-link-icon-color: #{$mutedText};
-    --cui-sidebar-nav-title-color: rgba(255, 255, 255, 0.45);
+    --cui-sidebar-nav-title-color: rgb(255 255 255 / 45%);
     --cui-sidebar-nav-link-hover-bg: #{$primary};
     --cui-sidebar-nav-link-hover-color: #fff;
     --cui-sidebar-nav-link-hover-icon-color: #fff;
@@ -37,8 +37,8 @@
 }
 
 // When sidebar is narrow-unfoldable (not hovered), push wrapper by narrow width
-@media (min-width: 992px) {
-    .sidebar.sidebar-narrow-unfoldable:not(.hide):not(.sidebar-end) ~ .wrapper {
+@media (width >= 992px) {
+    .sidebar.sidebar-narrow-unfoldable:not(.hide, .sidebar-end) ~ .wrapper {
         --cui-sidebar-occupy-start: 4rem;
     }
 }
@@ -64,7 +64,7 @@
 }
 
 // In narrow mode, icon should fill the width to hide text and center
-@media (min-width: 992px) {
+@media (width >= 992px) {
     .sidebar-narrow .sidebar-nav .nav-link,
     .sidebar-narrow-unfoldable:not(:hover) .sidebar-nav .nav-link {
         padding-left: 0;
@@ -79,6 +79,6 @@
 }
 
 .sidebar-footer {
-    background: rgba(0, 0, 0, 0.1);
-    border-top-color: rgba(255, 255, 255, 0.1) !important;
+    background: rgb(0 0 0 / 10%);
+    border-top-color: rgb(255 255 255 / 10%) !important;
 }

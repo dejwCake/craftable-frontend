@@ -1,29 +1,33 @@
 <template>
-    <div class="row" v-if="pagination.total > 0">
+    <div v-if="pagination.total > 0" class="row">
         <div class="col-sm">
             <span class="pagination-caption">{{ overview }}</span>
         </div>
         <div class="col-sm-auto">
             <nav>
-                <ul :class="['pagination', sizeClass]" v-if="pagination.last_page > 1">
+                <ul v-if="pagination.last_page > 1" :class="['pagination', sizeClass]">
                     <li v-if="showPrevious()" :class="{ disabled: pagination.current_page <= 1, 'page-item': true }">
                         <span v-if="pagination.current_page <= 1" class="page-link">
                             <span aria-hidden="true">{{ translations.previous }}</span>
                         </span>
 
                         <a
-                            href="#"
                             v-if="pagination.current_page > 1"
+                            href="#"
                             :aria-label="translations.previous"
-                            @click.prevent="changePage(pagination.current_page - 1)"
                             class="page-link"
+                            @click.prevent="changePage(pagination.current_page - 1)"
                         >
                             <span aria-hidden="true">{{ translations.previous }}</span>
                         </a>
                     </li>
 
-                    <li v-for="num in array" :key="num" :class="{ active: num === pagination.current_page, 'page-item': true }">
-                        <a href="#" @click.prevent="changePage(num)" class="page-link">{{ num }}</a>
+                    <li
+                        v-for="num in array"
+                        :key="num"
+                        :class="{ active: num === pagination.current_page, 'page-item': true }"
+                    >
+                        <a href="#" class="page-link" @click.prevent="changePage(num)">{{ num }}</a>
                     </li>
 
                     <li
@@ -41,11 +45,11 @@
                         </span>
 
                         <a
-                            href="#"
                             v-if="pagination.current_page < pagination.last_page"
+                            href="#"
                             :aria-label="translations.next"
-                            @click.prevent="changePage(pagination.current_page + 1)"
                             class="page-link"
+                            @click.prevent="changePage(pagination.current_page + 1)"
                         >
                             <span aria-hidden="true">{{ translations.next }}</span>
                         </a>
@@ -91,7 +95,7 @@ const config = computed(() => {
             offset: 3,
             alwaysShowPrevNext: false,
         },
-        props.options
+        props.options,
     );
 });
 
@@ -135,7 +139,7 @@ watch(
             cookies.set('per_page', newVal);
             props.callback();
         }
-    }
+    },
 );
 
 function showPrevious() {

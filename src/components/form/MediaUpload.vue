@@ -3,14 +3,12 @@
         <label v-if="label" class="form-label d-flex align-items-center">
             <i :class="labelIcon" class="me-1 text-body-secondary"></i>
             <span class="fw-semibold upload-label-title">{{ label }}</span>
-            <small v-for="(c, i) in constraintParts" :key="i" class="text-body-secondary fw-light ms-1">({{ c }})</small>
+            <small v-for="(c, i) in constraintParts" :key="i" class="text-body-secondary fw-light ms-1"
+                >({{ c }})</small
+            >
             <i v-if="isPrivate" class="fa fa-lock ms-auto text-body-secondary"></i>
         </label>
-        <div
-            v-bind="getRootProps()"
-            class="vue3-dropzone dropzone"
-            :class="{ 'dz-drag-hover': isDragActive }"
-        >
+        <div v-bind="getRootProps()" class="vue3-dropzone dropzone" :class="{ 'dz-drag-hover': isDragActive }">
             <input v-bind="getInputProps()" />
             <input type="hidden" name="collection" :value="collection" />
 
@@ -39,7 +37,12 @@
                 </div>
             </div>
 
-            <div v-for="(entry, index) in uploadedFiles" :key="'new-' + index" class="dz-preview dz-file-preview" :class="{ 'dz-success': entry.showSuccess, 'dz-error': entry.showError }">
+            <div
+                v-for="(entry, index) in uploadedFiles"
+                :key="'new-' + index"
+                class="dz-preview dz-file-preview"
+                :class="{ 'dz-success': entry.showSuccess, 'dz-error': entry.showError }"
+            >
                 <div class="dz-image">
                     <img v-if="entry.previewUrl" :src="entry.previewUrl" :alt="entry.file.name" />
                     <div v-else class="dz-file-icon">
@@ -150,9 +153,7 @@ function getMutableUploadedMedia() {
     return files;
 }
 
-const visibleUploadedMedia = computed(() =>
-    mutableUploadedMedia.value.filter((f) => !f.deleted)
-);
+const visibleUploadedMedia = computed(() => mutableUploadedMedia.value.filter((f) => !f.deleted));
 
 onMounted(() => {
     mutableUploadedMedia.value = getMutableUploadedMedia();
@@ -176,17 +177,18 @@ function uploadFile(file) {
 
     const csrfToken = document.head.querySelector('meta[name="csrf-token"]');
 
-    axios.post(props.url, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken.getAttribute('content') } : {}),
-        },
-        onUploadProgress(progressEvent) {
-            if (progressEvent.total) {
-                entry.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-            }
-        },
-    })
+    axios
+        .post(props.url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken.getAttribute('content') } : {}),
+            },
+            onUploadProgress(progressEvent) {
+                if (progressEvent.total) {
+                    entry.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                }
+            },
+        })
         .then((response) => {
             entry.response = response.data;
             entry.uploading = false;

@@ -4,15 +4,23 @@
         <div class="col-md-9 col-xl-8">
             <div class="input-group flex-nowrap">
                 <span class="input-group-text"><i class="fa" :class="icon"></i></span>
-                <VueDatePicker :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)"
-                    v-bind="config" class="datepicker-input" :class="{'is-invalid': error}"
-                    :id="name" :name="name" :placeholder="placeholder || label"
+                <VueDatePicker
+                    v-bind="config"
+                    :id="name"
+                    :model-value="modelValue"
+                    class="datepicker-input"
+                    :class="{ 'is-invalid': error }"
+                    :name="name"
+                    :placeholder="placeholder || label"
                     :time-config="{
                         enableTimePicker: config.enableTimePicker ?? true,
                         enableSeconds: config.enableSeconds ?? false,
                     }"
-                    :formats="{ input: config.format }" auto-apply :locale="config.locale"
+                    :formats="{ input: config.format }"
+                    auto-apply
+                    :locale="config.locale"
                     :input-attrs="{ hideInputIcon: true, clearable: false }"
+                    @update:model-value="$emit('update:modelValue', $event)"
                 ></VueDatePicker>
             </div>
             <div v-if="error" class="invalid-feedback d-block form-text">{{ error }}</div>

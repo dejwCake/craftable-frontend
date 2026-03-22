@@ -1,37 +1,49 @@
 <template>
-    <div class="row mb-2 localization-bar" v-if="locales.length > 0">
+    <div v-if="locales.length > 0" class="row mb-2 localization-bar">
         <div class="offset-md-3 col-md-9 col-xl-8 text-start" :class="{ 'd-none': onSmallScreen }">
-            <small v-if="!isFormLocalized">{{ currentlyEditingText }}<span v-if="otherLocales.length > 1"> {{ moreCanBeManagedText }}</span> | <a href="#" @click.prevent="$emit('show-localization')">{{ translations.manage_translations }}</a></small>
-            <i class="localization-error" v-if="!isFormLocalized && showLocalizedValidationError"></i>
+            <small v-if="!isFormLocalized"
+                >{{ currentlyEditingText }}<span v-if="otherLocales.length > 1"> {{ moreCanBeManagedText }}</span> |
+                <a href="#" @click.prevent="$emit('show-localization')">{{
+                    translations.manage_translations
+                }}</a></small
+            >
+            <i v-if="!isFormLocalized && showLocalizedValidationError" class="localization-error"></i>
 
             <div v-if="isFormLocalized" class="d-flex align-items-center gap-2">
                 <small class="text-nowrap">{{ translations.choose_translation_to_edit }}</small>
                 <Multiselect
                     :model-value="currentLocale"
-                    @update:model-value="$emit('update:currentLocale', $event)"
                     :options="localeOptions"
-                    :custom-label="l => l.toUpperCase()"
+                    :custom-label="(l) => l.toUpperCase()"
                     :searchable="false"
                     :allow-empty="false"
                     class="locale-selector"
+                    @update:model-value="$emit('update:currentLocale', $event)"
                 />
-                <i class="localization-error" v-if="showLocalizedValidationError"></i>
-                <small><a href="#" @click.prevent="$emit('hide-localization')">{{ translations.hide }}</a></small>
+                <i v-if="showLocalizedValidationError" class="localization-error"></i>
+                <small
+                    ><a href="#" @click.prevent="$emit('hide-localization')">{{ translations.hide }}</a></small
+                >
             </div>
         </div>
 
-        <div class="col" :class="{'language-mobile': true, 'text-danger': !isFormLocalized && showLocalizedValidationError}" v-if="onSmallScreen">
-            <small>{{ translations.choose_translation_to_edit }}
+        <div
+            v-if="onSmallScreen"
+            class="col"
+            :class="{ 'language-mobile': true, 'text-danger': !isFormLocalized && showLocalizedValidationError }"
+        >
+            <small
+                >{{ translations.choose_translation_to_edit }}
                 <Multiselect
                     :model-value="currentLocale"
-                    @update:model-value="$emit('update:currentLocale', $event)"
                     :options="[defaultLocale, ...otherLocales]"
-                    :custom-label="l => l.toUpperCase()"
+                    :custom-label="(l) => l.toUpperCase()"
                     :searchable="false"
                     :allow-empty="false"
                     class="locale-selector"
+                    @update:model-value="$emit('update:currentLocale', $event)"
                 />
-                <i class="localization-error" v-if="showLocalizedValidationError"></i>
+                <i v-if="showLocalizedValidationError" class="localization-error"></i>
             </small>
         </div>
     </div>
@@ -65,9 +77,7 @@ const moreCanBeManagedText = computed(() => {
 });
 
 const localeOptions = computed(() => {
-    return props.onSmallScreen
-        ? [props.defaultLocale, ...props.otherLocales]
-        : [...props.otherLocales];
+    return props.onSmallScreen ? [props.defaultLocale, ...props.otherLocales] : [...props.otherLocales];
 });
 </script>
 

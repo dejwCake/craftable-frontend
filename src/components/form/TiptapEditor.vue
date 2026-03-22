@@ -1,57 +1,96 @@
 <template>
     <div class="tiptap-editor">
         <div v-if="editor" class="tiptap-toolbar">
-            <select @change="setHeading($event)" class="tiptap-heading-select">
+            <select class="tiptap-heading-select" @change="setHeading($event)">
                 <option value="0" :selected="!editor.isActive('heading')">Paragraph</option>
-                <option v-for="level in [1,2,3,4,5,6]" :key="level" :value="level" :selected="editor.isActive('heading', { level })">
+                <option
+                    v-for="level in [1, 2, 3, 4, 5, 6]"
+                    :key="level"
+                    :value="level"
+                    :selected="editor.isActive('heading', { level })"
+                >
                     H{{ level }}
                 </option>
             </select>
 
-            <button type="button" @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }" title="Bold">
+            <button
+                type="button"
+                :class="{ 'is-active': editor.isActive('bold') }"
+                title="Bold"
+                @click="editor.chain().focus().toggleBold().run()"
+            >
                 <strong>B</strong>
             </button>
-            <button type="button" @click="editor.chain().focus().toggleItalic().run()" :class="{ 'is-active': editor.isActive('italic') }" title="Italic">
+            <button
+                type="button"
+                :class="{ 'is-active': editor.isActive('italic') }"
+                title="Italic"
+                @click="editor.chain().focus().toggleItalic().run()"
+            >
                 <em>I</em>
             </button>
-            <button type="button" @click="editor.chain().focus().toggleStrike().run()" :class="{ 'is-active': editor.isActive('strike') }" title="Strikethrough">
+            <button
+                type="button"
+                :class="{ 'is-active': editor.isActive('strike') }"
+                title="Strikethrough"
+                @click="editor.chain().focus().toggleStrike().run()"
+            >
                 <s>S</s>
             </button>
 
             <span class="tiptap-toolbar-divider"></span>
 
-            <button type="button" @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }" title="Bullet List">
+            <button
+                type="button"
+                :class="{ 'is-active': editor.isActive('bulletList') }"
+                title="Bullet List"
+                @click="editor.chain().focus().toggleBulletList().run()"
+            >
                 &#8226;
             </button>
-            <button type="button" @click="editor.chain().focus().toggleOrderedList().run()" :class="{ 'is-active': editor.isActive('orderedList') }" title="Ordered List">
+            <button
+                type="button"
+                :class="{ 'is-active': editor.isActive('orderedList') }"
+                title="Ordered List"
+                @click="editor.chain().focus().toggleOrderedList().run()"
+            >
                 1.
             </button>
 
             <span class="tiptap-toolbar-divider"></span>
 
-            <button type="button" @click="setLink" title="Link">
-                &#128279;
-            </button>
-            <button type="button" @click="uploadImage" title="Upload Image">
-                &#128228;
-            </button>
-            <button type="button" @click="addImageByUrl" title="Image URL">
-                &#128247;
-            </button>
-            <input ref="fileInput" type="file" accept="image/*" style="display: none" @change="onFileSelected">
+            <button type="button" title="Link" @click="setLink">&#128279;</button>
+            <button type="button" title="Upload Image" @click="uploadImage">&#128228;</button>
+            <button type="button" title="Image URL" @click="addImageByUrl">&#128247;</button>
+            <input ref="fileInput" type="file" accept="image/*" style="display: none" @change="onFileSelected" />
 
             <span v-if="showTableControls" class="tiptap-toolbar-divider"></span>
 
-            <button v-if="showTableControls" type="button" @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()" title="Insert Table">
+            <button
+                v-if="showTableControls"
+                type="button"
+                title="Insert Table"
+                @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
+            >
                 &#9638;
             </button>
 
             <span class="tiptap-toolbar-divider"></span>
 
-            <button type="button" @click="editor.chain().focus().undo().run()" :disabled="!editor.can().undo()" title="Undo">
+            <button
+                type="button"
+                :disabled="!editor.can().undo()"
+                title="Undo"
+                @click="editor.chain().focus().undo().run()"
+            >
                 &#8617;
             </button>
-            <button type="button" @click="editor.chain().focus().redo().run()" :disabled="!editor.can().redo()" title="Redo">
+            <button
+                type="button"
+                :disabled="!editor.can().redo()"
+                title="Redo"
+                @click="editor.chain().focus().redo().run()"
+            >
                 &#8618;
             </button>
         </div>
@@ -127,7 +166,7 @@ watch(
         if (editor.value && editor.value.getHTML() !== value) {
             editor.value.commands.setContent(value, false);
         }
-    }
+    },
 );
 
 onBeforeUnmount(() => {
@@ -181,21 +220,24 @@ function onFileSelected(event) {
 
     const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
-    axios.post(props.uploadUrl, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            ...(token ? { 'X-CSRF-TOKEN': token } : {}),
-        },
-    }).then(
-        (response) => {
-            editor.value.chain().focus().setImage({ src: response.data.file }).run();
-            emit('media-uploaded', response.data);
-        },
-        (error) => {
-            notifyError(error.response?.data?.error);
-        },
-    ).finally(() => {
-        fileInput.value.value = '';
-    });
+    axios
+        .post(props.uploadUrl, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                ...(token ? { 'X-CSRF-TOKEN': token } : {}),
+            },
+        })
+        .then(
+            (response) => {
+                editor.value.chain().focus().setImage({ src: response.data.file }).run();
+                emit('media-uploaded', response.data);
+            },
+            (error) => {
+                notifyError(error.response?.data?.error);
+            },
+        )
+        .finally(() => {
+            fileInput.value.value = '';
+        });
 }
 </script>

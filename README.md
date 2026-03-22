@@ -12,6 +12,50 @@ You can find the full documentation at https://www.getcraftable.com/
 Where do I report issues?
 If something is not working as expected, please open an issue in the main repository https://github.com/dejwCake/craftable.
 
+## Commands
+
+All commands run inside Docker containers from the package directory.
+
+### Install dependencies
+```shell
+docker compose run -it --rm node npm install
+```
+
+### Build the package
+```shell
+docker compose run -it --rm node npm run build
+```
+
+### Run ESLint
+```shell
+docker compose run -it --rm node npm run lint
+```
+
+### Run ESLint with auto-fix
+```shell
+docker compose run -it --rm node npm run lint:fix
+```
+
+### Run Stylelint on SCSS
+```shell
+docker compose run -it --rm node npm run lint:style
+```
+
+### Run Stylelint with auto-fix
+```shell
+docker compose run -it --rm node npm run lint:style:fix
+```
+
+### Check Prettier formatting
+```shell
+docker compose run -it --rm node npm run format:check
+```
+
+### Fix Prettier formatting
+```shell
+docker compose run -it --rm node npm run format
+```
+
 ## Publishing to npm
 
 Follow these steps to publish a new version of the package to npm:

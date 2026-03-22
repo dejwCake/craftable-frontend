@@ -1,325 +1,331 @@
 // Datepicker compatibility
 .dp__input {
-  background-color: white;
+    background-color: white;
 }
 
 // Datepicker inside input-group: zero left radius (prepend icon), keep right radius
 .input-group .dp__input {
-  border-radius: 0 $border-radius $border-radius 0;
+    border-radius: 0 $border-radius $border-radius 0;
 }
 
 .form-control {
-  border: 1px solid $mutedText;
-  padding-right: 2.2rem !important;
-  background-repeat: no-repeat;
-  background-position: center right 0.52344rem;
-  background-size: 1.04688rem 1.04688rem;
-  &:focus {
     border: 1px solid $mutedText;
-  }
+    padding-right: 2.2rem !important;
+    background-repeat: no-repeat;
+    background-position: center right 0.52344rem;
+    background-size: 1.04688rem 1.04688rem;
+
+    &:focus {
+        border: 1px solid $mutedText;
+    }
 }
 
 // BS5 validation (class on input pattern)
 .form-control.is-valid {
-  background-image: $icon-correct;
-  border-color: $mutedText;
-  &:focus {
+    background-image: $icon-correct;
     border-color: $mutedText;
-    box-shadow: none;
-  }
+
+    &:focus {
+        border-color: $mutedText;
+        box-shadow: none;
+    }
 }
 
 .form-control.is-invalid {
-  background-image: $icon-error;
-  border-color: $danger;
-  &:focus {
+    background-image: $icon-error;
     border-color: $danger;
-    box-shadow: none;
-  }
+
+    &:focus {
+        border-color: $danger;
+        box-shadow: none;
+    }
 }
 
 .invalid-feedback {
-  color: $danger;
-  font-weight: 500;
+    color: $danger;
+    font-weight: 500;
 }
 
 label {
-  color: $mutedText;
+    color: $mutedText;
 }
 
 .form-check-label {
-  color: #3e515b;
+    color: #3e515b;
 }
 
-
 .input-icon {
-  display: inline-block;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 15px;
-  height: 25px;
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 15px;
+    height: 25px;
 }
 
 .input-icon--mail {
-  width: 20px;
-  background-image: $icon-envelope;
+    width: 20px;
+    background-image: $icon-envelope;
 }
 
 .input-icon--lock {
-  margin: 0 3px;
-  background-image: $icon-lock;
+    margin: 0 3px;
+    background-image: $icon-lock;
 }
 
 .form-control::placeholder {
-  color: $mutedText;
+    color: $mutedText;
 }
 
 .form-check {
-  padding-inline-start: 0;
+    padding-inline-start: 0;
 }
 
 .form-check-label {
-  margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 // Vue Datepicker (@vuepic/vue-datepicker) theme
 .dp__active_date {
-  background: $primary !important;
-  border-color: $primary !important;
+    background: $primary !important;
+    border-color: $primary !important;
 }
 
 .dp__range_start,
 .dp__range_end {
-  background: $primary !important;
-  border-color: $primary !important;
+    background: $primary !important;
+    border-color: $primary !important;
 }
 
 .dp__today {
-  border-color: $primary !important;
+    border-color: $primary !important;
 }
 
 .base-upload {
-  margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
 .upload-label-title {
-  color: $primary;
+    color: $primary;
 }
 
 small select {
-  margin: 0 10px;
+    margin: 0 10px;
 }
 
 .dropzone,
 .vue3-dropzone {
-  border: 2px dashed #b8c4ce !important;
-  border-radius: $border-radius;
-  min-height: 200px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  align-content: flex-start;
-  &:hover, &.dz-drag-hover {
-    border: 2px dashed $primary !important;
-  }
-
-  i {
-    color: #c7c7c7 !important;
-    font-size: 40px !important;
-    margin-bottom: 10px;
-  }
-
-  .dz-message {
-    width: 100%;
-    min-height: 180px;
+    border: 2px dashed #b8c4ce !important;
+    border-radius: $border-radius;
+    min-height: 200px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: $mutedText !important;
-  }
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
 
-  //fixes https://github.com/rowanwins/vue-dropzone/issues/127
-  .dz-error-message {
-    top: calc(100% + 10px) !important;
-    left: calc(50% - 70px) !important;
-  }
-
-  .dz-preview {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    overflow: hidden;
-    margin: 8px;
-
-    &.dz-deleted {
-      display: none;
+    &:hover,
+    &.dz-drag-hover {
+        border: 2px dashed $primary !important;
     }
 
-    .dz-image {
-      width: 200px !important;
-      height: 200px !important;
+    i {
+        color: #c7c7c7 !important;
+        font-size: 40px !important;
+        margin-bottom: 10px;
+    }
 
-      img {
+    .dz-message {
         width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .dz-file-icon {
+        min-height: 180px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        height: 100%;
-        background: #f0f3f5;
-
-        i {
-          font-size: 60px !important;
-          color: #b8c4ce !important;
-          margin-bottom: 8px;
-          line-height: 1;
-        }
-
-        p {
-          width: 100%;
-          text-align: center;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          font-size: 12px;
-          line-height: 1.2;
-          padding: 0 12px;
-          margin: 0;
-          color: $mutedText;
-        }
-      }
+        color: $mutedText !important;
     }
 
-    .dz-hover-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba($primary, 0.85);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      opacity: 0;
-      transition: opacity 0.2s ease;
+    // fixes https://github.com/rowanwins/vue-dropzone/issues/127
+    .dz-error-message {
+        top: calc(100% + 10px) !important;
+        left: calc(50% - 70px) !important;
+    }
 
-      .dz-file-size {
-        color: white;
-        font-weight: 700;
-        font-size: 16px;
-        margin-bottom: 8px;
-      }
-
-      .dz-file-name {
-        color: white;
-        font-size: 13px;
-        text-align: center;
+    .dz-preview {
+        position: relative;
+        width: 200px;
+        height: 200px;
         overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        width: 100%;
-        margin-bottom: 16px;
-      }
+        margin: 8px;
 
-      .dz-remove-btn {
-        background: transparent;
-        color: white;
-        border: 2px solid white;
-        padding: 6px 20px;
-        font-size: 13px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        cursor: pointer;
-        transition: background 0.15s ease, color 0.15s ease;
-
-        &:hover {
-          background: white;
-          color: $primary;
+        &.dz-deleted {
+            display: none;
         }
-      }
+
+        .dz-image {
+            width: 200px !important;
+            height: 200px !important;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .dz-file-icon {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+                background: #f0f3f5;
+
+                i {
+                    font-size: 60px !important;
+                    color: #b8c4ce !important;
+                    margin-bottom: 8px;
+                    line-height: 1;
+                }
+
+                p {
+                    width: 100%;
+                    text-align: center;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    font-size: 12px;
+                    line-height: 1.2;
+                    padding: 0 12px;
+                    margin: 0;
+                    color: $mutedText;
+                }
+            }
+        }
+
+        .dz-hover-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba($primary, 0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+
+            .dz-file-size {
+                color: white;
+                font-weight: 700;
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+
+            .dz-file-name {
+                color: white;
+                font-size: 13px;
+                text-align: center;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                width: 100%;
+                margin-bottom: 16px;
+            }
+
+            .dz-remove-btn {
+                background: transparent;
+                color: white;
+                border: 2px solid white;
+                padding: 6px 20px;
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+                cursor: pointer;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease;
+
+                &:hover {
+                    background: white;
+                    color: $primary;
+                }
+            }
+        }
+
+        &:hover .dz-hover-overlay {
+            opacity: 1;
+        }
+
+        .dz-success-mark,
+        .dz-error-mark {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: dz-fade-in 0.3s ease;
+
+            i {
+                color: white !important;
+                font-size: 50px !important;
+                animation: dz-check-pop 0.4s ease;
+                margin-bottom: 0;
+            }
+        }
+
+        .dz-success-mark {
+            background: rgb(40 167 69 / 60%);
+        }
+
+        .dz-error-mark {
+            background: rgb(220 53 69 / 70%);
+        }
+
+        .dz-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: rgb(0 0 0 / 20%);
+
+            .dz-upload {
+                display: block;
+                height: 100%;
+                background: white;
+                transition: width 0.2s ease;
+            }
+        }
     }
-
-    &:hover .dz-hover-overlay {
-      opacity: 1;
-    }
-
-    .dz-success-mark,
-    .dz-error-mark {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: dz-fade-in 0.3s ease;
-
-      i {
-        color: white !important;
-        font-size: 50px !important;
-        animation: dz-check-pop 0.4s ease;
-        margin-bottom: 0;
-      }
-    }
-
-    .dz-success-mark {
-      background: rgba(40, 167, 69, 0.6);
-    }
-
-    .dz-error-mark {
-      background: rgba(220, 53, 69, 0.7);
-    }
-
-    .dz-progress {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 6px;
-      background: rgba(0, 0, 0, 0.2);
-
-      .dz-upload {
-        display: block;
-        height: 100%;
-        background: white;
-        transition: width 0.2s ease;
-      }
-    }
-  }
 }
 
 .language-mobile {
-  select {
-    margin-left: 0;
-    margin-top: 5px;
-    margin-bottom: 25px;
-  }
-  span, a {
-    display: none;
-  }
-}
-
-@media (max-width: 700px) {
-  select,
-  textarea,
-  input,
-  .input-group button {
-    font-size: 16px !important;
-  }
-}
-
-
-@media (min-width: 576px) {
-  .language-mobile {
     select {
-      margin: 0;
-      margin-left: 10px;
+        margin-left: 0;
+        margin-top: 5px;
+        margin-bottom: 25px;
     }
-  }
+
+    span,
+    a {
+        display: none;
+    }
 }
 
+@media (width <= 700px) {
+    select,
+    textarea,
+    input,
+    .input-group button {
+        font-size: 16px !important;
+    }
+}
+
+@media (width >= 576px) {
+    .language-mobile {
+        select {
+            margin: 0;
+            margin-left: 10px;
+        }
+    }
+}

@@ -24,14 +24,14 @@
                         <div class="input-group input-group--custom">
                             <span class="input-group-text"><i class="fa fa-envelope"></i></span>
                             <input
-                                type="text"
+                                id="email"
                                 v-model="form.email"
+                                type="text"
                                 class="form-control"
                                 :class="{ 'is-invalid': errors.email }"
-                                id="email"
                                 name="email"
                                 :placeholder="translations.email"
-                            >
+                            />
                         </div>
                         <div v-if="errors.email" class="invalid-feedback d-block form-text">
                             {{ errors.email }}

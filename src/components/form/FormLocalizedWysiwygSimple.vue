@@ -2,13 +2,21 @@
     <div class="mb-3 row align-items-center">
         <label :for="name + '_' + locales[0]" class="col-md-3 col-form-label text-md-end">{{ label }}</label>
         <div class="col-md-9 col-xl-8">
-            <div :class="{'d-flex gap-2': isFormLocalized}">
-                <div v-for="locale in locales" :key="locale" v-show="shouldShowLangGroup(locale)"
-                     :class="{'flex-fill localized-editor': isFormLocalized}">
-                    <TiptapEditor :model-value="modelValue[locale]"
+            <div :class="{ 'd-flex gap-2': isFormLocalized }">
+                <div
+                    v-for="locale in locales"
+                    v-show="shouldShowLangGroup(locale)"
+                    :key="locale"
+                    :class="{ 'flex-fill localized-editor': isFormLocalized }"
+                >
+                    <TiptapEditor
+                        :id="name + '_' + locale"
+                        :model-value="modelValue[locale]"
+                        :name="name + '_' + locale"
+                        :upload-url="uploadUrl"
+                        v-bind="config ? { config } : {}"
                         @update:model-value="onInput(locale, $event)"
-                        :id="name + '_' + locale" :name="name + '_' + locale"
-                        :upload-url="uploadUrl" v-bind="config ? { config } : {}"></TiptapEditor>
+                    ></TiptapEditor>
                     <div v-if="errors[name + '_' + locale]" class="invalid-feedback d-block form-text">
                         {{ errors[name + '_' + locale] }}
                     </div>

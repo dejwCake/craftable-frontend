@@ -1,16 +1,44 @@
 <template>
     <div class="ck-editor-wrapper">
-        <ckeditor :editor="ClassicEditor" v-model="content" :config="editorConfig" />
+        <ckeditor v-model="content" :editor="ClassicEditor" :config="editorConfig" />
     </div>
 </template>
 
 <script setup>
 import { ref, computed, toRaw } from 'vue';
-import { ClassicEditor, Essentials, Bold, Italic, Underline, Strikethrough,
-    Heading, Paragraph, Alignment, List, Link, AutoLink,
-    Image, ImageToolbar, ImageCaption, ImageStyle, ImageResize, ImageInsert, ImageInsertViaUrl, ImageUpload,
-    Table, TableToolbar, CodeBlock, Code, SourceEditing, BlockQuote,
-    HorizontalLine, Indent, GeneralHtmlSupport, Undo, FileRepository } from 'ckeditor5';
+import {
+    ClassicEditor,
+    Essentials,
+    Bold,
+    Italic,
+    Underline,
+    Strikethrough,
+    Heading,
+    Paragraph,
+    Alignment,
+    List,
+    Link,
+    AutoLink,
+    Image,
+    ImageToolbar,
+    ImageCaption,
+    ImageStyle,
+    ImageResize,
+    ImageInsert,
+    ImageInsertViaUrl,
+    ImageUpload,
+    Table,
+    TableToolbar,
+    CodeBlock,
+    Code,
+    SourceEditing,
+    BlockQuote,
+    HorizontalLine,
+    Indent,
+    GeneralHtmlSupport,
+    Undo,
+    FileRepository,
+} from 'ckeditor5';
 import { Ckeditor } from '@ckeditor/ckeditor5-vue';
 const axios = window.axios;
 
@@ -34,7 +62,7 @@ function propagateImageWidths(html) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
     let changed = false;
-    doc.querySelectorAll('figure').forEach(figure => {
+    doc.querySelectorAll('figure').forEach((figure) => {
         const width = figure.style.width;
         if (!width) return;
         const img = figure.querySelector('img');
@@ -60,23 +88,25 @@ class CsrfUploadAdapter {
     }
 
     upload() {
-        return this.loader.file.then(file => {
+        return this.loader.file.then((file) => {
             const formData = new FormData();
             formData.append('fileToUpload', file);
 
-            return axios.post(this.url, formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-                onUploadProgress: (evt) => {
-                    if (evt.total) {
-                        this.loader.uploadTotal = evt.total;
-                        this.loader.uploaded = evt.loaded;
-                    }
-                },
-            }).then(response => {
-                const url = response.data.file || response.data.url || response.data;
-                emit('media-uploaded', response.data);
-                return { default: url };
-            });
+            return axios
+                .post(this.url, formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    onUploadProgress: (evt) => {
+                        if (evt.total) {
+                            this.loader.uploadTotal = evt.total;
+                            this.loader.uploaded = evt.loaded;
+                        }
+                    },
+                })
+                .then((response) => {
+                    const url = response.data.file || response.data.url || response.data;
+                    emit('media-uploaded', response.data);
+                    return { default: url };
+                });
         });
     }
 
@@ -86,31 +116,78 @@ class CsrfUploadAdapter {
 const defaultConfig = {
     licenseKey: 'GPL',
     plugins: [
-        Essentials, Bold, Italic, Underline, Strikethrough,
-        Heading, Paragraph, Alignment, List, Link, AutoLink,
-        Image, ImageToolbar, ImageCaption, ImageStyle, ImageResize, ImageInsert, ImageInsertViaUrl, ImageUpload,
-        Table, TableToolbar, CodeBlock, Code, SourceEditing, BlockQuote,
-        HorizontalLine, Indent, GeneralHtmlSupport, Undo, FileRepository,
+        Essentials,
+        Bold,
+        Italic,
+        Underline,
+        Strikethrough,
+        Heading,
+        Paragraph,
+        Alignment,
+        List,
+        Link,
+        AutoLink,
+        Image,
+        ImageToolbar,
+        ImageCaption,
+        ImageStyle,
+        ImageResize,
+        ImageInsert,
+        ImageInsertViaUrl,
+        ImageUpload,
+        Table,
+        TableToolbar,
+        CodeBlock,
+        Code,
+        SourceEditing,
+        BlockQuote,
+        HorizontalLine,
+        Indent,
+        GeneralHtmlSupport,
+        Undo,
+        FileRepository,
     ],
     extraPlugins: [createUploadAdapterPlugin],
     toolbar: {
         items: [
-            'heading', '|',
-            'bold', 'italic', 'underline', 'strikethrough', '|',
-            'alignment', '|',
-            'bulletedList', 'numberedList', '|',
-            'blockQuote', 'horizontalLine', '|',
-            'link', 'insertImage', 'insertTable', '|',
-            'code', 'codeBlock', '|',
-            'undo', 'redo', '|',
+            'heading',
+            '|',
+            'bold',
+            'italic',
+            'underline',
+            'strikethrough',
+            '|',
+            'alignment',
+            '|',
+            'bulletedList',
+            'numberedList',
+            '|',
+            'blockQuote',
+            'horizontalLine',
+            '|',
+            'link',
+            'insertImage',
+            'insertTable',
+            '|',
+            'code',
+            'codeBlock',
+            '|',
+            'undo',
+            'redo',
+            '|',
             'sourceEditing',
         ],
         shouldNotGroupWhenFull: true,
     },
     image: {
         toolbar: [
-            'imageStyle:inline', 'imageStyle:block', 'imageStyle:side', '|',
-            'toggleImageCaption', 'imageTextAlternative', '|',
+            'imageStyle:inline',
+            'imageStyle:block',
+            'imageStyle:side',
+            '|',
+            'toggleImageCaption',
+            'imageTextAlternative',
+            '|',
             'resizeImage',
         ],
         resizeUnit: 'px',
@@ -146,8 +223,14 @@ const editorConfig = computed(() => {
 function deepMerge(target, source) {
     const result = { ...target };
     for (const key of Object.keys(source)) {
-        if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])
-            && target[key] && typeof target[key] === 'object' && !Array.isArray(target[key])) {
+        if (
+            source[key] &&
+            typeof source[key] === 'object' &&
+            !Array.isArray(source[key]) &&
+            target[key] &&
+            typeof target[key] === 'object' &&
+            !Array.isArray(target[key])
+        ) {
             result[key] = deepMerge(target[key], source[key]);
         } else {
             result[key] = source[key];
@@ -155,5 +238,4 @@ function deepMerge(target, source) {
     }
     return result;
 }
-
 </script>

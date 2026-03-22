@@ -1,11 +1,11 @@
 // Legacy BS4 compatibility shims removed — all templates now use BS5 patterns
 
 .translation-listing .table td:last-of-type {
-  min-width: 0;
+    min-width: 0;
 }
 
-@media (max-width: 700px) {
-  .input-group button {
-    font-size: 0.875rem !important;
-  }
+@media (width <= 700px) {
+    .input-group button {
+        font-size: 0.875rem !important;
+    }
 }

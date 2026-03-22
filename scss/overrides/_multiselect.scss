@@ -1,4 +1,4 @@
-.multiselect__tag-icon:after {
+.multiselect__tag-icon::after {
     color: white !important;
 }
 
@@ -22,7 +22,8 @@
 
 .multiselect__option--highlight {
     background: $success !important;
-    &:after {
+
+    &::after {
         background: $success !important;
     }
 }
@@ -33,7 +34,8 @@
 
 .multiselect__option--selected.multiselect__option--highlight {
     background: $danger !important;
-    &:after {
+
+    &::after {
         background: $danger !important;
     }
 }
@@ -48,6 +50,7 @@
     min-width: 180px;
     flex: 0 0 auto;
     box-sizing: border-box !important;
+
     // Let align-items: stretch from .input-group size this element
     align-self: stretch;
 

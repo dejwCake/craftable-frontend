@@ -2,11 +2,17 @@
     <div class="mb-3 row align-items-center">
         <label :for="name" class="col-md-3 col-form-label text-md-end">{{ label }}</label>
         <div class="col-md-9 col-xl-8">
-            <Multiselect :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)"
-                         :class="{'is-invalid': error}"
-                         :placeholder="placeholder" :options="options"
-                         :multiple="true" :label="optionLabel" :track-by="trackBy"
-                         open-direction="bottom"></Multiselect>
+            <Multiselect
+                :model-value="modelValue"
+                :class="{ 'is-invalid': error }"
+                :placeholder="placeholder"
+                :options="options"
+                :multiple="true"
+                :label="optionLabel"
+                :track-by="trackBy"
+                open-direction="bottom"
+                @update:model-value="$emit('update:modelValue', $event)"
+            ></Multiselect>
             <div v-if="error" class="invalid-feedback d-block form-text">{{ error }}</div>
         </div>
     </div>

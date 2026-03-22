@@ -4,16 +4,16 @@
         <Popper arrow click>
             <div class="d-inline-flex align-items-center cursor-pointer">
                 <img
+                    v-if="user.avatar_thumb_url"
                     :src="user.avatar_thumb_url"
                     class="avatar-photo"
                     :alt="user.full_name"
-                    v-if="user.avatar_thumb_url"
                 />
-                <div class="avatar-initials" v-else>
+                <div v-else class="avatar-initials">
                     {{ abbr }}
                 </div>
 
-                <div class="avatar-trigger-text" v-if="options.showFullNameLabel">
+                <div v-if="options.showFullNameLabel" class="avatar-trigger-text">
                     <span class="avatar-full-name">{{ user.full_name }}</span>
                     <span v-if="datetime" class="d-block user-info-span">{{ datetime }}</span>
                 </div>
@@ -23,12 +23,12 @@
                 <div class="user-detail-popper d-flex align-items-center">
                     <div class="user-avatar flex-shrink-0">
                         <img
+                            v-if="user.avatar_thumb_url"
                             :src="user.avatar_thumb_url"
                             class="avatar-photo"
                             :alt="user.full_name"
-                            v-if="user.avatar_thumb_url"
                         />
-                        <div class="avatar-initials" v-else>
+                        <div v-else class="avatar-initials">
                             {{ abbr }}
                         </div>
                     </div>

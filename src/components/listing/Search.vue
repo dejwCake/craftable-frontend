@@ -20,11 +20,7 @@
                 <i class="fa fa-times"></i>
             </button>
         </div>
-        <button
-            type="button"
-            class="btn btn-primary"
-            @click="doSearch"
-        >
+        <button type="button" class="btn btn-primary" @click="doSearch">
             <i class="fa fa-search"></i>&nbsp; {{ translations.search_btn }}
         </button>
     </div>
@@ -83,4 +79,3 @@ function clearSearch() {
 
 onBeforeUnmount(cancelDebounce);
 </script>
-

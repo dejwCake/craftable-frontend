@@ -2,8 +2,14 @@
     <div class="mb-3 row align-items-center">
         <label :for="name" class="col-md-3 col-form-label text-md-end">{{ label }}</label>
         <div class="col-md-9 col-xl-8">
-            <TiptapEditor :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)"
-                :id="name" :name="name" :upload-url="uploadUrl" v-bind="config ? { config } : {}"></TiptapEditor>
+            <TiptapEditor
+                :id="name"
+                :model-value="modelValue"
+                :name="name"
+                :upload-url="uploadUrl"
+                v-bind="config ? { config } : {}"
+                @update:model-value="$emit('update:modelValue', $event)"
+            ></TiptapEditor>
             <div v-if="error" class="invalid-feedback d-block form-text">{{ error }}</div>
         </div>
     </div>

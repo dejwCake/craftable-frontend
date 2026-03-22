@@ -23,10 +23,7 @@ const props = defineProps({
 const emit = defineEmits(['sort']);
 
 function sort(column) {
-    const direction =
-        props.orderBy.column === column
-            ? props.orderBy.direction === 'asc' ? 'desc' : 'asc'
-            : 'asc';
+    const direction = props.orderBy.column === column ? (props.orderBy.direction === 'asc' ? 'desc' : 'asc') : 'asc';
 
     props.orderBy.column = column;
     props.orderBy.direction = direction;

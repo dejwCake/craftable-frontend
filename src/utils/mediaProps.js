@@ -5,7 +5,7 @@ export const mediaCollectionDefaults = {
     maxFileSizeInMb: 2,
     acceptedFileTypes: undefined,
     thumbnailWidth: 200,
-    uploadedMedia: []
+    uploadedMedia: [],
 };
 
 export const mediaCollectionProp = {

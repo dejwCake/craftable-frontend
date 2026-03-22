@@ -41,7 +41,7 @@ function toggle() {
         (error) => {
             emit('update:modelValue', props.modelValue);
             notifyError(error.response?.data?.message);
-        }
+        },
     );
 }
 </script>

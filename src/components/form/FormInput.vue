@@ -2,9 +2,16 @@
     <div class="mb-3 row align-items-center">
         <label :for="name" class="col-md-3 col-form-label text-md-end">{{ label }}</label>
         <div class="col-md-9 col-xl-8">
-            <input :type="type" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
-                   class="form-control" :class="{'is-invalid': error}"
-                   :id="name" :name="name" :placeholder="placeholder || label">
+            <input
+                :id="name"
+                :type="type"
+                :value="modelValue"
+                class="form-control"
+                :class="{ 'is-invalid': error }"
+                :name="name"
+                :placeholder="placeholder || label"
+                @input="$emit('update:modelValue', $event.target.value)"
+            />
             <div v-if="error" class="invalid-feedback form-text">{{ error }}</div>
         </div>
     </div>

@@ -3,23 +3,19 @@
         {{ formatDatetime(item.published_at, datetimeFormat) }}
     </span>
     <span v-if="item.published_at > now">
-        <small>{{ translations.will_be_published }}</small><br />
+        <small>{{ translations.will_be_published }}</small
+        ><br />
         {{ formatDatetime(item.published_at, datetimeFormat) }}
-        <span
-            class="cursor-pointer"
-            @click="openPublishLater()"
-            :title="translations.publish_later"
-            role="button"
-        >
+        <span class="cursor-pointer" :title="translations.publish_later" role="button" @click="openPublishLater()">
             <i class="fa fa-calendar"></i>
         </span>
     </span>
     <div v-if="!item.published_at">
         <span
             class="btn btn-sm btn-info text-white mb-1"
-            @click="openPublishLater()"
             :title="translations.publish_later"
             role="button"
+            @click="openPublishLater()"
         >
             <i class="fa fa-calendar"></i>&nbsp;&nbsp;{{ translations.publish_later }}
         </span>
@@ -52,7 +48,7 @@
     <div v-if="editing" class="publish-later-modal">
         <div class="d-flex justify-content-between align-items-center mb-2">
             <strong>{{ translations.publish_later }}</strong>
-            <button type="button" class="btn-close btn-close-sm" @click="editing = false" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-sm" aria-label="Close" @click="editing = false"></button>
         </div>
         <VueDatePicker
             v-model="publishDate"
@@ -67,8 +63,8 @@
         <div class="mt-2 text-end">
             <button
                 class="btn btn-sm btn-primary text-white"
-                @click="savePublishLater()"
                 :disabled="submitting || !publishDate"
+                @click="savePublishLater()"
             >
                 Save
             </button>
@@ -97,7 +93,7 @@ const dateFnsLocale = getDateFnsLocale();
 
 const props = defineProps({
     item: { type: Object, required: true },
-    url: {type: String, required: true},
+    url: { type: String, required: true },
     now: { type: String, required: true },
     datetimeFormat: { type: String, default: 'DD.MM.YYYY HH:mm' },
     translations: {
@@ -132,18 +128,21 @@ function savePublishLater() {
     if (!publishDate.value) return;
     submitting.value = true;
 
-    axios.post(props.url, { published_at: publishDate.value }).then(
-        (response) => {
-            emit('update:item', { ...props.item, published_at: response.data.object.published_at });
-            editing.value = false;
-            notifySuccess(response.data.message);
-        },
-        (error) => {
-            notifyError(error.response?.data?.message);
-        }
-    ).finally(() => {
-        submitting.value = false;
-    });
+    axios
+        .post(props.url, { published_at: publishDate.value })
+        .then(
+            (response) => {
+                emit('update:item', { ...props.item, published_at: response.data.object.published_at });
+                editing.value = false;
+                notifySuccess(response.data.message);
+            },
+            (error) => {
+                notifyError(error.response?.data?.message);
+            },
+        )
+        .finally(() => {
+            submitting.value = false;
+        });
 }
 
 function publishNow() {
@@ -187,35 +186,41 @@ function onCancelConfirm() {
 
 function doPublishNow() {
     submitting.value = true;
-    axios.post(props.url, { publish_now: true }).then(
-        (response) => {
-            emit('update:item', { ...props.item, published_at: response.data.object.published_at });
-            notifySuccess(response.data.message);
-        },
-        (error) => {
-            notifyError(error.response?.data?.message);
-        }
-    ).finally(() => {
-        submitting.value = false;
-    });
+    axios
+        .post(props.url, { publish_now: true })
+        .then(
+            (response) => {
+                emit('update:item', { ...props.item, published_at: response.data.object.published_at });
+                notifySuccess(response.data.message);
+            },
+            (error) => {
+                notifyError(error.response?.data?.message);
+            },
+        )
+        .finally(() => {
+            submitting.value = false;
+        });
 }
 
 function doUnpublishNow() {
     submitting.value = true;
-    axios.post(props.url, { unpublish_now: true }).then(
-        (response) => {
-            emit('update:item', {
-                ...props.item,
-                published_at: response.data.object.published_at,
-                published_to: response.data.object.published_to,
-            });
-            notifySuccess(response.data.message);
-        },
-        (error) => {
-            notifyError(error.response?.data?.message);
-        }
-    ).finally(() => {
-        submitting.value = false;
-    });
+    axios
+        .post(props.url, { unpublish_now: true })
+        .then(
+            (response) => {
+                emit('update:item', {
+                    ...props.item,
+                    published_at: response.data.object.published_at,
+                    published_to: response.data.object.published_to,
+                });
+                notifySuccess(response.data.message);
+            },
+            (error) => {
+                notifyError(error.response?.data?.message);
+            },
+        )
+        .finally(() => {
+            submitting.value = false;
+        });
 }
 </script>

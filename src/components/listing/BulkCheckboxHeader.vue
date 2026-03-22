@@ -1,15 +1,13 @@
 <template>
     <input
-        class="form-check-input"
         id="enabled"
+        class="form-check-input"
         type="checkbox"
         :checked="isClickedAll"
         name="enabled_fake_element"
         @click="onToggleAll()"
     />
-    <label class="form-check-label" for="enabled">
-        #
-    </label>
+    <label class="form-check-label" for="enabled"> # </label>
 </template>
 
 <script setup>

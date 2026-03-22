@@ -1,31 +1,19 @@
 <template>
     <span class="align-middle fw-light text-dark">
         {{ translations.selected_items }} {{ selectedCount }}.
-        <a
-            href="javascript:void(0)"
-            class="text-primary"
-            @click="onCheckAll()"
-            v-if="selectedCount < totalCount"
-        >
+        <a v-if="selectedCount < totalCount" href="javascript:void(0)" class="text-primary" @click="onCheckAll()">
             <i v-if="loading" class="fa fa-spinner"></i>
             {{ translations.check_all_items }} {{ totalCount }}
         </a>
-        <span class="text-primary" v-if="selectedCount < totalCount"> | </span>
-        <a
-            href="javascript:void(0)"
-            class="text-primary"
-            @click="onUncheckAll()"
-        >
+        <span v-if="selectedCount < totalCount" class="text-primary"> | </span>
+        <a href="javascript:void(0)" class="text-primary" @click="onUncheckAll()">
             {{ translations.uncheck_all_items }}
         </a>
     </span>
 
     <span class="float-end pe-2">
         <slot>
-            <button
-                class="btn btn-sm btn-danger px-4"
-                @click="onBulkDelete()"
-            >
+            <button class="btn btn-sm btn-danger px-4" @click="onBulkDelete()">
                 {{ translations.delete_btn }}
             </button>
         </slot>

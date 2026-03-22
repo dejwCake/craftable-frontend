@@ -1,75 +1,79 @@
 table th a:not([href]) {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .table-hover tbody tr:hover {
-  background-color: #edf3fe;
+    background-color: #edf3fe;
 }
 
 .table-listing thead th {
-  border: none;
+    border: none;
 }
 
 .table-listing thead tr {
-  border-bottom: 1px solid #f0f2f5;
-  border-top: 1px solid #dee3e7;
+    border-bottom: 1px solid #f0f2f5;
+    border-top: 1px solid #dee3e7;
 }
 
 .table-listing td {
-  border-top: 1px solid #f0f2f5;
-  vertical-align: middle;
+    border-top: 1px solid #f0f2f5;
+    vertical-align: middle;
 }
 
 .table-listing .d-flex .btn {
-  @media (max-width: 1319px) {
-    margin-bottom: 10px;
-  }
+    @media (width <= 1319px) {
+        margin-bottom: 10px;
+    }
 }
 
 .table-listing td:last-of-type {
-  min-width: 95px;
-  text-align: end;
-  white-space: nowrap;
+    min-width: 95px;
+    text-align: end;
+    white-space: nowrap;
 }
 
 td > .switch {
-  top: 4px;
+    top: 4px;
 }
 
 .table-listing td .form-switch.form-switch-inline {
-  display: flex;
-  justify-content: center;
-  padding-left: 0;
-  min-width: 2.5em;
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    min-width: 2.5em;
 }
 
 .table-listing td .form-switch.form-switch-inline .form-check-input {
-  margin-left: 0;
-  float: none;
+    margin-left: 0;
+    float: none;
 }
 
-@media (max-width: 991px) {
-  .table-listing {
-    th,
-    td {
-      display: none;
+@media (width <= 991px) {
+    .table-listing {
+        th,
+        td {
+            display: none;
+        }
+
+        tr {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        th:last-of-type,
+        td:last-of-type,
+        th:nth-of-type(2),
+        td:nth-of-type(2) {
+            display: flex;
+        }
+
+        td:last-of-type {
+            padding-right: 0;
+        }
     }
-    tr {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-    }
-    th:last-of-type,
-    td:last-of-type,
-    th:nth-of-type(2),
+
     td:nth-of-type(2) {
-      display: flex;
+        overflow: hidden;
     }
-    td:last-of-type {
-      padding-right: 0;
-    }
-  }
-  td:nth-of-type(2) {
-    overflow: hidden;
-  }
 }

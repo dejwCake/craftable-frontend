@@ -1,60 +1,73 @@
 .btn {
     cursor: pointer;
+
     &-primary,
     &-info {
         background-color: $primary;
         border-color: $primary;
         color: white;
+
         &:hover {
             background-color: darken($primary, 10);
             border-color: darken($primary, 10);
             color: white;
         }
+
         &:active,
         &:focus {
             color: white;
         }
     }
+
     &-danger {
         background-color: $danger;
         border-color: $danger;
         color: white;
+
         &:hover {
             background-color: darken($danger, 10);
             border-color: darken($danger, 10);
             color: white;
         }
+
         &:active,
         &:focus {
             color: white;
         }
     }
+
     &-success {
         background-color: $success;
         border-color: $success;
         color: white;
+
         &:hover {
             background-color: darken($success, 10);
             border-color: darken($success, 10);
             color: white;
         }
+
         &:active,
         &:focus {
             color: white;
         }
     }
+
     &-warning {
         color: white;
+
         &:hover,
         &:active,
         &:focus {
             color: white;
         }
     }
+
     &-secondary {
         color: #263238;
         background-color: #fff;
         border-color: #ccc;
+
         &:hover,
         &:active,
         &:focus {
@@ -63,13 +76,15 @@
             border-color: #ccc !important;
         }
     }
+
     &-dialog {
         display: flex;
         height: 100%;
         justify-content: center;
         align-items: center;
     }
-    &:not([class*="btn-outline-"]) {
+
+    &:not([class*='btn-outline-']) {
         &:hover,
         &:active,
         &:focus,
@@ -77,21 +92,25 @@
             color: white;
         }
     }
+
     &:disabled {
         color: white;
     }
+
     &:hover,
     &:active,
     &:focus,
     &:visited {
         box-shadow: none;
     }
+
     &:hover {
         .fa-trash-can {
             animation: swing 1s;
             transform-origin: top center;
         }
     }
+
     &:not(.btn-outline-secondary) {
         i.fa,
         i.fa-solid,

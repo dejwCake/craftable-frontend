@@ -1,19 +1,9 @@
 <template>
-    <button
-        type="button"
-        class="btn btn-sm btn-danger"
-        :title="translations.delete_btn"
-        @click="showConfirm = true"
-    >
+    <button type="button" class="btn btn-sm btn-danger" :title="translations.delete_btn" @click="showConfirm = true">
         <i class="fa fa-trash"></i>
     </button>
 
-    <ConfirmModal
-        :show="showConfirm"
-        :translations="translations"
-        @confirm="onConfirm"
-        @cancel="showConfirm = false"
-    />
+    <ConfirmModal :show="showConfirm" :translations="translations" @confirm="onConfirm" @cancel="showConfirm = false" />
 </template>
 
 <script setup>
@@ -50,7 +40,7 @@ function onConfirm() {
         },
         (error) => {
             notifyError(error.response?.data?.message);
-        }
+        },
     );
 }
 </script>

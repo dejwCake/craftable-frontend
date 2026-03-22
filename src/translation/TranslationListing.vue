@@ -1,7 +1,6 @@
 <template>
     <div class="row">
         <div class="col">
-
             <TranslationEditModal
                 :show="showEditModal"
                 :item="editItem"
@@ -34,22 +33,33 @@
             <div class="card">
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> {{ translations.title }}
-                    <a class="btn btn-primary btn-sm float-end ms-2" href="#" @click.prevent="showImportModal = true" role="button">
+                    <a
+                        class="btn btn-primary btn-sm float-end ms-2"
+                        href="#"
+                        role="button"
+                        @click.prevent="showImportModal = true"
+                    >
                         <i class="fa fa-upload"></i>&nbsp; {{ translations.import_btn }}
                     </a>
-                    <a class="btn btn-primary btn-sm float-end ms-2" href="#" @click.prevent="showExportModal = true" role="button">
+                    <a
+                        class="btn btn-primary btn-sm float-end ms-2"
+                        href="#"
+                        role="button"
+                        @click.prevent="showExportModal = true"
+                    >
                         <i class="fa fa-file-excel"></i>&nbsp; {{ translations.export_btn }}
                     </a>
-                    <a class="btn btn-primary btn-sm float-end" href="#" @click.prevent="rescan" role="button">
-                        <i class="fa" :class="scanning ? 'fa-spinner fa-spin' : 'fa-eye'"></i>&nbsp; {{ translations.rescan_btn }}
+                    <a class="btn btn-primary btn-sm float-end" href="#" role="button" @click.prevent="rescan">
+                        <i class="fa" :class="scanning ? 'fa-spinner fa-spin' : 'fa-eye'"></i>&nbsp;
+                        {{ translations.rescan_btn }}
                     </a>
                 </div>
-                <div class="card-body" ref="cardBody">
+                <div ref="cardBody" class="card-body">
                     <div class="row justify-content-md-between mb-3">
                         <div class="col col-lg-7 col-xl-5 mb-3">
                             <Search
                                 v-model:search="search"
-                                :filterFn="filter"
+                                :filter-fn="filter"
                                 :translations="{
                                     search_placeholder: translations.search_placeholder,
                                     search_btn: translations.search_btn,
@@ -58,13 +68,13 @@
                                 <template #prepend>
                                     <Multiselect
                                         :model-value="filters.group"
-                                        @update:model-value="onGroupSelect"
                                         :options="groups"
                                         :placeholder="translations.all_groups"
                                         :allow-empty="true"
                                         :show-labels="false"
                                         open-direction="bottom"
                                         class="multiselect--input-group-prepend"
+                                        @update:model-value="onGroupSelect"
                                     />
                                 </template>
                             </Search>
@@ -78,10 +88,22 @@
                         <table class="table table-hover table-listing">
                             <thead>
                                 <tr>
-                                    <Sortable :column="'group'" :orderBy="orderBy" :callback="loadData">{{ translations.group }}</Sortable>
-                                    <Sortable :column="'key'" :orderBy="orderBy" :callback="loadData">{{ translations.default }}</Sortable>
-                                    <Sortable :column="'text'" :orderBy="orderBy" :callback="loadData">{{ userLocale.toUpperCase() }}</Sortable>
-                                    <Sortable v-if="isColumnVisible(4)" :column="'created_at'" :orderBy="orderBy" :callback="loadData">{{ translations.created_at_label }}</Sortable>
+                                    <Sortable :column="'group'" :order-by="orderBy" :callback="loadData">{{
+                                        translations.group
+                                    }}</Sortable>
+                                    <Sortable :column="'key'" :order-by="orderBy" :callback="loadData">{{
+                                        translations.default
+                                    }}</Sortable>
+                                    <Sortable :column="'text'" :order-by="orderBy" :callback="loadData">{{
+                                        userLocale.toUpperCase()
+                                    }}</Sortable>
+                                    <Sortable
+                                        v-if="isColumnVisible(4)"
+                                        :column="'created_at'"
+                                        :order-by="orderBy"
+                                        :callback="loadData"
+                                        >{{ translations.created_at_label }}</Sortable
+                                    >
                                     <th></th>
                                 </tr>
                             </thead>
@@ -92,9 +114,13 @@
                                     <td>{{ item.text?.[userLocale] }}</td>
                                     <td v-if="isColumnVisible(4)">{{ formatDate(item.created_at) }}</td>
                                     <td>
-                                        <a class="btn btn-sm btn-info" href="#"
+                                        <a
+                                            class="btn btn-sm btn-info"
+                                            href="#"
+                                            :title="translations.edit_btn"
+                                            role="button"
                                             @click.prevent="openEditModal(item)"
-                                            :title="translations.edit_btn" role="button">
+                                        >
                                             <i class="fa fa-edit"></i>
                                         </a>
                                     </td>
@@ -114,17 +140,17 @@
                         }"
                     />
 
-                    <div class="no-items-found" v-if="!collection?.length">
+                    <div v-if="!collection?.length" class="no-items-found">
                         <i class="fa fa-magnifying-glass"></i>
                         <h3>{{ translations.no_items }}</h3>
                         <p>{{ translations.try_changing_items }}</p>
-                        <a class="btn btn-primary" href="#" @click.prevent="rescan" role="button">
-                            <i class="fa" :class="scanning ? 'fa-spinner fa-spin' : 'fa-eye'"></i>&nbsp; {{ translations.rescan_btn }}
+                        <a class="btn btn-primary" href="#" role="button" @click.prevent="rescan">
+                            <i class="fa" :class="scanning ? 'fa-spinner fa-spin' : 'fa-eye'"></i>&nbsp;
+                            {{ translations.rescan_btn }}
                         </a>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </template>
@@ -150,9 +176,9 @@ const props = defineProps({
     url: { type: String, required: true },
     data: { type: Object, default: null },
     timezone: { type: String, default: 'UTC' },
-    locales: { type: [Object, Array], default: () => ([]) },
+    locales: { type: [Object, Array], default: () => [] },
     userLocale: { type: String, default: 'en' },
-    groups: { type: Array, default: () => ([]) },
+    groups: { type: Array, default: () => [] },
     translations: { type: Object, default: () => ({}) },
     stepCount: { type: Number, default: 3 },
 });
@@ -160,14 +186,9 @@ const props = defineProps({
 const cardBody = ref(null);
 const { isColumnVisible } = useResponsiveColumns(cardBody);
 
-const {
-    pagination, orderBy, filters, search, collection,
-    loadData, filter,
-} = useBaseListing(props);
+const { pagination, orderBy, filters, search, collection, loadData, filter } = useBaseListing(props);
 
-const localeList = computed(() =>
-    Array.isArray(props.locales) ? props.locales : Object.values(props.locales)
-);
+const localeList = computed(() => (Array.isArray(props.locales) ? props.locales : Object.values(props.locales)));
 
 // Modal state
 const showEditModal = ref(false);
@@ -194,8 +215,14 @@ const scanning = ref(false);
 function rescan() {
     scanning.value = true;
     axios.post(props.url + '/rescan').then(
-        () => { scanning.value = false; loadData(true); },
-        () => { scanning.value = false; notifyError(); }
+        () => {
+            scanning.value = false;
+            loadData(true);
+        },
+        () => {
+            scanning.value = false;
+            notifyError();
+        },
     );
 }
 </script>

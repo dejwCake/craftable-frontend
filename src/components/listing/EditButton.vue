@@ -1,10 +1,5 @@
 <template>
-    <a
-        class="btn btn-sm btn-spinner btn-info"
-        :href="url"
-        :title="translations.edit_btn"
-        role="button"
-    >
+    <a class="btn btn-sm btn-spinner btn-info" :href="url" :title="translations.edit_btn" role="button">
         <i class="fa fa-edit"></i>
     </a>
 </template>

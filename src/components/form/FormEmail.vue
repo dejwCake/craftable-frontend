@@ -1,5 +1,5 @@
 <template>
-    <FormInput v-bind="$props" type="email" @update:modelValue="$emit('update:modelValue', $event)" />
+    <FormInput v-bind="$props" type="email" @update:model-value="$emit('update:modelValue', $event)" />
 </template>
 
 <script setup>

@@ -1,13 +1,7 @@
 <template>
     <Teleport to="body">
         <div v-if="show" class="modal-backdrop fade show" @click="$emit('cancel')"></div>
-        <div
-            v-if="show"
-            class="modal fade show d-block"
-            tabindex="-1"
-            role="dialog"
-            @click.self="$emit('cancel')"
-        >
+        <div v-if="show" class="modal fade show d-block" tabindex="-1" role="dialog" @click.self="$emit('cancel')">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

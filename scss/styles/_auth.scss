@@ -1,72 +1,88 @@
 // Auth specific styles
 .auth {
     min-height: 100vh;
+
     .auth-header {
-        border-bottom: 1px solid #F2F5F9;
+        border-bottom: 1px solid #f2f5f9;
         padding: 30px;
     }
+
     .auth-body {
         padding: 30px;
     }
+
     .auth-title {
         text-transform: uppercase;
-        color: #333D5D;
+        color: #333d5d;
         font-size: 25px;
         font-weight: bold;
         margin-bottom: 15px;
     }
+
     .auth-subtitle {
         text-transform: uppercase;
         font-weight: bold;
-        color: #B9BBC6;
+        color: #b9bbc6;
         font-size: 12px;
         letter-spacing: 0;
         margin-bottom: 0;
     }
+
     .card-body {
         padding: 0;
     }
+
     .mb-3 {
         margin-bottom: 1.7rem !important;
+
         &:last-of-type {
             margin-bottom: 0 !important;
         }
     }
+
     label {
-        color: #9FA6B9;
+        color: #9fa6b9;
         text-transform: uppercase;
         font-weight: bold;
     }
+
     .form-control {
         padding: 1.3rem 0.75rem;
         border-color: $mutedText;
         height: 46px;
     }
+
     .input-group .form-control {
         border: 1px solid $mutedText;
         border-bottom-left-radius: 0;
         border-top-left-radius: 0;
         border-left: none;
     }
+
     .is-invalid ~ .form-control,
     .input-group:has(.is-invalid) .form-control {
         border-color: $danger;
     }
+
     .input-group-text {
         border-color: $mutedText;
         border-right: 0;
     }
+
     .invalid-feedback {
         color: $danger;
         font-weight: 500;
     }
+
     .btn.w-100 {
         padding: 1rem;
         font-size: 16px;
     }
+
     .auth-ghost-link {
-        color: #9FA6B9;
+        color: #9fa6b9;
     }
+
     .alert {
         margin-bottom: 1.4rem;
     }

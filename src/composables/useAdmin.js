@@ -2,38 +2,38 @@ import { ref, onMounted } from 'vue';
 const axios = window.axios;
 
 export function useAdmin() {
-  const loading = ref(false);
+    const loading = ref(false);
 
-  function setLoading(value) {
-    loading.value = !!value;
-  }
+    function setLoading(value) {
+        loading.value = !!value;
+    }
 
-  onMounted(() => {
-    axios.interceptors.request.use(
-      (config) => {
-        setLoading(true);
-        return config;
-      },
-      (error) => {
-        setLoading(false);
-        return Promise.reject(error);
-      }
-    );
+    onMounted(() => {
+        axios.interceptors.request.use(
+            (config) => {
+                setLoading(true);
+                return config;
+            },
+            (error) => {
+                setLoading(false);
+                return Promise.reject(error);
+            },
+        );
 
-    axios.interceptors.response.use(
-      (response) => {
-        setLoading(false);
-        return response;
-      },
-      (error) => {
-        setLoading(false);
-        return Promise.reject(error);
-      }
-    );
-  });
+        axios.interceptors.response.use(
+            (response) => {
+                setLoading(false);
+                return response;
+            },
+            (error) => {
+                setLoading(false);
+                return Promise.reject(error);
+            },
+        );
+    });
 
-  return {
-    loading,
-    setLoading,
-  };
+    return {
+        loading,
+        setLoading,
+    };
 }

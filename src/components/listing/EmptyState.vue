@@ -1,14 +1,9 @@
 <template>
-    <div class="no-items-found" v-if="show">
+    <div v-if="show" class="no-items-found">
         <i class="fa fa-magnifying-glass"></i>
         <h3>{{ translations.no_items }}</h3>
         <p>{{ translations.try_changing_items }}</p>
-        <a
-            v-if="createUrl"
-            class="btn btn-primary btn-spinner"
-            :href="createUrl"
-            role="button"
-        >
+        <a v-if="createUrl" class="btn btn-primary btn-spinner" :href="createUrl" role="button">
             <i class="fa fa-plus"></i>&nbsp; {{ translations.create_btn }}
         </a>
     </div>

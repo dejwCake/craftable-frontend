@@ -2,15 +2,23 @@
     <div class="mb-3 row align-items-center">
         <label :for="name + '_' + locales[0]" class="col-md-3 col-form-label text-md-end">{{ label }}</label>
         <div class="col-md-9 col-xl-8">
-            <div :class="{'d-flex gap-2': isFormLocalized}">
-                <div v-for="locale in locales" :key="locale" v-show="shouldShowLangGroup(locale)"
-                     :class="{'flex-fill': isFormLocalized}">
-                    <input type="text"
+            <div :class="{ 'd-flex gap-2': isFormLocalized }">
+                <div
+                    v-for="locale in locales"
+                    v-show="shouldShowLangGroup(locale)"
+                    :key="locale"
+                    :class="{ 'flex-fill': isFormLocalized }"
+                >
+                    <input
+                        :id="name + '_' + locale"
+                        type="text"
                         :value="modelValue[locale]"
+                        class="form-control"
+                        :class="{ 'is-invalid': errors[name + '_' + locale] }"
+                        :name="name + '_' + locale"
+                        :placeholder="isFormLocalized ? locale.toUpperCase() : label"
                         @input="onInput(locale, $event.target.value)"
-                        class="form-control" :class="{'is-invalid': errors[name + '_' + locale]}"
-                        :id="name + '_' + locale" :name="name + '_' + locale"
-                        :placeholder="isFormLocalized ? locale.toUpperCase() : label">
+                    />
                     <div v-if="errors[name + '_' + locale]" class="invalid-feedback d-block form-text">
                         {{ errors[name + '_' + locale] }}
                     </div>
