@@ -44,7 +44,7 @@
                         <i class="fa" :class="scanning ? 'fa-spinner fa-spin' : 'fa-eye'"></i>&nbsp; {{ translations.rescan_btn }}
                     </a>
                 </div>
-                <div class="card-body">
+                <div class="card-body" ref="cardBody">
                     <div class="row justify-content-md-between mb-3">
                         <div class="col col-lg-7 col-xl-5 mb-3">
                             <Search
@@ -74,32 +74,34 @@
                         </div>
                     </div>
 
-                    <table class="table table-hover table-listing">
-                        <thead>
-                            <tr>
-                                <Sortable :column="'group'" :orderBy="orderBy" :callback="loadData">{{ translations.group }}</Sortable>
-                                <Sortable :column="'key'" :orderBy="orderBy" :callback="loadData">{{ translations.default }}</Sortable>
-                                <Sortable :column="'text'" :orderBy="orderBy" :callback="loadData">{{ userLocale.toUpperCase() }}</Sortable>
-                                <Sortable :column="'created_at'" :orderBy="orderBy" :callback="loadData">{{ translations.created_at_label }}</Sortable>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="item in collection" :key="item.id">
-                                <td>{{ item.group }}</td>
-                                <td>{{ item.key }}</td>
-                                <td>{{ item.text?.[userLocale] }}</td>
-                                <td>{{ formatDate(item.created_at) }}</td>
-                                <td>
-                                    <a class="btn btn-sm btn-info" href="#"
-                                        @click.prevent="openEditModal(item)"
-                                        :title="translations.edit_btn" role="button">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-listing">
+                            <thead>
+                                <tr>
+                                    <Sortable :column="'group'" :orderBy="orderBy" :callback="loadData">{{ translations.group }}</Sortable>
+                                    <Sortable :column="'key'" :orderBy="orderBy" :callback="loadData">{{ translations.default }}</Sortable>
+                                    <Sortable :column="'text'" :orderBy="orderBy" :callback="loadData">{{ userLocale.toUpperCase() }}</Sortable>
+                                    <Sortable v-if="isColumnVisible(4)" :column="'created_at'" :orderBy="orderBy" :callback="loadData">{{ translations.created_at_label }}</Sortable>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in collection" :key="item.id">
+                                    <td>{{ item.group }}</td>
+                                    <td>{{ item.key }}</td>
+                                    <td>{{ item.text?.[userLocale] }}</td>
+                                    <td v-if="isColumnVisible(4)">{{ formatDate(item.created_at) }}</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-info" href="#"
+                                            @click.prevent="openEditModal(item)"
+                                            :title="translations.edit_btn" role="button">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                     <Pagination
                         :pagination="pagination.state"
@@ -130,6 +132,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useBaseListing } from '../composables/useBaseListing.js';
+import { useResponsiveColumns } from '../composables/useResponsiveColumns.js';
 import { notifyError } from '../utils/notify.js';
 import { formatDate } from '../utils/dateFormatters.js';
 import Multiselect from 'vue-multiselect';
@@ -153,6 +156,9 @@ const props = defineProps({
     translations: { type: Object, default: () => ({}) },
     stepCount: { type: Number, default: 3 },
 });
+
+const cardBody = ref(null);
+const { isColumnVisible } = useResponsiveColumns(cardBody);
 
 const {
     pagination, orderBy, filters, search, collection,
