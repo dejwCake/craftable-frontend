@@ -14,7 +14,6 @@ const externalPackages = [
   '@tiptap/extension-table-header',
   '@tiptap/extension-link',
   'vue3-popper',
-  'vue-final-modal',
   '@kyvg/vue3-notification',
   'vue3-cookies',
   '@vuepic/vue-datepicker',

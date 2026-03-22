@@ -5,12 +5,13 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const componentsDir = resolve(__dirname, '../src/components');
+const srcDir = resolve(__dirname, '../src');
+const componentsDir = resolve(srcDir, 'components');
 
 const groups = {
     auth: {
-        src: resolve(componentsDir, 'auth'),
-        dest: 'resources/js/admin/components/auth',
+        src: resolve(srcDir, 'auth'),
+        dest: 'resources/js/admin/auth',
     },
     form: {
         src: resolve(componentsDir, 'form'),

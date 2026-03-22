@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-body">
-            <form class="form-horizontal" role="form" method="POST" :action="action" novalidate @submit.prevent="submit">
+            <form role="form" method="POST" :action="action" novalidate @submit.prevent="submit">
                 <div class="auth-header">
                     <h1 class="auth-title">{{ translations.title }}</h1>
                     <p class="auth-subtitle">{{ translations.signInText }}</p>

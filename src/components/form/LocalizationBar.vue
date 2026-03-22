@@ -1,6 +1,6 @@
 <template>
     <div class="row mb-2 localization-bar" v-if="locales.length > 0">
-        <div :class="{'offset-md-3 col-md-9 col-xl-8 text-start': !isFormLocalized, 'offset-md-3 col-md-9 col-xl-8 text-start': isFormLocalized, 'd-none': onSmallScreen }">
+        <div class="offset-md-3 col-md-9 col-xl-8 text-start" :class="{ 'd-none': onSmallScreen }">
             <small v-if="!isFormLocalized">{{ currentlyEditingText }}<span v-if="otherLocales.length > 1"> {{ moreCanBeManagedText }}</span> | <a href="#" @click.prevent="$emit('show-localization')">{{ translations.manage_translations }}</a></small>
             <i class="localization-error" v-if="!isFormLocalized && showLocalizedValidationError"></i>
 

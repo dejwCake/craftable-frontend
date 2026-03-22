@@ -6,7 +6,7 @@
             <div class="input-group flex-nowrap">
                 <span class="input-group-text"><i class="fa" :class="icon"></i></span>
                 <VueDatePicker :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)"
-                    v-bind="config" class="flatpickr datepicker-input" :class="{'is-invalid': error}"
+                    v-bind="config" class="datepicker-input" :class="{'is-invalid': error}"
                     :id="name" :name="name" :placeholder="placeholder || label"
                     :time-config="{
                         enableTimePicker: config.enableTimePicker ?? true,

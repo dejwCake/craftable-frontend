@@ -4,8 +4,8 @@
       <span
         class="fa"
         :class="{
-          'fa-sort-amount-asc': orderBy.column === column && orderBy.direction === 'asc',
-          'fa-sort-amount-desc': orderBy.column === column && orderBy.direction === 'desc',
+          'fa-arrow-down-wide-short': orderBy.column === column && orderBy.direction === 'asc',
+          'fa-arrow-down-short-wide': orderBy.column === column && orderBy.direction === 'desc',
         }"
       ></span>
       <slot></slot>

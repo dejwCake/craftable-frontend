@@ -1,5 +1,4 @@
 // Datepicker compatibility
-.form-control.flatpickr,
 .dp__input {
   background-color: white;
 }
@@ -309,7 +308,6 @@ small select {
   select,
   textarea,
   input,
-  .ql-editor,
   .input-group button {
     font-size: 16px !important;
   }
@@ -317,9 +315,6 @@ small select {
 
 
 @media (min-width: 576px) {
-  .control-label {
-    margin-top: 7px;
-  }
   .language-mobile {
     select {
       margin: 0;
@@ -328,8 +323,3 @@ small select {
   }
 }
 
-@media (max-width: 500px) {
-  .input-group-btn--search-filter {
-    display: none;
-  }
-}

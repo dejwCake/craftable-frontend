@@ -1,20 +1,3 @@
-// vue-final-modal overrides
-.vfm {
-    z-index: 9999 !important;
-}
-
-.vfm__overlay {
-    background-color: rgba(0, 0, 0, .4) !important;
-}
-
-.vfm__content {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-}
-
-.modal--translation .vfm__content {
-    padding: 20px 30px 30px 30px;
-}
-
 .modal-title {
     text-align: center;
 }
@@ -22,8 +5,4 @@
 .modal-submit {
     margin-top: 30px;
     padding: 10px 0;
-}
-
-.loading .vfm {
-    display: none;
 }
