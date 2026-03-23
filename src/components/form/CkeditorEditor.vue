@@ -202,5 +202,4 @@ const editorConfig = computed(() => {
     if (!props.config) return defaultConfig;
     return deepMerge(defaultConfig, toRaw(props.config));
 });
-
 </script>
