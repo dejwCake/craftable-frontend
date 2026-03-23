@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import pluginVue from 'eslint-plugin-vue';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import globals from 'globals';
 
 export default [
   {
@@ -12,27 +13,13 @@ export default [
   {
     languageOptions: {
       globals: {
-        window: 'readonly',
-        document: 'readonly',
-        console: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-        ResizeObserver: 'readonly',
-        URLSearchParams: 'readonly',
-        FormData: 'readonly',
-        HTMLElement: 'readonly',
-        DOMParser: 'readonly',
-        URL: 'readonly',
-        process: 'readonly',
+        ...globals.browser,
       },
     },
     rules: {
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
       'vue/multi-word-component-names': 'off',
       'vue/require-default-prop': 'off',
-      'vue/no-mutating-props': 'off',
     },
   },
 ];

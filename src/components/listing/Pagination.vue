@@ -66,7 +66,6 @@ import { useCookies } from 'vue3-cookies';
 
 const props = defineProps({
     pagination: { type: Object, required: true },
-    callback: { type: Function, required: true },
     options: { type: Object, default: () => ({}) },
     size: { type: String, default: '' },
     translations: {
@@ -79,7 +78,7 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(['page-change']);
+const emit = defineEmits(['page-change', 'per-page-change']);
 const { cookies } = useCookies();
 
 const overview = computed(() => {
@@ -137,7 +136,7 @@ watch(
     (newVal, oldVal) => {
         if (+newVal !== +oldVal) {
             cookies.set('per_page', newVal);
-            props.callback();
+            emit('per-page-change');
         }
     },
 );
@@ -154,9 +153,6 @@ function changePage(page) {
     if (props.pagination.current_page === page) {
         return;
     }
-
-    props.pagination.current_page = page;
     emit('page-change', page);
-    props.callback();
 }
 </script>

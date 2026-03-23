@@ -88,20 +88,20 @@
                         <table class="table table-hover table-listing">
                             <thead>
                                 <tr>
-                                    <Sortable :column="'group'" :order-by="orderBy" :callback="loadData">{{
+                                    <Sortable :column="'group'" :order-by="orderBy" @sort="onSort">{{
                                         translations.group
                                     }}</Sortable>
-                                    <Sortable :column="'key'" :order-by="orderBy" :callback="loadData">{{
+                                    <Sortable :column="'key'" :order-by="orderBy" @sort="onSort">{{
                                         translations.default
                                     }}</Sortable>
-                                    <Sortable :column="'text'" :order-by="orderBy" :callback="loadData">{{
+                                    <Sortable :column="'text'" :order-by="orderBy" @sort="onSort">{{
                                         userLocale.toUpperCase()
                                     }}</Sortable>
                                     <Sortable
                                         v-if="isColumnVisible(4)"
                                         :column="'created_at'"
                                         :order-by="orderBy"
-                                        :callback="loadData"
+                                        @sort="onSort"
                                         >{{ translations.created_at_label }}</Sortable
                                     >
                                     <th></th>
@@ -131,13 +131,14 @@
 
                     <Pagination
                         :pagination="pagination.state"
-                        :callback="loadData"
                         :options="pagination.options"
                         :translations="{
                             previous: translations.pagination_previous,
                             next: translations.pagination_next,
                             overview: translations.pagination_overview,
                         }"
+                        @page-change="onPageChange"
+                        @per-page-change="onPerPageChange"
                     />
 
                     <div v-if="!collection?.length" class="no-items-found">
@@ -186,7 +187,8 @@ const props = defineProps({
 const cardBody = ref(null);
 const { isColumnVisible } = useResponsiveColumns(cardBody);
 
-const { pagination, orderBy, filters, search, collection, loadData, filter } = useBaseListing(props);
+const { pagination, orderBy, filters, search, collection, loadData, filter, onSort, onPageChange, onPerPageChange } =
+    useBaseListing(props);
 
 const localeList = computed(() => (Array.isArray(props.locales) ? props.locales : Object.values(props.locales)));
 

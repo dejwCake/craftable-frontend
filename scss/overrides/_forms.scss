@@ -52,6 +52,7 @@ label {
 
 .form-check-label {
     color: #3e515b;
+    margin-bottom: 0.5rem;
 }
 
 .input-icon {
@@ -79,10 +80,6 @@ label {
 
 .form-check {
     padding-inline-start: 0;
-}
-
-.form-check-label {
-    margin-bottom: 0.5rem;
 }
 
 // Vue Datepicker (@vuepic/vue-datepicker) theme

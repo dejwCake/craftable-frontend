@@ -258,10 +258,17 @@ export function useBaseListing(props) {
     function onSort({ column, direction }) {
         orderBy.column = column;
         orderBy.direction = direction;
+        loadData();
     }
 
     function onPageChange(page) {
         pagination.state.current_page = page;
+        loadData();
+    }
+
+    function onPerPageChange() {
+        pagination.state.current_page = 1;
+        loadData(true);
     }
 
     function onUpdateItem(updatedItem) {
@@ -300,6 +307,7 @@ export function useBaseListing(props) {
         getAction,
         onSort,
         onPageChange,
+        onPerPageChange,
         onUpdateItem,
 
         // Date formatters (convenience re-exports)

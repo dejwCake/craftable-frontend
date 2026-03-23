@@ -69,6 +69,7 @@
     "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-vue": "^10.8.0",
+    "globals": "^17.4.0",
     "prettier": "^3.8.1",
     "sass": "^1.85",
     "stylelint": "^16.26.1",

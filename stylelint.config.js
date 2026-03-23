@@ -7,7 +7,5 @@ export default {
     'scss/dollar-variable-pattern': null,
     'scss/no-global-function-names': null,
     'number-max-precision': null,
-    'no-duplicate-selectors': null,
-    'declaration-block-no-duplicate-properties': null,
   },
 };
