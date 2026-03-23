@@ -1,0 +1,17 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FormTextarea > renders with default props 1`] = `
+"<div class="mb-3 row align-items-center"><label for="bio" class="col-md-3 col-form-label text-md-end">Bio</label>
+  <div class="col-md-9 col-xl-8"><textarea id="bio" class="form-control" name="bio" placeholder="Bio" rows="3" value=""></textarea>
+    <!--v-if-->
+  </div>
+</div>"
+`;
+
+exports[`FormTextarea > renders with error 1`] = `
+"<div class="mb-3 row align-items-center"><label for="bio" class="col-md-3 col-form-label text-md-end">Bio</label>
+  <div class="col-md-9 col-xl-8"><textarea id="bio" class="form-control is-invalid" name="bio" placeholder="Bio" rows="3" value=""></textarea>
+    <div class="invalid-feedback form-text">Too long</div>
+  </div>
+</div>"
+`;

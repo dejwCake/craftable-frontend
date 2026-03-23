@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FormSelect > renders with error 1`] = `
+"<div class="mb-3 row align-items-center"><label for="role" class="col-md-3 col-form-label text-md-end">Role</label>
+  <div class="col-md-9 col-xl-8">
+    <div class="multiselect-stub is-invalid"></div>
+    <div class="invalid-feedback d-block form-text">Selection required</div>
+  </div>
+</div>"
+`;
+
+exports[`FormSelect > renders with options 1`] = `
+"<div class="mb-3 row align-items-center"><label for="role" class="col-md-3 col-form-label text-md-end">Role</label>
+  <div class="col-md-9 col-xl-8">
+    <div class="multiselect-stub"></div>
+    <!--v-if-->
+  </div>
+</div>"
+`;

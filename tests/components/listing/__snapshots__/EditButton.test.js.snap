@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`EditButton > renders with custom translations 1`] = `"<a class="btn btn-sm btn-spinner btn-info" href="/admin/posts/1/edit" title="Upravit" role="button"><i class="fa fa-edit"></i></a>"`;
+
+exports[`EditButton > renders with url 1`] = `"<a class="btn btn-sm btn-spinner btn-info" href="/admin/posts/1/edit" title="Edit" role="button"><i class="fa fa-edit"></i></a>"`;

@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`LocalizationBar > renders localized state with locale selector 1`] = `
+"<div data-v-e9cf0d49="" class="row mb-2 localization-bar">
+  <div data-v-e9cf0d49="" class="offset-md-3 col-md-9 col-xl-8 text-start">
+    <!--v-if-->
+    <!--v-if-->
+    <div data-v-e9cf0d49="" class="d-flex align-items-center gap-2"><small data-v-e9cf0d49="" class="text-nowrap">Choose translation:</small>
+      <div data-v-e9cf0d49="" class="multiselect-stub locale-selector"></div>
+      <!--v-if--><small data-v-e9cf0d49=""><a data-v-e9cf0d49="" href="#">Hide</a></small>
+    </div>
+  </div>
+  <!--v-if-->
+</div>"
+`;
+
+exports[`LocalizationBar > renders non-localized state 1`] = `
+"<div data-v-e9cf0d49="" class="row mb-2 localization-bar">
+  <div data-v-e9cf0d49="" class="offset-md-3 col-md-9 col-xl-8 text-start"><small data-v-e9cf0d49="">Editing EN version<span data-v-e9cf0d49="">(2 more can be managed)</span> | <a data-v-e9cf0d49="" href="#">Manage translations</a></small>
+    <!--v-if-->
+    <!--v-if-->
+  </div>
+  <!--v-if-->
+</div>"
+`;

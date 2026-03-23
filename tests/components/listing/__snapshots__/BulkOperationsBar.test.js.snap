@@ -1,0 +1,6 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`BulkOperationsBar > renders with selected count 1`] = `
+"<span class="align-middle fw-light text-dark">Selected items 3. <a href="javascript:void(0)" class="text-primary"><!--v-if--> Check all items 10</a><span class="text-primary"> | </span><a href="javascript:void(0)" class="text-primary">Uncheck all items</a></span>
+<span class="float-end pe-2"><button class="btn btn-sm btn-danger px-4">Delete</button></span>"
+`;

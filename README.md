@@ -46,6 +46,21 @@ docker compose run -it --rm node npm run lint:style
 docker compose run -it --rm node npm run lint:style:fix
 ```
 
+### Run tests
+```shell
+docker compose run -it --rm node npm test
+```
+
+### Run tests in watch mode
+```shell
+docker compose run -it --rm node npm run test:watch
+```
+
+### Run tests with coverage
+```shell
+docker compose run -it --rm node npm run test:coverage
+```
+
 ### Check Prettier formatting
 ```shell
 docker compose run -it --rm node npm run format:check

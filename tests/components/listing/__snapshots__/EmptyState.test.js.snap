@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`EmptyState > renders with create button 1`] = `
+"<div class="no-items-found"><i class="fa fa-magnifying-glass"></i>
+  <h3>Could not find any items</h3>
+  <p>Try changing the filters or add a new one</p><a class="btn btn-primary btn-spinner" href="/admin/posts/create" role="button"><i class="fa fa-plus"></i>&nbsp; New</a>
+</div>"
+`;
+
+exports[`EmptyState > renders with default props 1`] = `
+"<div class="no-items-found"><i class="fa fa-magnifying-glass"></i>
+  <h3>Could not find any items</h3>
+  <p>Try changing the filters or add a new one</p>
+  <!--v-if-->
+</div>"
+`;

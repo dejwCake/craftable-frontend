@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FormSubmit > renders default state 1`] = `"<button type="submit" class="btn btn-primary submit-btn"><i class="fa fa-download"></i> Save</button>"`;
+
+exports[`FormSubmit > renders submitting state 1`] = `"<button type="submit" class="btn btn-primary submit-btn" disabled=""><i class="fa fa-spinner"></i> Save</button>"`;

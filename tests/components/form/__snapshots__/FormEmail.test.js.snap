@@ -1,0 +1,17 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FormEmail > renders with default props 1`] = `
+"<div class="mb-3 row align-items-center"><label for="email" class="col-md-3 col-form-label text-md-end">Email</label>
+  <div class="col-md-9 col-xl-8"><input id="email" type="email" class="form-control" name="email" placeholder="Email" value="">
+    <!--v-if-->
+  </div>
+</div>"
+`;
+
+exports[`FormEmail > renders with error 1`] = `
+"<div class="mb-3 row align-items-center"><label for="email" class="col-md-3 col-form-label text-md-end">Email</label>
+  <div class="col-md-9 col-xl-8"><input id="email" type="email" class="form-control is-invalid" name="email" placeholder="Email" value="">
+    <div class="invalid-feedback form-text">Invalid email</div>
+  </div>
+</div>"
+`;

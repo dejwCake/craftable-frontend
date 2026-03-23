@@ -1,0 +1,6 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`BulkCheckboxHeader > renders unchecked 1`] = `
+"<input id="enabled" class="form-check-input" type="checkbox" name="enabled_fake_element">
+<label class="form-check-label" for="enabled"> # </label>"
+`;

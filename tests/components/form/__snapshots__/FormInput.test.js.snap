@@ -1,0 +1,17 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FormInput > renders with default props 1`] = `
+"<div class="mb-3 row align-items-center"><label for="username" class="col-md-3 col-form-label text-md-end">Username</label>
+  <div class="col-md-9 col-xl-8"><input id="username" type="text" class="form-control" name="username" placeholder="Username" value="">
+    <!--v-if-->
+  </div>
+</div>"
+`;
+
+exports[`FormInput > renders with error 1`] = `
+"<div class="mb-3 row align-items-center"><label for="username" class="col-md-3 col-form-label text-md-end">Username</label>
+  <div class="col-md-9 col-xl-8"><input id="username" type="text" class="form-control is-invalid" name="username" placeholder="Username" value="">
+    <div class="invalid-feedback form-text">Required field</div>
+  </div>
+</div>"
+`;

@@ -1,0 +1,23 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FormDatePicker > renders with default props 1`] = `
+"<div data-v-6ff355ec="" class="mb-3 row align-items-center"><label data-v-6ff355ec="" for="publish_date" class="col-md-3 col-form-label text-md-end">Publish Date</label>
+  <div data-v-6ff355ec="" class="col-md-9 col-xl-8">
+    <div data-v-6ff355ec="" class="input-group flex-nowrap"><span data-v-6ff355ec="" class="input-group-text"><i data-v-6ff355ec="" class="fa fa-calendar"></i></span>
+      <div data-v-6ff355ec="" class="datepicker-stub datepicker-input" format="yyyy-MM-dd"></div>
+    </div>
+    <!--v-if-->
+  </div>
+</div>"
+`;
+
+exports[`FormDatePicker > renders with error 1`] = `
+"<div data-v-6ff355ec="" class="mb-3 row align-items-center"><label data-v-6ff355ec="" for="publish_date" class="col-md-3 col-form-label text-md-end">Publish Date</label>
+  <div data-v-6ff355ec="" class="col-md-9 col-xl-8">
+    <div data-v-6ff355ec="" class="input-group flex-nowrap"><span data-v-6ff355ec="" class="input-group-text"><i data-v-6ff355ec="" class="fa fa-calendar"></i></span>
+      <div data-v-6ff355ec="" class="datepicker-stub datepicker-input is-invalid" format="yyyy-MM-dd"></div>
+    </div>
+    <div data-v-6ff355ec="" class="invalid-feedback d-block form-text">Invalid date</div>
+  </div>
+</div>"
+`;

@@ -24,5 +24,8 @@ dist/
 .claude
 CLAUDE.md
 
+# Test coverage
+tests/coverage/
+
 # Other
 TODO.md

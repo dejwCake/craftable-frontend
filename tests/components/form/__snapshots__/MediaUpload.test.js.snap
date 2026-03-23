@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MediaUpload > renders empty state with drop message 1`] = `
+"<div class="base-upload">
+  <!--v-if-->
+  <div class="vue3-dropzone dropzone"><input><input type="hidden" name="collection" value="images">
+    <div class="dz-message"><i class="fa-solid fa-cloud-arrow-up"></i>
+      <p>Drop files here or click to upload</p>
+    </div>
+  </div>
+</div>"
+`;

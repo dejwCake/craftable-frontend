@@ -1,0 +1,26 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`UserDetailTooltip > renders user full name 1`] = `
+"<div class="user-detail-tooltip d-inline-flex align-items-center">
+  <!--v-if-->
+  <div class="popper-stub" arrow="">
+    <div class="d-inline-flex align-items-center cursor-pointer">
+      <div class="avatar-initials">JD</div>
+      <div class="avatar-trigger-text"><span class="avatar-full-name">John Doe</span>
+        <!--v-if-->
+      </div>
+    </div>
+    <div class="user-detail-popper d-flex align-items-center">
+      <div class="user-avatar flex-shrink-0">
+        <div class="avatar-initials">JD</div>
+      </div>
+      <div class="user-info ms-3">
+        <h3>John Doe
+          <!--v-if-->
+        </h3><a href="mailto:john@example.com">john@example.com</a>
+        <!--v-if-->
+      </div>
+    </div>
+  </div>
+</div>"
+`;

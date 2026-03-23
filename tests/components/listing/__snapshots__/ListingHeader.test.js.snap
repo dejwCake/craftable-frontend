@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ListingHeader > renders with create button 1`] = `
+"<i class="fa fa-align-justify"></i>
+ Posts
+<a class="btn btn-primary btn-spinner btn-sm float-end mb-0" href="/admin/posts/create" role="button"><i class="fa fa-plus"></i>&nbsp; New Post</a>"
+`;
+
+exports[`ListingHeader > renders with default props 1`] = `
+"<i class="fa fa-align-justify"></i>
+ Listing
+<!--v-if-->"
+`;

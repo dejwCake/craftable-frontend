@@ -1,0 +1,30 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`LoginForm > renders login form 1`] = `
+"<div data-v-b1cfc21d="" class="card">
+  <div data-v-b1cfc21d="" class="card-body">
+    <form data-v-b1cfc21d="" role="form" method="POST" action="/admin/login" novalidate="">
+      <div data-v-b1cfc21d="" class="auth-header">
+        <h1 data-v-b1cfc21d="" class="auth-title">Login</h1>
+        <p data-v-b1cfc21d="" class="auth-subtitle">Sign in to your account</p>
+      </div>
+      <div data-v-b1cfc21d="" class="auth-body">
+        <!--v-if-->
+        <!--v-if-->
+        <div data-v-b1cfc21d="" class="mb-3"><label data-v-b1cfc21d="" for="email">Email</label>
+          <div data-v-b1cfc21d="" class="input-group input-group--custom"><span data-v-b1cfc21d="" class="input-group-text"><i data-v-b1cfc21d="" class="fa fa-envelope"></i></span><input data-v-b1cfc21d="" id="email" type="text" class="form-control" name="email" placeholder="Email"></div>
+          <!--v-if-->
+        </div>
+        <div data-v-b1cfc21d="" class="mb-3"><label data-v-b1cfc21d="" for="password">Password</label>
+          <div data-v-b1cfc21d="" class="input-group input-group--custom"><span data-v-b1cfc21d="" class="input-group-text"><i data-v-b1cfc21d="" class="fa fa-lock"></i></span><input data-v-b1cfc21d="" id="password" type="password" class="form-control" name="password" placeholder="Password"></div>
+          <!--v-if-->
+        </div>
+        <div data-v-b1cfc21d="" class="mb-3"><input data-v-b1cfc21d="" type="hidden" name="remember" value="1"><button data-v-b1cfc21d="" type="submit" class="btn btn-primary submit-btn">
+            <!--v-if--> Login
+          </button></div>
+        <div data-v-b1cfc21d="" class="mb-3 text-center"><a data-v-b1cfc21d="" href="/admin/password-reset" class="auth-ghost-link forgot-link">Forgot password?</a></div>
+      </div>
+    </form>
+  </div>
+</div>"
+`;

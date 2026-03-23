@@ -1,0 +1,32 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ActivationError > renders with default props 1`] = `
+"<div class="card">
+  <div class="card-body">
+    <div class="auth-header">
+      <h1 class="auth-title">Activation Error</h1>
+    </div>
+    <div class="auth-body">
+      <!--v-if-->
+    </div>
+  </div>
+</div>"
+`;
+
+exports[`ActivationError > renders with server errors 1`] = `
+"<div class="card">
+  <div class="card-body">
+    <div class="auth-header">
+      <h1 class="auth-title">Activation Error</h1>
+    </div>
+    <div class="auth-body">
+      <div class="alert alert-danger">
+        <ul>
+          <li>Token expired</li>
+          <li>User not found</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>"
+`;

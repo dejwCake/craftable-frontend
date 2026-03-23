@@ -34,3 +34,13 @@ jobs:
       - uses: actions/checkout@v5
       - run: npm ci
       - run: npm run lint:style
+
+  vitest:
+    name: Vitest
+    runs-on: ubuntu-latest
+    container:
+      image: dejwcake/node24:1
+    steps:
+      - uses: actions/checkout@v5
+      - run: npm ci
+      - run: npm test
