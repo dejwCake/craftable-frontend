@@ -37,6 +37,7 @@ jobs:
 
   vitest:
     name: Vitest
+    needs: [prettier, eslint, stylelint]
     runs-on: ubuntu-latest
     container:
       image: dejwcake/node24:1
