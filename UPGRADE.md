@@ -137,9 +137,7 @@ new Vue({ mixins: [Admin] }).$mount('#app');
 
 ```js
 import { createApp } from 'vue';
-import { useAdmin } from '@dejwcake/craftable';
-import { initUI } from '@craftable/ui/index.js';
-import { initDateFnsLocale } from '@craftable/utils/dateFnsLocale.js';
+import { useAdmin, initUI, initDateFnsLocale } from '@dejwcake/craftable';
 
 const app = createApp({
     setup() {
@@ -180,8 +178,7 @@ export default {
 
 ```vue
 <script setup>
-import { useBaseForm } from '@craftable/composables/useBaseForm.js';
-import { mediaCollectionProp, mediaCollectionDefaults } from '@craftable/utils/mediaProps.js';
+import { useBaseForm, mediaCollectionProp, mediaCollectionDefaults } from '@dejwcake/craftable';
 
 const props = defineProps({
     action: { type: String, required: true },
@@ -191,15 +188,14 @@ const props = defineProps({
 });
 
 const {
-    form, errors, submitting, locale,
+    form, errors, submitting, currentLocale,
     onSubmit, getPostData, getLocalizedFormDefaults,
-} = useBaseForm(props, {
-    form: {
-        title: '', email: '',
-        ...getLocalizedFormDefaults({ title: '' }),
-    },
-    mediaCollections: ['cover'],
-});
+    mediaCollections,
+} = useBaseForm(props);
+
+// Use getLocalizedFormDefaults() after composable is initialised to build
+// locale-keyed sub-objects, e.g.: form.value.translations = getLocalizedFormDefaults();
+mediaCollections.value = ['cover'];
 </script>
 ```
 
@@ -221,7 +217,7 @@ export default {
 
 ```vue
 <script setup>
-import { useBaseListing } from '@craftable/composables/useBaseListing.js';
+import { useBaseListing } from '@dejwcake/craftable';
 
 const props = defineProps({
     url: { type: String, required: true },
@@ -234,12 +230,12 @@ const {
     pagination, orderBy, filters, search, collection, now,
     bulkItems, bulkCheckingAllLoader,
     isClickedAll, clickedBulkItemsCount,
-    loadData, filter, resolveUrl,
+    loadData, filter, resolveUrl, getAction,
     onBulkItemClicked, onBulkItemsClickedAll,
     onBulkItemsClickedAllWithPagination,
     onBulkItemsClickedAllUncheck,
     bulkDelete, confirmModal,
-    onSort, onPageChange,
+    onSort, onPageChange, onPerPageChange, onUpdateItem,
 } = useBaseListing(props);
 </script>
 ```
@@ -256,11 +252,13 @@ export default { mixins: [Auth] };
 **v2** — pre-built Vue 3 SFC components:
 
 ```js
-import LoginForm from '@craftable/auth/LoginForm.vue';
-import ForgotPasswordForm from '@craftable/auth/ForgotPasswordForm.vue';
-import ResetPasswordForm from '@craftable/auth/ResetPasswordForm.vue';
-import ActivationForm from '@craftable/auth/ActivationForm.vue';
-import ActivationError from '@craftable/auth/ActivationError.vue';
+import {
+    LoginForm,
+    ForgotPasswordForm,
+    ResetPasswordForm,
+    ActivationForm,
+    ActivationError,
+} from '@dejwcake/craftable';
 
 app.component('LoginForm', LoginForm);
 ```
@@ -276,7 +274,7 @@ import { TranslationListing, TranslationForm } from '@brackets/craftable';
 **v2** — single `TranslationListing` SFC with inline editing via modals (no separate form):
 
 ```js
-import TranslationListing from '@craftable/translation/TranslationListing.vue';
+import { TranslationListing } from '@dejwcake/craftable';
 app.component('TranslationListing', TranslationListing);
 ```
 
@@ -310,8 +308,7 @@ moment().tz(this.timezone).format('YYYY-MM-DD HH:mm:ss');
 **v2** — dayjs for formatting, date-fns for locales, VueDatePicker:
 
 ```js
-import { formatDate, formatDatetime, formatTime } from '@craftable/utils/dateFormatters.js';
-import { initDateFnsLocale } from '@craftable/utils/dateFnsLocale.js';
+import { formatDate, formatDatetime, formatTime, initDateFnsLocale } from '@dejwcake/craftable';
 // Date picker component
 import { VueDatePicker } from '@vuepic/vue-datepicker';
 ```
@@ -327,7 +324,7 @@ this.$notify({ type: 'success', title: '...', text: '...' });
 **v2** — `@kyvg/vue3-notification` via utility functions:
 
 ```js
-import { notifySuccess, notifyError } from '@craftable/utils/notify.js';
+import { notifySuccess, notifyError } from '@dejwcake/craftable';
 notifySuccess('Saved successfully');
 ```
 
@@ -345,7 +342,7 @@ import '@coreui/coreui';
 **v2** — vanilla JS `initUI()` (call after Vue mounts):
 
 ```js
-import { initUI } from '@craftable/ui/index.js';
+import { initUI, initDateFnsLocale } from '@dejwcake/craftable';
 initDateFnsLocale().then(() => {
     app.mount('#app');
     initUI();
@@ -471,7 +468,7 @@ v2 introduces `useResponsiveColumns` composable for responsive table column visi
 ```vue
 <script setup>
 import { ref } from 'vue';
-import { useResponsiveColumns } from '@craftable/composables/useResponsiveColumns.js';
+import { useResponsiveColumns } from '@dejwcake/craftable';
 
 const cardBody = ref(null);
 const { isColumnVisible } = useResponsiveColumns(cardBody);
