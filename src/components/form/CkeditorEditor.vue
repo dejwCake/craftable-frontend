@@ -40,7 +40,7 @@ import {
     FileRepository,
 } from 'ckeditor5';
 import { Ckeditor } from '@ckeditor/ckeditor5-vue';
-import { propagateImageWidths, deepMerge } from '@/utils/ckeditorHelpers.js';
+import { propagateImageWidths, deepMerge } from '../../utils/ckeditorHelpers.js';
 const axios = window.axios;
 
 import 'ckeditor5/ckeditor5.css';
