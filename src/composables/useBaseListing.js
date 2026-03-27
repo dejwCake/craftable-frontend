@@ -167,9 +167,7 @@ export function useBaseListing(props) {
             confirmModal.show = false;
             axios
                 .post(url, {
-                    data: {
-                        ids: itemsToDelete,
-                    },
+                    ids: itemsToDelete,
                 })
                 .then((response) => {
                     Object.keys(bulkItems).forEach((key) => delete bulkItems[key]);

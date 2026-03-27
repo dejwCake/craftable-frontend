@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, computed, toRaw } from 'vue';
+import { computed, toRaw } from 'vue';
 import {
     ClassicEditor,
     Essentials,

@@ -265,6 +265,30 @@ describe('useBaseListing', () => {
         });
     });
 
+    describe('bulkDelete', () => {
+        it('posts ids directly without data wrapper', async () => {
+            const result = setup();
+            result.bulkItems[1] = true;
+            result.bulkItems[2] = true;
+            result.bulkItems[3] = false;
+
+            window.axios.post.mockResolvedValueOnce({ data: { message: 'Deleted' } });
+            window.axios.get.mockResolvedValueOnce({ data: { data: mockData } });
+
+            result.bulkDelete('/api/items/bulk-destroy');
+
+            // Confirm modal should be shown
+            expect(result.confirmModal.show).toBe(true);
+
+            // Trigger confirm callback
+            result.confirmModal.onConfirm();
+
+            expect(window.axios.post).toHaveBeenCalledWith('/api/items/bulk-destroy', {
+                ids: ['1', '2'],
+            });
+        });
+    });
+
     describe('onUpdateItem', () => {
         it('replaces item in collection by id', () => {
             const result = setup();

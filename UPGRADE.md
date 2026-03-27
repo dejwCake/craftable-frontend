@@ -461,6 +461,30 @@ v2 adds `scripts/publish-components.js` — a Node.js CLI tool that copies `.vue
 
 ---
 
+## Bulk delete payload
+
+v2 changes the `bulkDelete` POST payload — the `data` wrapper has been removed:
+
+```js
+// v1
+axios.post(url, { data: { ids: [...] } });
+
+// v2
+axios.post(url, { ids: [...] });
+```
+
+Backend `bulkDestroy` controllers must be updated to read `ids` directly from the request instead of from `$request->data['ids']`:
+
+```php
+// Before
+(new Collection($request->data['ids']))->chunk(1000)->each(...);
+
+// After — access ids directly from the request
+(new Collection($request->ids))->chunk(1000)->each(...);
+```
+
+---
+
 ## Responsive columns
 
 v2 introduces `useResponsiveColumns` composable for responsive table column visibility. It uses `ResizeObserver` on the card body container to determine how many columns fit:
