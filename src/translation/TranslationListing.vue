@@ -32,7 +32,7 @@
             <!-- Main card -->
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-align-justify"></i> {{ translations.title }}
+                    <i class="fa fa-align-justify"></i> {{ translations.listing_title }}
                     <a
                         class="btn btn-primary btn-sm float-end ms-2"
                         href="#"
