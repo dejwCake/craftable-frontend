@@ -12,7 +12,7 @@ describe('ListingHeader', () => {
         const wrapper = mount(ListingHeader, {
             props: {
                 createUrl: '/admin/posts/create',
-                translations: { title: 'Posts', create_btn: 'New Post' },
+                translations: { listing_title: 'Posts', create_btn: 'New Post' },
             },
         });
         expect(wrapper.html()).toMatchSnapshot();
