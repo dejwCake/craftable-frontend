@@ -106,11 +106,7 @@ import { notifyError } from '../../utils/notify.js';
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
-import Table from '@tiptap/extension-table';
-import TableRow from '@tiptap/extension-table-row';
-import TableCell from '@tiptap/extension-table-cell';
-import TableHeader from '@tiptap/extension-table-header';
+import { Table, TableRow, TableCell, TableHeader } from '@tiptap/extension-table';
 
 const props = defineProps({
     modelValue: {
@@ -134,14 +130,13 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'media-uploaded']);
 
 const extensions = [
-    StarterKit,
+    StarterKit.configure({
+        link: { openOnClick: false },
+    }),
     Image.configure({
         HTMLAttributes: {
             class: 'tiptap-image',
         },
-    }),
-    Link.configure({
-        openOnClick: false,
     }),
     Table.configure({
         resizable: true,
@@ -164,7 +159,7 @@ watch(
     () => props.modelValue,
     (value) => {
         if (editor.value && editor.value.getHTML() !== value) {
-            editor.value.commands.setContent(value, false);
+            editor.value.commands.setContent(value, { emitUpdate: false });
         }
     },
 );
