@@ -30,7 +30,7 @@ v2 is a complete rewrite of the frontend package. The main changes are:
 | `font-awesome` ^4 | `@fortawesome/fontawesome-free` ^7.2 |
 | `simple-line-icons` | Removed |
 | `moment` / `moment-timezone` | `dayjs` ^1.11 + `date-fns` ^4.1 |
-| `trumbowyg` / `vue-trumbowyg` | `ckeditor5` ^47 + `@tiptap/*` ^2.11 |
+| `trumbowyg` / `vue-trumbowyg` | `ckeditor5` ^48 + `@tiptap/*` ^3.22 |
 | `vee-validate` ^2 | `vee-validate` ^4.15 + `@vee-validate/rules` + `@vee-validate/i18n` |
 | `vue-flatpickr-component` | `@vuepic/vue-datepicker` ^12.1 |
 | `vue-notification` | `@kyvg/vue3-notification` ^3.4 |
@@ -46,8 +46,8 @@ v2 is a complete rewrite of the frontend package. The main changes are:
 
 | Package | Purpose |
 |---|---|
-| `@tiptap/starter-kit`, `@tiptap/vue-3`, `@tiptap/extension-*` | Tiptap WYSIWYG editor |
-| `@ckeditor/ckeditor5-vue` ^7.3, `ckeditor5` ^47 | CKEditor 5 WYSIWYG editor |
+| `@tiptap/starter-kit` ^3.22, `@tiptap/vue-3` ^3.22, `@tiptap/extension-image` ^3.22, `@tiptap/extension-table` ^3.22 | Tiptap WYSIWYG editor (Link bundled in StarterKit; Table re-exports TableRow/TableCell/TableHeader) |
+| `@ckeditor/ckeditor5-vue` ^7.4, `ckeditor5` ^48 | CKEditor 5 WYSIWYG editor |
 | `vue3-popper` | Tooltips (replaces v-tooltip) |
 
 ### Build tools
@@ -57,7 +57,7 @@ v2 is a complete rewrite of the frontend package. The main changes are:
 | `@babel/preset-env`, `@babel/cli` | Removed |
 | `sass-loader`, `vue-loader`, `resolve-url-loader` | Removed |
 | `postcss-cli`, `autoprefixer` ^9, `cpx` | `autoprefixer` ^10 |
-| — | `vite` ^6.3 + `@vitejs/plugin-vue` ^5.2 |
+| — | `vite` ^8.0 + `@vitejs/plugin-vue` ^6.0 |
 
 ---
 
