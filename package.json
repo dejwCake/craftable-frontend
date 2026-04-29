@@ -80,7 +80,7 @@
     "vitest": "^4.1.0"
   },
   "bin": {
-    "craftable-publish-components": "./scripts/publish-components.js"
+    "craftable-publish-components": "scripts/publish-components.js"
   },
   "files": [
     "/dist",

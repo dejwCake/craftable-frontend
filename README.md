@@ -75,27 +75,50 @@ docker compose run -it --rm node npm run format
 
 Follow these steps to publish a new version of the package to npm:
 
+```shell
+docker compose run -it --rm node bash
+```
+
 1. **Prerequisites**  
    - Ensure you have an npm account and are added as a collaborator/owner of the package.  
-   - Log in from your terminal: `npm login`.
+   - Log in from your terminal: 
+```shell
+npm login
+```
 
 2. **Check and bump the version**  
    - Inspect the current version in `package.json`.  
    - Bump it according to [semver](https://semver.org/) using one of:  
-     - `npm version patch`  
-     - `npm version minor`  
-     - `npm version major`  
+```shell
+npm version patch
+npm version minor
+npm version major
+```
 
-3. **Build**
+3. **Install**
+    - Install dependencies:
+```shell
+npm install
+```
+
+4**Build**
    - Build the package:  
-     - `npm run build`  
+```shell
+npm run build
+```
 
-4. **Dry-run the publish**  
+5**Dry-run the publish**  
    - Verify what would be published without actually publishing:  
-     - `npm publish --dry-run`  
+```shell
+npm publish --dry-run
+```
 
-5. **Publish the package**  
+6**Publish the package**  
    - When everything looks correct, publish to npm:  
-     - `npm publish`  
+```shell
+npm publish
+```
    - For scoped packages you want public:
-     - `npm publish --access public`
+```shell
+npm publish --access public
+```
