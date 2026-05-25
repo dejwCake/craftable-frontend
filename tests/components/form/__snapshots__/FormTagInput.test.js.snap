@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FormTagInput > renders with tags 1`] = `
+"<div class="mb-3 row align-items-center"><label for="tags" class="col-md-3 col-form-label text-md-end">Tags</label>
+  <div class="col-md-9 col-xl-8">
+    <div class="multiselect-stub"></div>
+    <!--v-if-->
+  </div>
+</div>"
+`;
