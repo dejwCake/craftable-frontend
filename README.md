@@ -14,7 +14,8 @@ If something is not working as expected, please open an issue in the main reposi
 
 ## Commands
 
-All commands run inside Docker containers from the package directory.
+All commands run inside Docker containers from the package directory. Vitest tests live under `tests/`;
+snapshots live in `tests/components/__snapshots__/`.
 
 ### Install dependencies
 ```shell
@@ -46,6 +47,16 @@ docker compose run -it --rm node npm run lint:style
 docker compose run -it --rm node npm run lint:style:fix
 ```
 
+### Check Prettier formatting
+```shell
+docker compose run -it --rm node npm run format:check
+```
+
+### Fix Prettier formatting
+```shell
+docker compose run -it --rm node npm run format
+```
+
 ### Run tests
 ```shell
 docker compose run -it --rm node npm test
@@ -61,14 +72,21 @@ docker compose run -it --rm node npm run test:watch
 docker compose run -it --rm node npm run test:coverage
 ```
 
-### Check Prettier formatting
+### Update snapshots after an intentional markup change
 ```shell
-docker compose run -it --rm node npm run format:check
+docker compose run -it --rm node npm test -- -u
 ```
 
-### Fix Prettier formatting
+### Run the whole frontend suite
+
+Run every check and the test suite in sequence (stops at the first failure):
 ```shell
-docker compose run -it --rm node npm run format
+docker compose run -it --rm node npm ci \
+  && docker compose run -it --rm node npm run build \
+  && docker compose run -it --rm node npm run lint \
+  && docker compose run -it --rm node npm run lint:style \
+  && docker compose run -it --rm node npm run format:check \
+  && docker compose run -it --rm node npm test
 ```
 
 ## Publishing to npm
