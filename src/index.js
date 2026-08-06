@@ -35,6 +35,7 @@ export { default as FormCheckbox } from './components/form/FormCheckbox.vue';
 export { default as FormDatePicker } from './components/form/FormDatePicker.vue';
 export { default as FormWysiwyg } from './components/form/FormWysiwyg.vue';
 export { default as FormMultiSelect } from './components/form/FormMultiSelect.vue';
+export { default as FormTagInput } from './components/form/FormTagInput.vue';
 export { default as FormLocalizedInput } from './components/form/FormLocalizedInput.vue';
 export { default as FormLocalizedWysiwyg } from './components/form/FormLocalizedWysiwyg.vue';
 export { default as FormWysiwygSimple } from './components/form/FormWysiwygSimple.vue';
