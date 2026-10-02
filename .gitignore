@@ -22,7 +22,6 @@ dist/
 
 # AI tools
 .claude
-CLAUDE.md
 
 # Test coverage
 tests/coverage/
