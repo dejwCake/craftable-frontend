@@ -30,7 +30,7 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.js'),
+      entry: resolve(import.meta.dirname, 'src/index.js'),
       name: 'Craftable',
       formats: ['es', 'cjs'],
       fileName: (format) => `index.${format === 'es' ? 'mjs' : 'cjs'}`,
@@ -51,8 +51,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@dejwcake/craftable': resolve(__dirname, 'src/index.js'),
-      '@': resolve(__dirname, 'src'),
+      '@dejwcake/craftable': resolve(import.meta.dirname, 'src/index.js'),
+      '@': resolve(import.meta.dirname, 'src'),
     },
   },
 });

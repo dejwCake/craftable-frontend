@@ -43,10 +43,10 @@
     "@coreui/coreui": "^5.3",
     "@fortawesome/fontawesome-free": "^7.2",
     "@kyvg/vue3-notification": "^3.4",
-    "@tiptap/extension-image": "^3.22.5",
-    "@tiptap/extension-table": "^3.22.5",
-    "@tiptap/starter-kit": "^3.22.5",
-    "@tiptap/vue-3": "^3.22.5",
+    "@tiptap/extension-image": "^3.31.4",
+    "@tiptap/extension-table": "^3.31.4",
+    "@tiptap/starter-kit": "^3.31.4",
+    "@tiptap/vue-3": "^3.31.4",
     "@vee-validate/i18n": "^4.15",
     "@vee-validate/rules": "^4.15",
     "@vuepic/vue-datepicker": "^12.1",
@@ -63,11 +63,12 @@
     "vue3-popper": "^1.5.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@vitejs/plugin-vue": "^6.0.0",
     "@vitest/coverage-v8": "^4.1.0",
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4",
-    "eslint": "^9.39.4",
+    "eslint": "^10.12.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-vue": "^10.8.0",
     "globals": "^17.5.0",
@@ -88,5 +89,9 @@
     "/scss",
     "/scripts",
     "/src"
-  ]
+  ],
+  "allowScripts": {
+    "vue-demi": false,
+    "@parcel/watcher": false
+  }
 }

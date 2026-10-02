@@ -119,19 +119,19 @@ npm version major
 npm install
 ```
 
-4**Build**
+4. **Build**
    - Build the package:  
 ```shell
 npm run build
 ```
 
-5**Dry-run the publish**  
+5. **Dry-run the publish**  
    - Verify what would be published without actually publishing:  
 ```shell
 npm publish --dry-run
 ```
 
-6**Publish the package**  
+6. **Publish the package**  
    - When everything looks correct, publish to npm:  
 ```shell
 npm publish

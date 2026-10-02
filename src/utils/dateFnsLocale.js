@@ -11,7 +11,7 @@ export async function initDateFnsLocale() {
     const map = {
         sk: () => import('date-fns/locale/sk'),
         cs: () => import('date-fns/locale/cs'),
-        en: () => import('date-fns/locale/en-US'),
+        en: async () => ({ enUS }),
         de: () => import('date-fns/locale/de'),
         fr: () => import('date-fns/locale/fr'),
         es: () => import('date-fns/locale/es'),

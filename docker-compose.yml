@@ -1,6 +1,6 @@
 services:
   node:
-    image: dejwcake/node24:1
+    image: dejwcake/node26:1
     user: node
     volumes:
       - .:/var/www/html:delegated
