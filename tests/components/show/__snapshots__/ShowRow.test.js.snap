@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ShowRow > renders a label and value 1`] = `
+"<div class="mb-3 row align-items-center"><label class="col-md-3 col-form-label text-md-end">Monitor</label>
+  <div class="col-md-9 col-xl-8"><span>Example monitor</span></div>
+</div>"
+`;

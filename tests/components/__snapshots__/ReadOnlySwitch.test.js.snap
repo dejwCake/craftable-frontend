@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ReadOnlySwitch > renders checked for a truthy value 1`] = `"<div class="form-check form-switch form-switch-inline"><input class="form-check-input form-switch-success" type="checkbox" role="switch" checked="" disabled=""></div>"`;
+
+exports[`ReadOnlySwitch > renders unchecked for a falsy value 1`] = `"<div class="form-check form-switch form-switch-inline"><input class="form-check-input form-switch-success" type="checkbox" role="switch" disabled=""></div>"`;
