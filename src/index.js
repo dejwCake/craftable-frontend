@@ -26,6 +26,9 @@ export { default as EditButton } from './components/listing/EditButton.vue';
 export { default as DeleteButton } from './components/listing/DeleteButton.vue';
 export { default as ConfirmModal } from './components/ConfirmModal.vue';
 export { default as ToggleSwitch } from './components/listing/ToggleSwitch.vue';
+export { default as ReadOnlySwitch } from './components/ReadOnlySwitch.vue';
+
+export { default as ShowRow } from './components/show/ShowRow.vue';
 
 // Form components
 export { default as FormInput } from './components/form/FormInput.vue';
