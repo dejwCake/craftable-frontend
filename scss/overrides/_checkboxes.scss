@@ -79,3 +79,15 @@
 label:hover::before {
     border: 1px solid $primary !important;
 }
+
+/* Inline switch: no float or reserved gutter, so it sits where it is placed -- in a listing cell,
+   a detail row, or anywhere else. Bootstrap otherwise pulls the input back over the preceding
+   column. */
+.form-switch.form-switch-inline {
+    padding-left: 0;
+
+    .form-check-input {
+        margin-left: 0;
+        float: none;
+    }
+}
