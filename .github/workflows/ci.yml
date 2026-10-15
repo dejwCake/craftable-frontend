@@ -9,7 +9,7 @@ jobs:
     name: Prettier
     runs-on: ubuntu-latest
     container:
-      image: dejwcake/node24:1
+      image: dejwcake/node26:1
     steps:
       - uses: actions/checkout@v5
       - run: npm ci
@@ -19,7 +19,7 @@ jobs:
     name: ESLint
     runs-on: ubuntu-latest
     container:
-      image: dejwcake/node24:1
+      image: dejwcake/node26:1
     steps:
       - uses: actions/checkout@v5
       - run: npm ci
@@ -29,7 +29,7 @@ jobs:
     name: Stylelint
     runs-on: ubuntu-latest
     container:
-      image: dejwcake/node24:1
+      image: dejwcake/node26:1
     steps:
       - uses: actions/checkout@v5
       - run: npm ci
@@ -40,8 +40,10 @@ jobs:
     needs: [prettier, eslint, stylelint]
     runs-on: ubuntu-latest
     container:
-      image: dejwcake/node24:1
+      image: dejwcake/node26:1
     steps:
       - uses: actions/checkout@v5
       - run: npm ci
-      - run: npm test
+      - run: |
+          npm run test:coverage
+          { echo '### Coverage'; echo '```'; cat tests/coverage/coverage.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"

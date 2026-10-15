@@ -18,6 +18,10 @@ export default defineConfig({
         include: ['tests/**/*.test.js'],
         coverage: {
             reportsDirectory: './tests/coverage',
+            // Report every source file, untested ones included — like PHPUnit's <source>.
+            include: ['src/**/*.{js,vue}'],
+            // Vitest's defaults, plus the text table written to a file for the CI job summary.
+            reporter: ['text', 'html', 'clover', 'json', ['text', { file: 'coverage.txt' }]],
         },
     },
 });
