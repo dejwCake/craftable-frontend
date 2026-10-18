@@ -71,6 +71,29 @@ describe('useResponsiveColumns', () => {
         expect(result.isColumnVisible(2)).toBe(true);
     });
 
+    it('exposes isColumnWithinPriority as the clearer name for the same check', () => {
+        const { result } = setupWithWidth(900);
+
+        expect(result.isColumnWithinPriority(2)).toBe(true);
+        expect(result.isColumnWithinPriority(3)).toBe(false);
+    });
+
+    it('keeps isColumnVisible working as an alias', () => {
+        const { result, triggerResize } = setupWithWidth(1900);
+
+        expect(result.isColumnVisible).toBe(result.isColumnWithinPriority);
+
+        triggerResize(900);
+        expect(result.isColumnVisible(3)).toBe(result.isColumnWithinPriority(3));
+    });
+
+    it('hides priorities above 3 at a typical laptop card width', () => {
+        const { result } = setupWithWidth(1190);
+
+        expect(result.isColumnWithinPriority(3)).toBe(true);
+        expect(result.isColumnWithinPriority(4)).toBe(false);
+    });
+
     it('respects custom breakpoints', () => {
         const customBreakpoints = [
             { minWidth: 500, maxPriority: 5 },
