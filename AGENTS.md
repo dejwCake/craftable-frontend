@@ -13,7 +13,7 @@ Vue 3 component and composable library for Craftable admin panels, published to 
 - `src/components/form/` — form fields (incl. localized variants, `MediaUpload`, `TiptapEditor`,
   `CkeditorEditor`); `src/components/listing/` — pagination, sorting, search, bulk operations,
   row actions; `src/components/` — shared across listing/form/show:
-  `ConfirmModal`, `UserDetailTooltip`, `ReadOnlySwitch`; `src/components/show/` — `ShowRow`.
+  `BackButton`, `ConfirmModal`, `UserDetailTooltip`, `ReadOnlySwitch`; `src/components/show/` — `ShowRow`.
 - `src/auth/` — login, password reset and activation forms (built on `useBaseAuth`).
 - `src/translation/` — `TranslationListing` with edit/import/export modals.
 - `src/ui/` — Bootstrap 5 / CoreUI 5 initialization; `src/utils/` — dates (dayjs, date-fns),

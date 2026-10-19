@@ -22,8 +22,10 @@ export { default as BulkCheckboxRow } from './components/listing/BulkCheckboxRow
 export { default as BulkOperationsBar } from './components/listing/BulkOperationsBar.vue';
 export { default as PublishedAtColumn } from './components/listing/PublishedAtColumn.vue';
 export { default as ListingHeader } from './components/listing/ListingHeader.vue';
+export { default as ShowButton } from './components/listing/ShowButton.vue';
 export { default as EditButton } from './components/listing/EditButton.vue';
 export { default as DeleteButton } from './components/listing/DeleteButton.vue';
+export { default as BackButton } from './components/BackButton.vue';
 export { default as ConfirmModal } from './components/ConfirmModal.vue';
 export { default as ToggleSwitch } from './components/listing/ToggleSwitch.vue';
 export { default as ReadOnlySwitch } from './components/ReadOnlySwitch.vue';

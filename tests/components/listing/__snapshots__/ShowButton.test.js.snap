@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ShowButton > renders with custom translations 1`] = `"<a class="btn btn-sm btn-spinner btn-info" href="/admin/posts/1" title="Zobrazit" role="button"><i class="fa fa-eye"></i></a>"`;
+
+exports[`ShowButton > renders with url 1`] = `"<a class="btn btn-sm btn-spinner btn-info" href="/admin/posts/1" title="Show" role="button"><i class="fa fa-eye"></i></a>"`;

@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`BackButton > renders with custom translations 1`] = `"<a class="btn btn-sm btn-outline-secondary" href="/admin/posts"><i class="fa fa-arrow-left"></i> Späť</a>"`;
+
+exports[`BackButton > renders with url 1`] = `"<a class="btn btn-sm btn-outline-secondary" href="/admin/posts"><i class="fa fa-arrow-left"></i> Back</a>"`;
