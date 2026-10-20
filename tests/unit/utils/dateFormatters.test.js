@@ -94,6 +94,12 @@ describe('formatDuration', () => {
         expect(formatDuration(undefined)).toBe('—');
     });
 
+    it('returns the placeholder for negative and non-finite values', () => {
+        expect(formatDuration(-90)).toBe('—');
+        expect(formatDuration(NaN)).toBe('—');
+        expect(formatDuration(Infinity)).toBe('—');
+    });
+
     it('accepts a custom placeholder', () => {
         expect(formatDuration(null, 'n/a')).toBe('n/a');
     });
