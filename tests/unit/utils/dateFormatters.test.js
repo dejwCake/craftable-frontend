@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { formatDate, formatDatetime, formatTime, nowInTimezone } from '@/utils/dateFormatters.js';
+import {
+    formatDate,
+    formatDatetime,
+    formatTime,
+    formatDuration,
+    nowInTimezone,
+} from '@/utils/dateFormatters.js';
 
 describe('formatDate', () => {
     it('formats a valid ISO date with default format', () => {
@@ -61,5 +67,34 @@ describe('nowInTimezone', () => {
     it('accepts a custom format', () => {
         const result = nowInTimezone('UTC', 'YYYY');
         expect(result).toMatch(/^\d{4}$/);
+    });
+});
+
+describe('formatDuration', () => {
+    it('formats a full breakdown', () => {
+        expect(formatDuration(31086099)).toBe('359d 19h 1m 39s');
+    });
+
+    it('drops zero-valued units', () => {
+        expect(formatDuration(7200)).toBe('2h');
+        expect(formatDuration(90)).toBe('1m 30s');
+        expect(formatDuration(86400)).toBe('1d');
+    });
+
+    it('renders zero as 0s', () => {
+        expect(formatDuration(0)).toBe('0s');
+    });
+
+    it('floors a fractional second count', () => {
+        expect(formatDuration(59.9)).toBe('59s');
+    });
+
+    it('returns the placeholder for null and undefined', () => {
+        expect(formatDuration(null)).toBe('—');
+        expect(formatDuration(undefined)).toBe('—');
+    });
+
+    it('accepts a custom placeholder', () => {
+        expect(formatDuration(null, 'n/a')).toBe('n/a');
     });
 });

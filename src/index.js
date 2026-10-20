@@ -61,7 +61,14 @@ export { default as ActivationError } from './auth/ActivationError.vue';
 export { default as TranslationListing } from './translation/TranslationListing.vue';
 
 // Utilities
-export { formatDate, formatDatetime, formatTime, nowInTimezone, dayjs } from './utils/dateFormatters.js';
+export {
+    formatDate,
+    formatDatetime,
+    formatTime,
+    formatDuration,
+    nowInTimezone,
+    dayjs,
+} from './utils/dateFormatters.js';
 export { mediaCollectionProp, mediaCollectionDefaults } from './utils/mediaProps.js';
 export { notifySuccess, notifyError } from './utils/notify.js';
 export { getDateFnsLocale, initDateFnsLocale } from './utils/dateFnsLocale.js';
