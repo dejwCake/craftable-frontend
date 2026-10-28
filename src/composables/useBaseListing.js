@@ -32,15 +32,18 @@ export function useBaseListing(props) {
     const bulkItems = reactive({});
     const bulkCheckingAllLoader = ref(false);
 
+    const defaultConfirmTranslations = {
+        confirm_title: 'Warning!',
+        confirm_text: 'Are you sure?',
+        confirm_btn: 'Yes, confirm',
+        cancel_btn: 'Cancel',
+    };
+
     const confirmModal = reactive({
         show: false,
         onConfirm: null,
-        translations: {
-            confirm_title: 'Warning!',
-            confirm_text: 'Are you sure?',
-            confirm_btn: 'Yes, confirm',
-            cancel_btn: 'Cancel',
-        },
+        variant: 'danger',
+        translations: { ...defaultConfirmTranslations },
     });
 
     // Update "now" every second
@@ -152,13 +155,14 @@ export function useBaseListing(props) {
         }
     }
 
-    function bulkDelete(url, trans = {}) {
-        const itemsToDelete = Object.keys(bulkItems).filter((key) => bulkItems[key]);
+    function bulkAction(url, trans = {}, variant = 'danger') {
+        const selectedItems = Object.keys(bulkItems).filter((key) => bulkItems[key]);
 
+        confirmModal.variant = variant;
         confirmModal.translations = {
-            ...confirmModal.translations,
+            ...defaultConfirmTranslations,
             ...trans,
-            confirm_text: (trans.confirm_text || 'Do you really want to delete :number selected items?').replace(
+            confirm_text: (trans.confirm_text || defaultConfirmTranslations.confirm_text).replace(
                 ':number',
                 clickedBulkItemsCount.value,
             ),
@@ -167,7 +171,7 @@ export function useBaseListing(props) {
             confirmModal.show = false;
             axios
                 .post(url, {
-                    ids: itemsToDelete,
+                    ids: selectedItems,
                 })
                 .then((response) => {
                     Object.keys(bulkItems).forEach((key) => delete bulkItems[key]);
@@ -179,6 +183,34 @@ export function useBaseListing(props) {
                 });
         };
         confirmModal.show = true;
+    }
+
+    function bulkDelete(url, trans = {}) {
+        bulkAction(url, {
+            ...trans,
+            confirm_text: trans.confirm_text || 'Do you really want to delete :number selected items?',
+        });
+    }
+
+    function bulkForceDelete(url, trans = {}) {
+        bulkAction(url, {
+            confirm_btn: 'Delete permanently',
+            ...trans,
+            confirm_text: trans.confirm_text || 'Delete :number selected items permanently? This cannot be undone.',
+        });
+    }
+
+    function bulkRestore(url, trans = {}) {
+        bulkAction(
+            url,
+            {
+                confirm_title: 'Restore',
+                confirm_btn: 'Restore',
+                ...trans,
+                confirm_text: trans.confirm_text || 'Do you really want to restore :number selected items?',
+            },
+            'success',
+        );
     }
 
     function loadData(resetCurrentPage) {
@@ -298,7 +330,10 @@ export function useBaseListing(props) {
         onBulkItemsClickedAll,
         onBulkItemsClickedAllWithPagination,
         onBulkItemsClickedAllUncheck,
+        bulkAction,
         bulkDelete,
+        bulkForceDelete,
+        bulkRestore,
         loadData,
         filter,
         resolveUrl,

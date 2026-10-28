@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RestoreButton > renders disabled with the reason as title 1`] = `
+"<span title="This item cannot be restored, an item it belongs to is deleted."><button type="button" class="btn btn-sm btn-success text-white" disabled=""><i class="fa fa-trash-arrow-up"></i></button></span>
+<!--teleport start-->
+<!--teleport end-->"
+`;
+
+exports[`RestoreButton > renders restore button 1`] = `
+"<span title="Restore"><button type="button" class="btn btn-sm btn-success text-white"><i class="fa fa-trash-arrow-up"></i></button></span>
+<!--teleport start-->
+<!--teleport end-->"
+`;

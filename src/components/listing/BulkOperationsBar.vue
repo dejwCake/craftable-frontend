@@ -11,10 +11,19 @@
         </a>
     </span>
 
-    <span class="float-end pe-2">
+    <span class="float-end pe-2 d-inline-flex gap-2">
         <slot>
-            <button class="btn btn-sm btn-danger px-4" @click="onBulkDelete()">
+            <button v-if="onBulkDelete" class="btn btn-sm btn-danger px-4" @click="onBulkDelete()">
+                <i class="fa fa-trash me-1"></i>
                 {{ translations.delete_btn }}
+            </button>
+            <button v-if="onBulkForceDelete" class="btn btn-sm btn-dark px-4" @click="onBulkForceDelete()">
+                <i class="fa fa-eraser me-1"></i>
+                {{ translations.force_delete_btn }}
+            </button>
+            <button v-if="onBulkRestore" class="btn btn-sm btn-success text-white px-4" @click="onBulkRestore()">
+                <i class="fa fa-trash-arrow-up me-1"></i>
+                {{ translations.restore_btn }}
             </button>
         </slot>
     </span>
@@ -27,7 +36,9 @@ defineProps({
     loading: { type: Boolean, default: false },
     onCheckAll: { type: Function, required: true },
     onUncheckAll: { type: Function, required: true },
-    onBulkDelete: { type: Function, required: true },
+    onBulkDelete: { type: Function, default: null },
+    onBulkForceDelete: { type: Function, default: null },
+    onBulkRestore: { type: Function, default: null },
     translations: {
         type: Object,
         default: () => ({
@@ -35,6 +46,8 @@ defineProps({
             check_all_items: 'Check all items',
             uncheck_all_items: 'Uncheck all items',
             delete_btn: 'Delete',
+            force_delete_btn: 'Delete permanently',
+            restore_btn: 'Restore',
         }),
     },
 });

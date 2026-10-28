@@ -289,6 +289,76 @@ describe('useBaseListing', () => {
         });
     });
 
+    describe('bulkAction', () => {
+        it('replaces :number and resets the texts of a previous action', () => {
+            const result = setup();
+            result.bulkItems[1] = true;
+            result.bulkItems[2] = true;
+
+            result.bulkRestore('/api/items/bulk-restore', { confirm_btn: 'Obnoviť' });
+            result.bulkAction('/api/items/bulk-archive', { confirm_text: 'Archive :number items?' });
+
+            expect(result.confirmModal.variant).toBe('danger');
+            expect(result.confirmModal.translations).toEqual({
+                confirm_title: 'Warning!',
+                confirm_text: 'Archive 2 items?',
+                confirm_btn: 'Yes, confirm',
+                cancel_btn: 'Cancel',
+            });
+        });
+    });
+
+    describe('bulkForceDelete', () => {
+        it('confirms as danger and posts the selected ids', () => {
+            const result = setup();
+            result.bulkItems[1] = true;
+            result.bulkItems[3] = true;
+
+            window.axios.post.mockResolvedValueOnce({ data: { message: 'Deleted' } });
+            window.axios.get.mockResolvedValueOnce({ data: { data: mockData } });
+
+            result.bulkForceDelete('/api/items/bulk-force-destroy');
+
+            expect(result.confirmModal.variant).toBe('danger');
+            expect(result.confirmModal.translations.confirm_text).toBe(
+                'Delete 2 selected items permanently? This cannot be undone.',
+            );
+            expect(result.confirmModal.translations.confirm_btn).toBe('Delete permanently');
+
+            result.confirmModal.onConfirm();
+
+            expect(window.axios.post).toHaveBeenCalledWith('/api/items/bulk-force-destroy', {
+                ids: ['1', '3'],
+            });
+        });
+    });
+
+    describe('bulkRestore', () => {
+        it('confirms as success and posts the selected ids', () => {
+            const result = setup();
+            result.bulkItems[2] = true;
+
+            window.axios.post.mockResolvedValueOnce({ data: { message: 'Restored' } });
+            window.axios.get.mockResolvedValueOnce({ data: { data: mockData } });
+
+            result.bulkRestore('/api/items/bulk-restore', { confirm_text: 'Restore :number?' });
+
+            expect(result.confirmModal.variant).toBe('success');
+            expect(result.confirmModal.translations).toEqual({
+                confirm_title: 'Restore',
+                confirm_text: 'Restore 1?',
+                confirm_btn: 'Restore',
+                cancel_btn: 'Cancel',
+            });
+
+            result.confirmModal.onConfirm();
+
+            expect(window.axios.post).toHaveBeenCalledWith('/api/items/bulk-restore', {
+                ids: ['2'],
+            });
+        });
+    });
+
     describe('onUpdateItem', () => {
         it('replaces item in collection by id', () => {
             const result = setup();

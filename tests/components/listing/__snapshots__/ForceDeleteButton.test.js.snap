@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ForceDeleteButton > renders force delete button 1`] = `
+"<button type="button" class="btn btn-sm btn-dark" title="Delete permanently"><i class="fa fa-eraser"></i></button>
+<!--teleport start-->
+<!--teleport end-->"
+`;

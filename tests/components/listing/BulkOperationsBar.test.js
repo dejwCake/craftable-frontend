@@ -29,4 +29,33 @@ describe('BulkOperationsBar', () => {
         await wrapper.find('button.btn-danger').trigger('click');
         expect(deleteFn).toHaveBeenCalledOnce();
     });
+
+    it('renders only the buttons whose handlers are given', () => {
+        const wrapper = mount(BulkOperationsBar, {
+            props: { ...baseProps, onBulkDelete: null, onBulkRestore: vi.fn(), onBulkForceDelete: vi.fn() },
+        });
+        expect(wrapper.html()).toMatchSnapshot();
+        expect(wrapper.find('button.btn-danger').exists()).toBe(false);
+    });
+
+    it('calls onBulkRestore and onBulkForceDelete on their buttons', async () => {
+        const restoreFn = vi.fn();
+        const forceDeleteFn = vi.fn();
+        const wrapper = mount(BulkOperationsBar, {
+            props: { ...baseProps, onBulkRestore: restoreFn, onBulkForceDelete: forceDeleteFn },
+        });
+        await wrapper.find('button.btn-success').trigger('click');
+        await wrapper.find('button.btn-dark').trigger('click');
+        expect(restoreFn).toHaveBeenCalledOnce();
+        expect(forceDeleteFn).toHaveBeenCalledOnce();
+    });
+
+    it('renders the slot instead of the buttons', () => {
+        const wrapper = mount(BulkOperationsBar, {
+            props: baseProps,
+            slots: { default: '<button class="custom">Custom</button>' },
+        });
+        expect(wrapper.find('button.custom').exists()).toBe(true);
+        expect(wrapper.find('button.btn-danger').exists()).toBe(false);
+    });
 });
