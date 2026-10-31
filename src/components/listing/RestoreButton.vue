@@ -3,6 +3,7 @@
         <button
             type="button"
             class="btn btn-sm btn-success text-white"
+            :aria-label="disabled ? translations.not_restorable : translations.restore_btn"
             :disabled="disabled"
             @click="showConfirm = true"
         >

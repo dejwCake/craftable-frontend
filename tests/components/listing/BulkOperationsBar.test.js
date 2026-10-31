@@ -57,5 +57,6 @@ describe('BulkOperationsBar', () => {
         });
         expect(wrapper.find('button.custom').exists()).toBe(true);
         expect(wrapper.find('button.btn-danger').exists()).toBe(false);
+        expect(wrapper.find('.d-inline-flex').exists()).toBe(false);
     });
 });
