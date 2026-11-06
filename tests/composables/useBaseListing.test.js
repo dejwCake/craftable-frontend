@@ -374,4 +374,70 @@ describe('useBaseListing', () => {
             expect(result.collection.value).toEqual(original);
         });
     });
+
+    describe('showDeleted', () => {
+        it('is false by default', () => {
+            const result = setup();
+            expect(result.showDeleted.value).toBe(false);
+        });
+
+        it('sets the trashed filter and reloads when enabled', () => {
+            const result = setup();
+            window.axios.get.mockResolvedValueOnce({ data: { data: mockData } });
+
+            result.showDeleted.value = true;
+
+            expect(result.filters.trashed).toBe(1);
+            expect(result.showDeleted.value).toBe(true);
+            expect(window.axios.get).toHaveBeenCalledWith('/api/items', {
+                params: expect.objectContaining({ trashed: 1, page: 1 }),
+            });
+        });
+
+        it('removes the trashed filter when disabled', () => {
+            const result = setup();
+            result.filters.trashed = 1;
+            window.axios.get.mockResolvedValueOnce({ data: { data: mockData } });
+
+            result.showDeleted.value = false;
+
+            expect(result.filters.trashed).toBeUndefined();
+            expect(result.showDeleted.value).toBe(false);
+        });
+
+        it('resets a deleted_at sort to the default order when disabled', () => {
+            const result = setup();
+            result.filters.trashed = 1;
+            result.orderBy.column = 'deleted_at';
+            result.orderBy.direction = 'desc';
+            window.axios.get.mockResolvedValueOnce({ data: { data: mockData } });
+
+            result.showDeleted.value = false;
+
+            expect(result.orderBy).toEqual({ column: 'id', direction: 'asc' });
+        });
+
+        it('keeps any other sort when disabled', () => {
+            const result = setup();
+            result.filters.trashed = 1;
+            result.orderBy.column = 'name';
+            result.orderBy.direction = 'desc';
+            window.axios.get.mockResolvedValueOnce({ data: { data: mockData } });
+
+            result.showDeleted.value = false;
+
+            expect(result.orderBy).toEqual({ column: 'name', direction: 'desc' });
+        });
+
+        it('clears the bulk selection when toggled', () => {
+            const result = setup();
+            result.bulkItems[1] = true;
+            result.bulkItems[2] = true;
+            window.axios.get.mockResolvedValueOnce({ data: { data: mockData } });
+
+            result.showDeleted.value = true;
+
+            expect(result.clickedBulkItemsCount.value).toBe(0);
+        });
+    });
 });

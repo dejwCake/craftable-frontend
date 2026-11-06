@@ -20,10 +20,12 @@ export function useBaseListing(props) {
         },
     });
 
-    const orderBy = reactive({
+    const defaultOrderBy = {
         column: 'id',
         direction: 'asc',
-    });
+    };
+
+    const orderBy = reactive({ ...defaultOrderBy });
 
     const filters = reactive({});
     const search = ref('');
@@ -58,6 +60,19 @@ export function useBaseListing(props) {
     // Computed
     const clickedBulkItemsCount = computed(() => {
         return Object.values(bulkItems).filter((item) => item === true).length;
+    });
+
+    const showDeleted = computed({
+        get() {
+            return Boolean(filters.trashed);
+        },
+        set(value) {
+            if (!value && orderBy.column === 'deleted_at') {
+                Object.assign(orderBy, defaultOrderBy);
+            }
+            onBulkItemsClickedAllUncheck();
+            filter('trashed', value ? 1 : '');
+        },
     });
 
     const isClickedAll = computed({
@@ -324,6 +339,7 @@ export function useBaseListing(props) {
         // Computed
         isClickedAll,
         clickedBulkItemsCount,
+        showDeleted,
 
         // Methods
         onBulkItemClicked,
