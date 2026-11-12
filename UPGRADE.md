@@ -1,3 +1,33 @@
+# Upgrading within v2
+
+## Next v2 minor (unreleased)
+
+Nothing breaks; the steps below are only needed to use the new pages.
+
+### Account components
+
+The package adds the components behind admin-auth's profile and password pages, in `src/account/`:
+
+- `ProfileForm` — first and last name, e-mail, language and avatar; asks for the current password
+  only when the e-mail changes.
+- `PasswordChangeForm` — current password, new password and its confirmation.
+
+Update `dejwcake/admin-auth` together with this package: its profile pages mount these components.
+Register them in `resources/js/admin/admin.js`, imported by path so a project copy can override them:
+
+```js
+import ProfileForm from '@craftable/account/ProfileForm.vue';
+import PasswordChangeForm from '@craftable/account/PasswordChangeForm.vue';
+
+app.component('ProfileForm', ProfileForm);
+app.component('PasswordChangeForm', PasswordChangeForm);
+```
+
+Both are also named exports of `@dejwcake/craftable`. `craftable-publish-components account` copies
+them to `resources/js/admin/account/` for customising.
+
+---
+
 # Upgrade Guide: v1 to v2
 
 ## Overview

@@ -14,6 +14,11 @@ const groups = {
         dest: 'resources/js/admin/auth',
         ext: '.vue',
     },
+    account: {
+        src: resolve(srcDir, 'account'),
+        dest: 'resources/js/admin/account',
+        ext: '.vue',
+    },
     form: {
         src: resolve(componentsDir, 'form'),
         dest: 'resources/js/admin/components/form',

@@ -12,6 +12,30 @@ You can find the full documentation at https://www.getcraftable.com/
 Where do I report issues?
 If something is not working as expected, please open an issue in the main repository https://github.com/dejwCake/craftable.
 
+## Components
+
+Everything public is exported from `src/index.js`. The groups under `src/` are:
+
+- `composables/` — `useBaseForm`, `useBaseAuth`, `useBaseListing`, `useAdmin`, `useResponsiveColumns`
+- `components/form/`, `components/listing/`, `components/show/` — form fields, listing parts, show rows
+- `auth/` — `LoginForm`, `ForgotPasswordForm`, `ResetPasswordForm`, `ActivationForm`, `ActivationError`
+- `account/` — `ProfileForm`, `PasswordChangeForm`: the logged-in admin's own pages (admin-auth
+  profile and password)
+- `translation/` — `TranslationListing`
+
+### Overriding a component
+
+Projects import components by path, e.g. `import ProfileForm from '@craftable/account/ProfileForm.vue'`.
+The `craftableOverrides()` Vite plugin (in the admin-ui install stub of `vite.config.js`) resolves
+`@craftable/<path>` to `resources/js/admin/<path>` when that file exists, otherwise to this package's
+`src/<path>`. To customise a component, copy it to the same path in the project — by hand or with
+`npx craftable-publish-components <group>` (`account`, `auth`, `form`, `listing`, …) — and edit the
+copy. Package components import shared code only from `@dejwcake/craftable` or `@craftable/…`, so a
+copy builds unchanged. An overridden copy no longer receives package fixes.
+
+Projects without `craftableOverrides()` override by registering their own component under the same
+name in `admin.js`.
+
 ## Commands
 
 All commands run inside Docker containers from the package directory. Vitest tests live under `tests/`;
