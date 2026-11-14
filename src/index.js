@@ -59,10 +59,12 @@ export { default as ForgotPasswordForm } from './auth/ForgotPasswordForm.vue';
 export { default as ResetPasswordForm } from './auth/ResetPasswordForm.vue';
 export { default as ActivationForm } from './auth/ActivationForm.vue';
 export { default as ActivationError } from './auth/ActivationError.vue';
+export { default as TwoFactorChallengeForm } from './auth/TwoFactorChallengeForm.vue';
 
 // Account components (the logged-in admin's own pages)
 export { default as ProfileForm } from './account/ProfileForm.vue';
 export { default as PasswordChangeForm } from './account/PasswordChangeForm.vue';
+export { default as TwoFactorSettings } from './account/TwoFactorSettings.vue';
 
 // Page components
 export { default as TranslationListing } from './translation/TranslationListing.vue';

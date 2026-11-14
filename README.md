@@ -18,9 +18,10 @@ Everything public is exported from `src/index.js`. The groups under `src/` are:
 
 - `composables/` — `useBaseForm`, `useBaseAuth`, `useBaseListing`, `useAdmin`, `useResponsiveColumns`
 - `components/form/`, `components/listing/`, `components/show/` — form fields, listing parts, show rows
-- `auth/` — `LoginForm`, `ForgotPasswordForm`, `ResetPasswordForm`, `ActivationForm`, `ActivationError`
-- `account/` — `ProfileForm`, `PasswordChangeForm`: the logged-in admin's own pages (admin-auth
-  profile and password)
+- `auth/` — `LoginForm`, `ForgotPasswordForm`, `ResetPasswordForm`, `ActivationForm`, `ActivationError`,
+  `TwoFactorChallengeForm` (the code asked for after the password login)
+- `account/` — `ProfileForm`, `PasswordChangeForm`, `TwoFactorSettings`: the logged-in admin's own
+  pages (admin-auth profile, password and two-factor authentication)
 - `translation/` — `TranslationListing`
 
 ### Overriding a component

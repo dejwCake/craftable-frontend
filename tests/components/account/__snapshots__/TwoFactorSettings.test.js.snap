@@ -1,0 +1,32 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TwoFactorSettings > renders the off state 1`] = `
+"<div data-v-55bbcac6="" class="card">
+  <div data-v-55bbcac6="" class="card-header"><i data-v-55bbcac6="" class="fa fa-shield-halved"></i> Two-factor authentication</div>
+  <div data-v-55bbcac6="" class="card-body">
+    <!--v-if-->
+    <p data-v-55bbcac6="" class="two-factor-status"><span data-v-55bbcac6="" class="badge bg-secondary">Off</span></p>
+    <p data-v-55bbcac6="">Protect your account with a code from an authenticator app.</p><button data-v-55bbcac6="" type="button" class="btn btn-primary two-factor-enable">
+      <!--v-if--> Enable
+    </button>
+  </div>
+</div>"
+`;
+
+exports[`TwoFactorSettings > renders the on state 1`] = `
+"<div data-v-55bbcac6="" class="card">
+  <div data-v-55bbcac6="" class="card-header"><i data-v-55bbcac6="" class="fa fa-shield-halved"></i> Two-factor authentication</div>
+  <div data-v-55bbcac6="" class="card-body">
+    <!--v-if-->
+    <form data-v-55bbcac6="" novalidate="">
+      <p data-v-55bbcac6="" class="two-factor-status"><span data-v-55bbcac6="" class="badge bg-success">On</span></p>
+      <!--v-if-->
+      <div data-v-55bbcac6="" class="mb-3 row align-items-center"><label for="current_password" class="col-md-3 col-form-label text-md-end">Current password</label>
+        <div class="col-md-9 col-xl-8"><input id="current_password" type="password" class="form-control" name="current_password" placeholder="Current password" value="">
+          <!--v-if-->
+        </div>
+      </div><button data-v-55bbcac6="" type="button" class="btn btn-outline-primary me-2 two-factor-regenerate">Regenerate recovery codes</button><button data-v-55bbcac6="" type="button" class="btn btn-danger two-factor-disable">Disable</button>
+    </form>
+  </div>
+</div>"
+`;

@@ -1,0 +1,102 @@
+import { describe, it, expect, vi, beforeAll } from 'vitest';
+import { mount, flushPromises } from '@vue/test-utils';
+import { defineRule } from 'vee-validate';
+import { required } from '@vee-validate/rules';
+
+vi.mock('@kyvg/vue3-notification', () => ({
+    notify: vi.fn(),
+}));
+
+import TwoFactorChallengeForm from '@/auth/TwoFactorChallengeForm.vue';
+
+const baseProps = {
+    action: '/admin/two-factor/challenge',
+    translations: {
+        title: 'Two-factor authentication',
+        codeText: 'Enter the code from your authenticator app.',
+        recoveryCodeText: 'Enter one of your recovery codes.',
+        code: 'Code',
+        recoveryCode: 'Recovery code',
+        button: 'Verify',
+        useRecoveryCode: 'Use a recovery code',
+        useCode: 'Use an authentication code',
+    },
+};
+
+describe('TwoFactorChallengeForm', () => {
+    beforeAll(() => {
+        defineRule('required', required);
+    });
+
+    it('renders the code mode', () => {
+        const wrapper = mount(TwoFactorChallengeForm, { props: baseProps });
+        expect(wrapper.html()).toMatchSnapshot();
+
+        const code = wrapper.find('input#code');
+        expect(code.attributes('autocomplete')).toBe('one-time-code');
+        expect(code.attributes('inputmode')).toBe('numeric');
+        expect(wrapper.find('input#recovery_code').exists()).toBe(false);
+    });
+
+    it('posts the code and follows the returned redirect', async () => {
+        const replace = vi.spyOn(window.location, 'replace').mockImplementation(() => {});
+        window.axios.post.mockResolvedValueOnce({ data: { redirect: '/admin/posts' } });
+        const wrapper = mount(TwoFactorChallengeForm, { props: baseProps });
+
+        await wrapper.find('input#code').setValue('123456');
+        await wrapper.find('form').trigger('submit');
+        await flushPromises();
+
+        expect(window.axios.post).toHaveBeenCalledWith('/admin/two-factor/challenge', {
+            code: '123456',
+            recovery_code: '',
+        });
+        expect(replace).toHaveBeenCalledWith('/admin/posts');
+        replace.mockRestore();
+    });
+
+    it('does not post an empty code', async () => {
+        const wrapper = mount(TwoFactorChallengeForm, { props: baseProps });
+        await wrapper.find('form').trigger('submit');
+        await flushPromises();
+
+        expect(window.axios.post).not.toHaveBeenCalled();
+        expect(wrapper.find('input#code').classes()).toContain('is-invalid');
+    });
+
+    it('switches to the recovery code mode and posts the recovery code', async () => {
+        const replace = vi.spyOn(window.location, 'replace').mockImplementation(() => {});
+        window.axios.post.mockResolvedValueOnce({ data: {} });
+        const wrapper = mount(TwoFactorChallengeForm, { props: baseProps });
+
+        await wrapper.find('button.toggle-link').trigger('click');
+        expect(wrapper.find('input#code').exists()).toBe(false);
+        expect(wrapper.find('button.toggle-link').text()).toBe('Use an authentication code');
+
+        await wrapper.find('input#recovery_code').setValue('aaaaa-bbbbb');
+        await wrapper.find('form').trigger('submit');
+        await flushPromises();
+
+        expect(window.axios.post).toHaveBeenCalledWith('/admin/two-factor/challenge', {
+            code: '',
+            recovery_code: 'aaaaa-bbbbb',
+        });
+        // No redirect in the response: falls back to the redirectUrl prop.
+        expect(replace).toHaveBeenCalledWith('/admin');
+        replace.mockRestore();
+    });
+
+    it('shows the server error on the code', async () => {
+        window.axios.post.mockRejectedValueOnce({
+            response: { data: { errors: { code: ['The code is invalid.'] } } },
+        });
+        const wrapper = mount(TwoFactorChallengeForm, { props: baseProps });
+
+        await wrapper.find('input#code').setValue('000000');
+        await wrapper.find('form').trigger('submit');
+        await flushPromises();
+
+        expect(wrapper.find('input#code').classes()).toContain('is-invalid');
+        expect(wrapper.find('.invalid-feedback').text()).toBe('The code is invalid.');
+    });
+});

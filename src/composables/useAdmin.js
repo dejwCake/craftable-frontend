@@ -27,6 +27,11 @@ export function useAdmin() {
             },
             (error) => {
                 setLoading(false);
+                // The admin gate (e.g. a pending two-factor challenge) answers JSON requests with 403 + redirect.
+                const redirect = error.response?.status === 403 ? error.response.data?.redirect : null;
+                if (redirect) {
+                    window.location.assign(redirect);
+                }
                 return Promise.reject(error);
             },
         );

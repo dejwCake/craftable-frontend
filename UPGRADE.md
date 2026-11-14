@@ -1,6 +1,6 @@
 # Upgrading within v2
 
-## Next v2 minor (unreleased)
+## 2.6.0 (unreleased)
 
 Nothing breaks; the steps below are only needed to use the new pages.
 
@@ -25,6 +25,36 @@ app.component('PasswordChangeForm', PasswordChangeForm);
 
 Both are also named exports of `@dejwcake/craftable`. `craftable-publish-components account` copies
 them to `resources/js/admin/account/` for customising.
+
+### Two-factor components
+
+Two components behind admin-auth's two-factor authentication pages:
+
+- `TwoFactorSettings` (`src/account/`) — enable two-factor (QR code and key, confirm with a code),
+  show the recovery codes once (copy / download), regenerate them and disable two-factor; both
+  ask for the current password.
+- `TwoFactorChallengeForm` (`src/auth/`) — the code asked for after the password login, with a
+  switch to a recovery code.
+
+Update `dejwcake/admin-auth` together with this package: its two-factor pages mount these
+components. Register them in `resources/js/admin/admin.js`:
+
+```js
+import TwoFactorSettings from '@craftable/account/TwoFactorSettings.vue';
+import TwoFactorChallengeForm from '@craftable/auth/TwoFactorChallengeForm.vue';
+
+app.component('TwoFactorSettings', TwoFactorSettings);
+app.component('TwoFactorChallengeForm', TwoFactorChallengeForm);
+```
+
+Both are also named exports of `@dejwcake/craftable`.
+
+### `useAdmin` follows a 403 redirect
+
+The axios response interceptor registered by `useAdmin` now follows `redirect` from a 403 JSON
+response (`window.location.assign`). admin-auth answers admin AJAX calls that way while a
+two-factor challenge or enrolment is pending, so a listing loaded before verification sends the
+admin to the challenge instead of failing silently. No action needed.
 
 ---
 
