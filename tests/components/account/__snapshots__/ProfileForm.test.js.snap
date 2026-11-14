@@ -1,0 +1,50 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ProfileForm > renders the profile form 1`] = `
+"<form class="form-horizontal" method="post" action="/admin/profile" novalidate="">
+  <div class="card">
+    <div class="card-header"><i class="fa fa-pencil"></i> Edit profile</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4 text-center">
+          <div class="avatar-upload">
+            <div class="base-upload">
+              <!--v-if-->
+              <div class="vue3-dropzone dropzone"><input><input type="hidden" name="collection" value="avatar">
+                <div class="dz-message"><i class="fa-solid fa-cloud-arrow-up"></i>
+                  <p>Drop files here or click to upload</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="mb-3 row align-items-center"><label for="first_name" class="col-md-3 col-form-label text-md-end">First name</label>
+            <div class="col-md-9 col-xl-8"><input id="first_name" type="text" class="form-control" name="first_name" placeholder="First name" value="John">
+              <!--v-if-->
+            </div>
+          </div>
+          <div class="mb-3 row align-items-center"><label for="last_name" class="col-md-3 col-form-label text-md-end">Last name</label>
+            <div class="col-md-9 col-xl-8"><input id="last_name" type="text" class="form-control" name="last_name" placeholder="Last name" value="Doe">
+              <!--v-if-->
+            </div>
+          </div>
+          <div class="mb-3 row align-items-center"><label for="email" class="col-md-3 col-form-label text-md-end">E-mail</label>
+            <div class="col-md-9 col-xl-8"><input id="email" type="email" class="form-control" name="email" placeholder="E-mail" value="john@example.com">
+              <!--v-if-->
+            </div>
+          </div>
+          <!--v-if-->
+          <div class="mb-3 row align-items-center"><label for="language" class="col-md-3 col-form-label text-md-end">Language</label>
+            <div class="col-md-9 col-xl-8">
+              <div class="multiselect-stub"></div>
+              <!--v-if-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer"><button type="submit" class="btn btn-primary submit-btn"><i class="fa fa-download"></i> Save</button></div>
+  </div>
+</form>"
+`;
