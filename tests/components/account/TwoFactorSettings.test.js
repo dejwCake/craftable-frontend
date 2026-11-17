@@ -66,6 +66,19 @@ describe('TwoFactorSettings', () => {
         expect(wrapper.find('.two-factor-required').exists()).toBe(true);
     });
 
+    it('allows disabling a required two-factor when another factor remains', () => {
+        const wrapper = mount(TwoFactorSettings, {
+            props: { ...baseProps, enabled: true, required: true, canDisable: true },
+        });
+        expect(wrapper.find('button.two-factor-disable').exists()).toBe(true);
+        expect(wrapper.find('.two-factor-required').exists()).toBe(true);
+    });
+
+    it('hides disabling when canDisable is false', () => {
+        const wrapper = mount(TwoFactorSettings, { props: { ...baseProps, enabled: true, canDisable: false } });
+        expect(wrapper.find('button.two-factor-disable').exists()).toBe(false);
+    });
+
     it('goes from off to enrolling with the QR code and secret', async () => {
         const wrapper = mount(TwoFactorSettings, { props: baseProps });
         await enrol(wrapper);

@@ -49,6 +49,36 @@ app.component('TwoFactorChallengeForm', TwoFactorChallengeForm);
 
 Both are also named exports of `@dejwcake/craftable`.
 
+### Passkeys
+
+admin-auth adds passkeys (WebAuthn): passwordless login, a passkey as the second factor and a
+passkeys page. This package adds:
+
+- `PasskeySettings` (`src/account/`) — lists the admin's passkeys, adds one (current password and a
+  name prefilled from the browser and the OS), renames inline and removes one (current password).
+  It says when the browser can't use passkeys or the migration has not run.
+- `usePasskeys` (`src/composables/`) — the ceremonies on `@simplewebauthn/browser`, a new
+  dependency installed with this package.
+- `LoginForm` gets the optional props `passkeyOptionsUrl` and `passkeyLoginUrl`: with both, it shows
+  "Sign in with a passkey" and offers passkeys in the e-mail field's autofill.
+- `TwoFactorChallengeForm` gets `hasTotp` (default `true`), `hasPasskeys`, `passkeyOptionsUrl` and
+  `passkeyUrl`, and offers the passkey first.
+- `TwoFactorSettings` gets the optional `canDisable`, so a forced admin with a passkey can turn off
+  TOTP.
+
+Update `dejwcake/admin-auth` together with this package: its pages pass these props and mount
+`PasskeySettings`. Register it in `resources/js/admin/admin.js`:
+
+```js
+import PasskeySettings from '@craftable/account/PasskeySettings.vue';
+
+app.component('PasskeySettings', PasskeySettings);
+```
+
+Both are also named exports of `@dejwcake/craftable`. A project that overrides the login view adds
+the two props to `<login-form>` itself (see admin-auth's UPGRADE.md). Without the props the forms
+render as before.
+
 ### `useAdmin` follows a 403 redirect
 
 The axios response interceptor registered by `useAdmin` now follows `redirect` from a 403 JSON

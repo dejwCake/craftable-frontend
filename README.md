@@ -16,12 +16,15 @@ If something is not working as expected, please open an issue in the main reposi
 
 Everything public is exported from `src/index.js`. The groups under `src/` are:
 
-- `composables/` — `useBaseForm`, `useBaseAuth`, `useBaseListing`, `useAdmin`, `useResponsiveColumns`
+- `composables/` — `useBaseForm`, `useBaseAuth`, `useBaseListing`, `useAdmin`, `useResponsiveColumns`,
+  `usePasskeys` (passkey ceremonies on `@simplewebauthn/browser`: support check, register,
+  authenticate, autofill)
 - `components/form/`, `components/listing/`, `components/show/` — form fields, listing parts, show rows
 - `auth/` — `LoginForm`, `ForgotPasswordForm`, `ResetPasswordForm`, `ActivationForm`, `ActivationError`,
-  `TwoFactorChallengeForm` (the code asked for after the password login)
-- `account/` — `ProfileForm`, `PasswordChangeForm`, `TwoFactorSettings`: the logged-in admin's own
-  pages (admin-auth profile, password and two-factor authentication)
+  `TwoFactorChallengeForm` (the code or passkey asked for after the password login); `LoginForm` and
+  `TwoFactorChallengeForm` offer passkeys when admin-auth passes the passkey props
+- `account/` — `ProfileForm`, `PasswordChangeForm`, `TwoFactorSettings`, `PasskeySettings`: the
+  logged-in admin's own pages (admin-auth profile, password, two-factor authentication and passkeys)
 - `translation/` — `TranslationListing`
 
 ### Overriding a component
@@ -32,7 +35,9 @@ The `craftableOverrides()` Vite plugin (in the admin-ui install stub of `vite.co
 `src/<path>`. To customise a component, copy it to the same path in the project — by hand or with
 `npx craftable-publish-components <group>` (`account`, `auth`, `form`, `listing`, …) — and edit the
 copy. Package components import shared code only from `@dejwcake/craftable` or `@craftable/…`, so a
-copy builds unchanged. An overridden copy no longer receives package fixes.
+copy builds unchanged. An overridden copy no longer receives package fixes. The passkey components
+import `@craftable/composables/usePasskeys.js`, so a project can override the composable alone (e.g.
+a different autofill behaviour) and keep the package components.
 
 Projects without `craftableOverrides()` override by registering their own component under the same
 name in `admin.js`.

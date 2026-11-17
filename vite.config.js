@@ -24,6 +24,7 @@ const externalPackages = [
   'vue-multiselect',
   'ckeditor5',
   '@ckeditor/ckeditor5-vue',
+  '@simplewebauthn/browser',
 ];
 
 export default defineConfig({
@@ -52,6 +53,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@dejwcake/craftable': resolve(import.meta.dirname, 'src/index.js'),
+      // Projects resolve @craftable/<path> to their override or this package's src (see README).
+      '@craftable': resolve(import.meta.dirname, 'src'),
       '@': resolve(import.meta.dirname, 'src'),
     },
   },

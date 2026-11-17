@@ -7,6 +7,16 @@ vi.mock('@kyvg/vue3-notification', () => ({
     notify: vi.fn(),
 }));
 
+const passkeysMock = {
+    isSupported: vi.fn(() => true),
+    authenticate: vi.fn(),
+    isCancelled: vi.fn((error) => error?.name === 'NotAllowedError'),
+};
+
+vi.mock('@craftable/composables/usePasskeys.js', () => ({
+    usePasskeys: () => passkeysMock,
+}));
+
 import TwoFactorChallengeForm from '@/auth/TwoFactorChallengeForm.vue';
 
 const baseProps = {
@@ -20,7 +30,18 @@ const baseProps = {
         button: 'Verify',
         useRecoveryCode: 'Use a recovery code',
         useCode: 'Use an authentication code',
+        passkeyText: 'Confirm it is you with your passkey.',
+        usePasskey: 'Use a passkey',
+        passkeyUnsupported: 'This browser cannot use passkeys here.',
+        or: 'or',
     },
+};
+
+const passkeyProps = {
+    ...baseProps,
+    hasPasskeys: true,
+    passkeyOptionsUrl: '/admin/two-factor/challenge/passkey/options',
+    passkeyUrl: '/admin/two-factor/challenge/passkey',
 };
 
 describe('TwoFactorChallengeForm', () => {
@@ -98,5 +119,83 @@ describe('TwoFactorChallengeForm', () => {
 
         expect(wrapper.find('input#code').classes()).toContain('is-invalid');
         expect(wrapper.find('.invalid-feedback').text()).toBe('The code is invalid.');
+    });
+
+    describe('passkeys', () => {
+        it('offers only codes with TOTP only', () => {
+            const wrapper = mount(TwoFactorChallengeForm, { props: baseProps });
+
+            expect(wrapper.find('button.passkey-btn').exists()).toBe(false);
+            expect(wrapper.find('input#code').exists()).toBe(true);
+        });
+
+        it('offers only the passkey with passkeys only', () => {
+            const wrapper = mount(TwoFactorChallengeForm, { props: { ...passkeyProps, hasTotp: false } });
+
+            expect(wrapper.html()).toMatchSnapshot();
+            expect(wrapper.find('button.passkey-btn').text()).toBe('Use a passkey');
+            expect(wrapper.find('.auth-subtitle').text()).toBe('Confirm it is you with your passkey.');
+            expect(wrapper.find('input#code').exists()).toBe(false);
+            expect(wrapper.find('button.toggle-link').exists()).toBe(false);
+            expect(wrapper.find('button.submit-btn').exists()).toBe(false);
+        });
+
+        it('offers the passkey first, then the code, with both', () => {
+            const wrapper = mount(TwoFactorChallengeForm, { props: passkeyProps });
+
+            expect(wrapper.html()).toMatchSnapshot();
+            const html = wrapper.html();
+            expect(html.indexOf('passkey-btn')).toBeLessThan(html.indexOf('id="code"'));
+            expect(wrapper.find('.passkey-or').exists()).toBe(true);
+        });
+
+        it('says the browser cannot use passkeys', () => {
+            passkeysMock.isSupported.mockReturnValueOnce(false);
+            const wrapper = mount(TwoFactorChallengeForm, { props: { ...passkeyProps, hasTotp: false } });
+
+            expect(wrapper.find('.passkey-unsupported').exists()).toBe(true);
+            expect(wrapper.find('button.passkey-btn').exists()).toBe(false);
+        });
+
+        it('verifies with a passkey and follows the returned redirect', async () => {
+            const replace = vi.spyOn(window.location, 'replace').mockImplementation(() => {});
+            passkeysMock.authenticate.mockResolvedValueOnce({ id: 'assertion' });
+            window.axios.post.mockResolvedValueOnce({ data: { redirect: '/admin/posts' } });
+            const wrapper = mount(TwoFactorChallengeForm, { props: passkeyProps });
+
+            await wrapper.find('button.passkey-btn').trigger('click');
+            await flushPromises();
+
+            expect(passkeysMock.authenticate).toHaveBeenCalledWith('/admin/two-factor/challenge/passkey/options');
+            expect(window.axios.post).toHaveBeenCalledWith('/admin/two-factor/challenge/passkey', {
+                credential: { id: 'assertion' },
+            });
+            expect(replace).toHaveBeenCalledWith('/admin/posts');
+            replace.mockRestore();
+        });
+
+        it('shows a rejected passkey', async () => {
+            passkeysMock.authenticate.mockResolvedValueOnce({ id: 'assertion' });
+            window.axios.post.mockRejectedValueOnce({
+                response: { data: { errors: { passkey: ['The passkey could not be verified.'] } } },
+            });
+            const wrapper = mount(TwoFactorChallengeForm, { props: passkeyProps });
+
+            await wrapper.find('button.passkey-btn').trigger('click');
+            await flushPromises();
+
+            expect(wrapper.find('.passkey-error').text()).toBe('The passkey could not be verified.');
+        });
+
+        it('stays quiet when the dialog is closed', async () => {
+            passkeysMock.authenticate.mockRejectedValueOnce({ name: 'NotAllowedError' });
+            const wrapper = mount(TwoFactorChallengeForm, { props: passkeyProps });
+
+            await wrapper.find('button.passkey-btn').trigger('click');
+            await flushPromises();
+
+            expect(wrapper.find('.passkey-error').exists()).toBe(false);
+            expect(window.axios.post).not.toHaveBeenCalled();
+        });
     });
 });

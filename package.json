@@ -43,6 +43,7 @@
     "@coreui/coreui": "^5.3",
     "@fortawesome/fontawesome-free": "^7.2",
     "@kyvg/vue3-notification": "^3.4",
+    "@simplewebauthn/browser": "^14.0.0",
     "@tiptap/extension-image": "^3.31.4",
     "@tiptap/extension-table": "^3.31.4",
     "@tiptap/starter-kit": "^3.31.4",

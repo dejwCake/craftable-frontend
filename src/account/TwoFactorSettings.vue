@@ -93,7 +93,7 @@
                     {{ translations.regenerate }}
                 </button>
                 <button
-                    v-if="!required"
+                    v-if="disableAllowed"
                     type="button"
                     class="btn btn-danger two-factor-disable"
                     :disabled="submitting"
@@ -107,12 +107,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { FormInput, notifySuccess } from '@dejwcake/craftable';
 
 const props = defineProps({
     enabled: { type: Boolean, default: false },
     required: { type: Boolean, default: false },
+    // Whether TOTP may be turned off; without it, only when two-factor is not required (a forced
+    // admin with another factor, e.g. a passkey, may).
+    canDisable: { type: Boolean, default: undefined },
     enableUrl: { type: String, required: true },
     confirmUrl: { type: String, required: true },
     recoveryCodesUrl: { type: String, required: true },
@@ -121,6 +124,8 @@ const props = defineProps({
 });
 
 const axios = window.axios;
+
+const disableAllowed = computed(() => props.canDisable ?? !props.required);
 
 // off → enrolling → codes → on; regenerating goes on → codes, disabling on → off
 const state = ref(props.enabled ? 'on' : 'off');

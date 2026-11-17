@@ -7,6 +7,7 @@ export default defineConfig({
     resolve: {
         alias: {
             '@dejwcake/craftable': resolve(import.meta.dirname, 'src/index.js'),
+            '@craftable': resolve(import.meta.dirname, 'src'),
             '@': resolve(import.meta.dirname, 'src'),
         },
     },

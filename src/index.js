@@ -4,6 +4,7 @@ export { useBaseAuth } from './composables/useBaseAuth.js';
 export { useBaseListing } from './composables/useBaseListing.js';
 export { useAdmin } from './composables/useAdmin.js';
 export { useResponsiveColumns } from './composables/useResponsiveColumns.js';
+export { usePasskeys } from './composables/usePasskeys.js';
 
 // Components
 export { default as MediaUpload } from './components/form/MediaUpload.vue';
@@ -65,6 +66,7 @@ export { default as TwoFactorChallengeForm } from './auth/TwoFactorChallengeForm
 export { default as ProfileForm } from './account/ProfileForm.vue';
 export { default as PasswordChangeForm } from './account/PasswordChangeForm.vue';
 export { default as TwoFactorSettings } from './account/TwoFactorSettings.vue';
+export { default as PasskeySettings } from './account/PasskeySettings.vue';
 
 // Page components
 export { default as TranslationListing } from './translation/TranslationListing.vue';

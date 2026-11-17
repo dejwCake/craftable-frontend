@@ -27,6 +27,7 @@
                                 class="form-control"
                                 :class="{ 'is-invalid': errors.email }"
                                 name="email"
+                                :autocomplete="passkeysEnabled ? 'username webauthn' : undefined"
                                 :placeholder="translations.email"
                             />
                         </div>
@@ -61,6 +62,20 @@
                             {{ translations.button }}
                         </button>
                     </div>
+                    <div v-if="passkeysEnabled" class="mb-3">
+                        <button
+                            type="button"
+                            class="btn btn-outline-primary w-100 passkey-btn"
+                            :disabled="passkeySubmitting"
+                            @click="signInWithPasskey"
+                        >
+                            <i class="fa" :class="passkeySubmitting ? 'fa-spinner fa-spin' : 'fa-fingerprint'"></i>
+                            {{ translations.passkeyButton }}
+                        </button>
+                        <div v-if="passkeyError" class="invalid-feedback d-block form-text passkey-error">
+                            {{ passkeyError }}
+                        </div>
+                    </div>
                     <div class="mb-3 text-center">
                         <a :href="passwordResetUrl" class="auth-ghost-link forgot-link">{{
                             translations.forgotPassword
@@ -73,7 +88,9 @@
 </template>
 
 <script setup>
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useBaseAuth } from '@dejwcake/craftable';
+import { usePasskeys } from '@craftable/composables/usePasskeys.js';
 
 const props = defineProps({
     action: { type: String, required: true },
@@ -82,6 +99,9 @@ const props = defineProps({
     passwordResetUrl: { type: String, default: '/admin/password-reset' },
     statusMessage: { type: String, default: '' },
     serverErrors: { type: Array, default: () => [] },
+    // Both set (admin-auth passes them once the passkeys table exists) to offer passkeys.
+    passkeyOptionsUrl: { type: String, default: '' },
+    passkeyLoginUrl: { type: String, default: '' },
 });
 
 const { form, errors, submitting, onSubmit } = useBaseAuth(props, {
@@ -93,6 +113,69 @@ const { form, errors, submitting, onSubmit } = useBaseAuth(props, {
     onSuccess() {
         window.location.replace(props.redirectUrl);
     },
+});
+
+const axios = window.axios;
+const { isSupported, authenticate, autofill, cancel, isCancelled } = usePasskeys();
+
+const passkeysEnabled = Boolean(props.passkeyOptionsUrl && props.passkeyLoginUrl) && isSupported();
+const passkeySubmitting = ref(false);
+const passkeyError = ref('');
+
+async function login(credential) {
+    passkeySubmitting.value = true;
+    try {
+        // The form always remembers the login, like its hidden `remember` field.
+        await axios.post(props.passkeyLoginUrl, { credential, remember: true });
+        window.location.replace(props.redirectUrl);
+    } finally {
+        passkeySubmitting.value = false;
+    }
+}
+
+function showError(error) {
+    if (isCancelled(error)) {
+        return;
+    }
+    const data = error?.response?.data || {};
+    passkeyError.value = data.errors?.passkey?.[0] || data.errors?.email?.[0] || data.message || '';
+}
+
+async function startAutofill() {
+    try {
+        const credential = await autofill(props.passkeyOptionsUrl);
+        if (credential) {
+            passkeyError.value = '';
+            await login(credential);
+        }
+    } catch (error) {
+        // Not restarted here: a failing options request would loop. The button restarts it.
+        showError(error);
+    }
+}
+
+async function signInWithPasskey() {
+    passkeyError.value = '';
+    try {
+        // Starting a new ceremony aborts the pending autofill request.
+        await login(await authenticate(props.passkeyOptionsUrl));
+    } catch (error) {
+        showError(error);
+        // The button's ceremony aborted the autofill request; offer passkeys in the field again.
+        startAutofill();
+    }
+}
+
+onMounted(() => {
+    if (passkeysEnabled) {
+        startAutofill();
+    }
+});
+
+onBeforeUnmount(() => {
+    if (passkeysEnabled) {
+        cancel();
+    }
 });
 </script>
 

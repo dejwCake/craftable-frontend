@@ -1,0 +1,53 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PasskeySettings > lists the passkeys with their dates 1`] = `
+"<div class="card">
+  <div class="card-header"><i class="fa fa-fingerprint"></i> Passkeys</div>
+  <div class="card-body">
+    <!--v-if-->
+    <!--v-if-->
+    <p>Sign in with your fingerprint, face or device PIN.</p>
+    <ul class="list-group mb-3 passkeys-list">
+      <li class="list-group-item passkeys-item">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <div class="me-auto">
+            <div class="fw-semibold passkeys-name">MacBook</div><small class="text-body-secondary passkeys-dates">Added 2026-11-01 · Last used 2026-11-10</small>
+          </div><button type="button" class="btn btn-outline-secondary btn-sm passkeys-rename-start">Rename</button><button type="button" class="btn btn-outline-danger btn-sm passkeys-remove-start">Remove</button>
+        </div>
+      </li>
+      <li class="list-group-item passkeys-item">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <div class="me-auto">
+            <div class="fw-semibold passkeys-name">YubiKey</div><small class="text-body-secondary passkeys-dates">Added 2026-11-02 · Last used never</small>
+          </div><button type="button" class="btn btn-outline-secondary btn-sm passkeys-rename-start">Rename</button><button type="button" class="btn btn-outline-danger btn-sm passkeys-remove-start">Remove</button>
+        </div>
+      </li>
+    </ul><button type="button" class="btn btn-primary passkeys-add-start"><i class="fa fa-plus"></i> Add a passkey</button>
+  </div>
+</div>"
+`;
+
+exports[`PasskeySettings > says there are none and offers to add one 1`] = `
+"<div class="card">
+  <div class="card-header"><i class="fa fa-fingerprint"></i> Passkeys</div>
+  <div class="card-body">
+    <!--v-if-->
+    <!--v-if-->
+    <p>Sign in with your fingerprint, face or device PIN.</p>
+    <p class="text-body-secondary passkeys-empty">You have no passkeys yet.</p><button type="button" class="btn btn-primary passkeys-add-start"><i class="fa fa-plus"></i> Add a passkey</button>
+  </div>
+</div>"
+`;
+
+exports[`PasskeySettings > shows the missing-migration notice without the add action 1`] = `
+"<div class="card">
+  <div class="card-header"><i class="fa fa-fingerprint"></i> Passkeys</div>
+  <div class="card-body">
+    <div class="alert alert-warning passkeys-migration-missing">Run the migration first.</div>
+    <!--v-if-->
+    <p>Sign in with your fingerprint, face or device PIN.</p>
+    <p class="text-body-secondary passkeys-empty">You have no passkeys yet.</p>
+    <!--v-if-->
+  </div>
+</div>"
+`;

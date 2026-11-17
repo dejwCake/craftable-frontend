@@ -1,5 +1,52 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`TwoFactorChallengeForm > passkeys > offers only the passkey with passkeys only 1`] = `
+"<div data-v-aadd5ba7="" class="card">
+  <div data-v-aadd5ba7="" class="card-body">
+    <form data-v-aadd5ba7="" role="form" method="POST" action="/admin/two-factor/challenge" novalidate="">
+      <div data-v-aadd5ba7="" class="auth-header">
+        <h1 data-v-aadd5ba7="" class="auth-title">Two-factor authentication</h1>
+        <p data-v-aadd5ba7="" class="auth-subtitle">Confirm it is you with your passkey.</p>
+      </div>
+      <div data-v-aadd5ba7="" class="auth-body">
+        <div data-v-aadd5ba7="" class="mb-3 passkey-option"><button data-v-aadd5ba7="" type="button" class="btn btn-primary w-100 passkey-btn"><i data-v-aadd5ba7="" class="fa fa-fingerprint"></i> Use a passkey</button>
+          <!--v-if-->
+          <!--v-if-->
+        </div>
+        <!--v-if-->
+      </div>
+    </form>
+  </div>
+</div>"
+`;
+
+exports[`TwoFactorChallengeForm > passkeys > offers the passkey first, then the code, with both 1`] = `
+"<div data-v-aadd5ba7="" class="card">
+  <div data-v-aadd5ba7="" class="card-body">
+    <form data-v-aadd5ba7="" role="form" method="POST" action="/admin/two-factor/challenge" novalidate="">
+      <div data-v-aadd5ba7="" class="auth-header">
+        <h1 data-v-aadd5ba7="" class="auth-title">Two-factor authentication</h1>
+        <p data-v-aadd5ba7="" class="auth-subtitle">Enter the code from your authenticator app.</p>
+      </div>
+      <div data-v-aadd5ba7="" class="auth-body">
+        <div data-v-aadd5ba7="" class="mb-3 passkey-option"><button data-v-aadd5ba7="" type="button" class="btn btn-primary w-100 passkey-btn"><i data-v-aadd5ba7="" class="fa fa-fingerprint"></i> Use a passkey</button>
+          <!--v-if-->
+          <p data-v-aadd5ba7="" class="text-center text-body-secondary mt-3 mb-0 passkey-or">or</p>
+        </div>
+        <div data-v-aadd5ba7="" class="mb-3"><label data-v-aadd5ba7="" for="code">Code</label>
+          <div data-v-aadd5ba7="" class="input-group input-group--custom"><span data-v-aadd5ba7="" class="input-group-text"><i data-v-aadd5ba7="" class="fa fa-mobile-screen"></i></span><input data-v-aadd5ba7="" id="code" type="text" class="form-control" name="code" autocomplete="one-time-code" inputmode="numeric" placeholder="Code"></div>
+          <!--v-if-->
+        </div>
+        <div data-v-aadd5ba7="" class="mb-3"><button data-v-aadd5ba7="" type="submit" class="btn btn-primary submit-btn">
+            <!--v-if--> Verify
+          </button></div>
+        <div data-v-aadd5ba7="" class="mb-3 text-center"><button data-v-aadd5ba7="" type="button" class="btn btn-link auth-ghost-link toggle-link">Use a recovery code</button></div>
+      </div>
+    </form>
+  </div>
+</div>"
+`;
+
 exports[`TwoFactorChallengeForm > renders the code mode 1`] = `
 "<div data-v-aadd5ba7="" class="card">
   <div data-v-aadd5ba7="" class="card-body">
@@ -9,6 +56,7 @@ exports[`TwoFactorChallengeForm > renders the code mode 1`] = `
         <p data-v-aadd5ba7="" class="auth-subtitle">Enter the code from your authenticator app.</p>
       </div>
       <div data-v-aadd5ba7="" class="auth-body">
+        <!--v-if-->
         <div data-v-aadd5ba7="" class="mb-3"><label data-v-aadd5ba7="" for="code">Code</label>
           <div data-v-aadd5ba7="" class="input-group input-group--custom"><span data-v-aadd5ba7="" class="input-group-text"><i data-v-aadd5ba7="" class="fa fa-mobile-screen"></i></span><input data-v-aadd5ba7="" id="code" type="text" class="form-control" name="code" autocomplete="one-time-code" inputmode="numeric" placeholder="Code"></div>
           <!--v-if-->

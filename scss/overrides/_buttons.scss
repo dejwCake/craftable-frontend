@@ -111,7 +111,8 @@
         }
     }
 
-    &:not(.btn-outline-secondary) {
+    // Outline and link buttons keep their own text colour (also on hover); their icons follow it.
+    &:not([class*='btn-outline-'], .btn-link) {
         i.fa,
         i.fa-solid,
         i.fa-regular {
