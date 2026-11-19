@@ -19,7 +19,9 @@ Everything public is exported from `src/index.js`. The groups under `src/` are:
 - `composables/` — `useBaseForm`, `useBaseAuth`, `useBaseListing`, `useAdmin`, `useResponsiveColumns`,
   `usePasskeys` (passkey ceremonies on `@simplewebauthn/browser`: support check, register,
   authenticate, autofill)
-- `components/form/`, `components/listing/`, `components/show/` — form fields, listing parts, show rows
+- `components/form/`, `components/listing/`, `components/show/` — form fields, listing parts, show rows;
+  `listing/SecurityResetButton` resets another admin's second factors from the generated admin-users
+  listing (admin-auth's reset endpoint, the acting admin's password in a modal)
 - `auth/` — `LoginForm`, `ForgotPasswordForm`, `ResetPasswordForm`, `ActivationForm`, `ActivationError`,
   `TwoFactorChallengeForm` (the code or passkey asked for after the password login); `LoginForm` and
   `TwoFactorChallengeForm` offer passkeys when admin-auth passes the passkey props

@@ -29,6 +29,7 @@ export { default as DeleteButton } from './components/listing/DeleteButton.vue';
 export { default as ForceDeleteButton } from './components/listing/ForceDeleteButton.vue';
 export { default as RestoreButton } from './components/listing/RestoreButton.vue';
 export { default as ShowDeleted } from './components/listing/ShowDeleted.vue';
+export { default as SecurityResetButton } from './components/listing/SecurityResetButton.vue';
 export { default as BackButton } from './components/BackButton.vue';
 export { default as ConfirmModal } from './components/ConfirmModal.vue';
 export { default as ToggleSwitch } from './components/listing/ToggleSwitch.vue';

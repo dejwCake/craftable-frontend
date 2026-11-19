@@ -79,6 +79,14 @@ Both are also named exports of `@dejwcake/craftable`. A project that overrides t
 the two props to `<login-form>` itself (see admin-auth's UPGRADE.md). Without the props the forms
 render as before.
 
+### Security reset button
+
+`SecurityResetButton` (`src/components/listing/`) is the "Reset two-factor" row action of the
+admin-users listing that admin-generator generates when admin-auth's reset endpoint is available. It
+asks for the acting admin's password in a modal, posts it and emits `reset`. Generated code imports it
+by path (`@craftable/components/listing/SecurityResetButton.vue`); it is also a named export. Nothing
+to do until the admin-users CRUD is regenerated.
+
 ### `useAdmin` follows a 403 redirect
 
 The axios response interceptor registered by `useAdmin` now follows `redirect` from a 403 JSON
