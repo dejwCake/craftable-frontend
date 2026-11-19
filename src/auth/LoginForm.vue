@@ -65,7 +65,7 @@
                     <div v-if="passkeysEnabled" class="mb-3">
                         <button
                             type="button"
-                            class="btn btn-outline-primary w-100 passkey-btn"
+                            class="btn btn-outline-primary passkey-btn"
                             :disabled="passkeySubmitting"
                             @click="signInWithPasskey"
                         >
@@ -180,6 +180,15 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+.passkey-btn {
+    --cui-btn-hover-color: #fff;
+    --cui-btn-active-color: #fff;
+
+    width: 100%;
+    padding: 0.25rem 0.75rem;
+    font-size: 14px;
+}
+
 .forgot-link {
     text-decoration: none;
 }

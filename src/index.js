@@ -67,6 +67,7 @@ export { default as TwoFactorChallengeForm } from './auth/TwoFactorChallengeForm
 export { default as ProfileForm } from './account/ProfileForm.vue';
 export { default as PasswordChangeForm } from './account/PasswordChangeForm.vue';
 export { default as TwoFactorSettings } from './account/TwoFactorSettings.vue';
+export { default as TwoFactorOverview } from './account/TwoFactorOverview.vue';
 export { default as PasskeySettings } from './account/PasskeySettings.vue';
 
 // Page components

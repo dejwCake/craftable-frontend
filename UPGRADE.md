@@ -28,11 +28,15 @@ them to `resources/js/admin/account/` for customising.
 
 ### Two-factor components
 
-Two components behind admin-auth's two-factor authentication pages:
+Three components behind admin-auth's two-factor authentication pages:
 
-- `TwoFactorSettings` (`src/account/`) — enable two-factor (QR code and key, confirm with a code),
-  show the recovery codes once (copy / download), regenerate them and disable two-factor; both
-  ask for the current password.
+- `TwoFactorOverview` (`src/account/`) — the settings page: the overall two-factor status (on when
+  any second factor is active) and one section per factor that admin-auth passes, either a
+  registered component or a status with a link (passkeys).
+- `TwoFactorSettings` (`src/account/`) — the authenticator-app section: enable it (QR code and key,
+  confirm with a code), show the recovery codes once (copy / download), regenerate them and disable
+  it; both ask for the current password. It emits `update:active` when it turns on or off, so the
+  overview's status follows.
 - `TwoFactorChallengeForm` (`src/auth/`) — the code asked for after the password login, with a
   switch to a recovery code.
 
@@ -40,14 +44,16 @@ Update `dejwcake/admin-auth` together with this package: its two-factor pages mo
 components. Register them in `resources/js/admin/admin.js`:
 
 ```js
+import TwoFactorOverview from '@craftable/account/TwoFactorOverview.vue';
 import TwoFactorSettings from '@craftable/account/TwoFactorSettings.vue';
 import TwoFactorChallengeForm from '@craftable/auth/TwoFactorChallengeForm.vue';
 
+app.component('TwoFactorOverview', TwoFactorOverview);
 app.component('TwoFactorSettings', TwoFactorSettings);
 app.component('TwoFactorChallengeForm', TwoFactorChallengeForm);
 ```
 
-Both are also named exports of `@dejwcake/craftable`.
+All three are also named exports of `@dejwcake/craftable`.
 
 ### Passkeys
 

@@ -123,6 +123,8 @@ const props = defineProps({
     translations: { type: Object, default: () => ({}) },
 });
 
+const emit = defineEmits(['update:active']);
+
 const axios = window.axios;
 
 const disableAllowed = computed(() => props.canDisable ?? !props.required);
@@ -174,6 +176,7 @@ async function confirm() {
     const data = await send(() => axios.post(props.confirmUrl, { code: form.value.code }));
     if (data) {
         showRecoveryCodes(data.recovery_codes);
+        emit('update:active', true);
     }
 }
 
@@ -199,6 +202,7 @@ async function disable() {
     if (data) {
         form.value.current_password = '';
         state.value = 'off';
+        emit('update:active', false);
         notifySuccess(data.message);
     }
 }

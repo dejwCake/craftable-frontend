@@ -102,6 +102,7 @@ describe('TwoFactorSettings', () => {
 
         expect(window.axios.post).toHaveBeenLastCalledWith('/admin/two-factor/confirm', { code: '123456' });
         expect(wrapper.findAll('.two-factor-recovery-codes li').map((item) => item.text())).toEqual(recoveryCodes);
+        expect(wrapper.emitted('update:active')).toEqual([[true]]);
 
         await wrapper.find('button.two-factor-done').trigger('click');
         expect(wrapper.find('.two-factor-status').text()).toBe('On');
@@ -122,6 +123,7 @@ describe('TwoFactorSettings', () => {
         expect(wrapper.find('input#code').classes()).toContain('is-invalid');
         expect(wrapper.find('.invalid-feedback').text()).toBe('The code is invalid.');
         expect(wrapper.find('.two-factor-recovery-codes').exists()).toBe(false);
+        expect(wrapper.emitted('update:active')).toBeUndefined();
     });
 
     it('goes back to off when enrolment is cancelled', async () => {
@@ -156,6 +158,7 @@ describe('TwoFactorSettings', () => {
             current_password: 'secret',
         });
         expect(wrapper.findAll('.two-factor-recovery-codes li')).toHaveLength(2);
+        expect(wrapper.emitted('update:active')).toBeUndefined();
     });
 
     it('stays on and shows the password error when regenerating with a wrong password', async () => {
@@ -184,6 +187,7 @@ describe('TwoFactorSettings', () => {
             data: { current_password: 'secret' },
         });
         expect(wrapper.find('.two-factor-status').text()).toBe('Off');
+        expect(wrapper.emitted('update:active')).toEqual([[false]]);
     });
 
     it('copies the recovery codes', async () => {

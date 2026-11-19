@@ -25,8 +25,11 @@ Everything public is exported from `src/index.js`. The groups under `src/` are:
 - `auth/` — `LoginForm`, `ForgotPasswordForm`, `ResetPasswordForm`, `ActivationForm`, `ActivationError`,
   `TwoFactorChallengeForm` (the code or passkey asked for after the password login); `LoginForm` and
   `TwoFactorChallengeForm` offer passkeys when admin-auth passes the passkey props
-- `account/` — `ProfileForm`, `PasswordChangeForm`, `TwoFactorSettings`, `PasskeySettings`: the
-  logged-in admin's own pages (admin-auth profile, password, two-factor authentication and passkeys)
+- `account/` — `ProfileForm`, `PasswordChangeForm`, `TwoFactorOverview`, `TwoFactorSettings`,
+  `PasskeySettings`: the logged-in admin's own pages (admin-auth profile, password, two-factor
+  authentication and passkeys). `TwoFactorOverview` shows the overall two-factor status and one section
+  per second factor; a factor that manages itself in place (as `TwoFactorSettings` does for the
+  authenticator app) is a registered component that emits `update:active`
 - `translation/` — `TranslationListing`
 
 ### Overriding a component

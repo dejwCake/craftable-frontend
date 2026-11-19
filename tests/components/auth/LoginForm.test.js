@@ -114,6 +114,8 @@ describe('LoginForm', () => {
 
             expect(wrapper.html()).toMatchSnapshot();
             expect(wrapper.find('button.passkey-btn').text()).toBe('Sign in with a passkey');
+            // Not `.w-100`, which the auth card pads like a primary button.
+            expect(wrapper.find('button.passkey-btn').classes()).not.toContain('w-100');
             expect(wrapper.find('input#email').attributes('autocomplete')).toBe('username webauthn');
         });
 
