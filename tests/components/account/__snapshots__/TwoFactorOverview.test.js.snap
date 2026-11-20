@@ -1,0 +1,26 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TwoFactorOverview > renders off without an active factor 1`] = `
+"<div class="two-factor-overview">
+  <div class="card mb-3">
+    <div class="card-header"><i class="fa fa-shield-halved"></i> Two-factor authentication</div>
+    <div class="card-body">
+      <p class="two-factor-overall mb-0"><span class="badge bg-secondary">Off</span>
+        <!--v-if-->
+      </p>
+    </div>
+  </div>
+  <!--v-if-->
+  <div class="mb-3 two-factor-factor-totp">
+    <div class="managed-factor"><span class="managed-factor-label">TOTP settings</span><button class="managed-on"></button><button class="managed-off"></button></div>
+  </div>
+  <div class="mb-3 two-factor-factor-passkey">
+    <div class="card">
+      <div class="card-header"><i class="fa fa-fingerprint"></i> Passkeys</div>
+      <div class="card-body">
+        <p class="two-factor-factor-status"><span class="badge bg-secondary">None</span></p><a href="/admin/passkeys" class="btn btn-outline-primary two-factor-factor-link">Manage passkeys</a>
+      </div>
+    </div>
+  </div>
+</div>"
+`;

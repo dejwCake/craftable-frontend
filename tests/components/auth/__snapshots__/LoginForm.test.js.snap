@@ -52,7 +52,7 @@ exports[`LoginForm > with the passkey props > renders the button and the webauth
         <div data-v-b1cfc21d="" class="mb-3"><input data-v-b1cfc21d="" type="hidden" name="remember" value="1"><button data-v-b1cfc21d="" type="submit" class="btn btn-primary submit-btn">
             <!--v-if--> Login
           </button></div>
-        <div data-v-b1cfc21d="" class="mb-3"><button data-v-b1cfc21d="" type="button" class="btn btn-outline-primary w-100 passkey-btn"><i data-v-b1cfc21d="" class="fa fa-fingerprint"></i> Sign in with a passkey</button>
+        <div data-v-b1cfc21d="" class="mb-3"><button data-v-b1cfc21d="" type="button" class="btn btn-outline-primary passkey-btn"><i data-v-b1cfc21d="" class="fa fa-fingerprint"></i> Sign in with a passkey</button>
           <!--v-if-->
         </div>
         <div data-v-b1cfc21d="" class="mb-3 text-center"><a data-v-b1cfc21d="" href="/admin/password-reset" class="auth-ghost-link forgot-link">Forgot password?</a></div>
