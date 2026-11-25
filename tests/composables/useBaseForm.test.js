@@ -1,4 +1,7 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach, beforeAll } from 'vitest';
+import { flushPromises } from '@vue/test-utils';
+import { defineRule } from 'vee-validate';
+import { required } from '@vee-validate/rules';
 
 vi.mock('@kyvg/vue3-notification', () => ({
     notify: vi.fn(),
@@ -9,6 +12,10 @@ import { useBaseForm } from '@/composables/useBaseForm.js';
 
 describe('useBaseForm', () => {
     let unmount;
+
+    beforeAll(() => {
+        defineRule('required', required);
+    });
 
     afterEach(() => {
         if (unmount) unmount();
@@ -175,6 +182,18 @@ describe('useBaseForm', () => {
 
             expect(window.axios.post).toHaveBeenCalledWith('/api/store', expect.any(Object));
             expect(result.submitting.value).toBe(true);
+        });
+
+        it('names the field in validation messages without underscores', async () => {
+            const result = setup({ data: {} }, { validationSchema: { current_password: 'required' } });
+            result.form.value = { current_password: '' };
+
+            await result.onSubmit();
+            await flushPromises();
+
+            expect(window.axios.post).not.toHaveBeenCalled();
+            // vee-validate's default message is "{field} is not valid."
+            expect(result.errors.value.current_password).toBe('current password is not valid.');
         });
     });
 
