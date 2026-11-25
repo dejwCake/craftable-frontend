@@ -24,6 +24,7 @@ const baseProps = {
     translations: {
         title: 'Two-factor authentication',
         codeText: 'Enter the code from your authenticator app.',
+        codeOrPasskeyText: 'Use your passkey or enter the code.',
         recoveryCodeText: 'Enter one of your recovery codes.',
         code: 'Code',
         recoveryCode: 'Recovery code',
@@ -127,6 +128,7 @@ describe('TwoFactorChallengeForm', () => {
 
             expect(wrapper.find('button.passkey-btn').exists()).toBe(false);
             expect(wrapper.find('input#code').exists()).toBe(true);
+            expect(wrapper.find('.auth-subtitle').text()).toBe('Enter the code from your authenticator app.');
         });
 
         it('offers only the passkey with passkeys only', () => {
@@ -147,6 +149,21 @@ describe('TwoFactorChallengeForm', () => {
             const html = wrapper.html();
             expect(html.indexOf('passkey-btn')).toBeLessThan(html.indexOf('id="code"'));
             expect(wrapper.find('.passkey-or').exists()).toBe(true);
+            expect(wrapper.find('.auth-subtitle').text()).toBe('Use your passkey or enter the code.');
+        });
+
+        it('falls back to the code text with both when the view has no combined text', () => {
+            const { codeOrPasskeyText: _, ...translations } = baseProps.translations;
+            const wrapper = mount(TwoFactorChallengeForm, { props: { ...passkeyProps, translations } });
+
+            expect(wrapper.find('.auth-subtitle').text()).toBe('Enter the code from your authenticator app.');
+        });
+
+        it('shows the recovery code text with both in the recovery code mode', async () => {
+            const wrapper = mount(TwoFactorChallengeForm, { props: passkeyProps });
+            await wrapper.find('button.toggle-link').trigger('click');
+
+            expect(wrapper.find('.auth-subtitle').text()).toBe('Enter one of your recovery codes.');
         });
 
         it('says the browser cannot use passkeys', () => {

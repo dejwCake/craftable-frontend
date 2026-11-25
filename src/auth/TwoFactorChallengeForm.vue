@@ -5,13 +5,7 @@
                 <div class="auth-header">
                     <h1 class="auth-title">{{ translations.title }}</h1>
                     <p class="auth-subtitle">
-                        {{
-                            !hasTotp
-                                ? translations.passkeyText
-                                : useRecoveryCode
-                                  ? translations.recoveryCodeText
-                                  : translations.codeText
-                        }}
+                        {{ subtitle }}
                     </p>
                 </div>
                 <div class="auth-body">
@@ -98,7 +92,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useBaseAuth } from '@dejwcake/craftable';
 import { usePasskeys } from '@craftable/composables/usePasskeys.js';
 
@@ -113,6 +107,20 @@ const props = defineProps({
 });
 
 const useRecoveryCode = ref(false);
+
+const subtitle = computed(() => {
+    if (!props.hasTotp) {
+        return props.translations.passkeyText;
+    }
+    if (useRecoveryCode.value) {
+        return props.translations.recoveryCodeText;
+    }
+
+    // A view published before `codeOrPasskeyText` existed falls back to the code text.
+    return props.hasPasskeys
+        ? props.translations.codeOrPasskeyText || props.translations.codeText
+        : props.translations.codeText;
+});
 // useBaseAuth reads the schema on each submit, so toggling swaps the validated field.
 const validationSchema = { code: 'required' };
 

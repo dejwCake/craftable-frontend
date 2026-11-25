@@ -26,7 +26,7 @@ exports[`TwoFactorChallengeForm > passkeys > offers the passkey first, then the 
     <form data-v-aadd5ba7="" role="form" method="POST" action="/admin/two-factor/challenge" novalidate="">
       <div data-v-aadd5ba7="" class="auth-header">
         <h1 data-v-aadd5ba7="" class="auth-title">Two-factor authentication</h1>
-        <p data-v-aadd5ba7="" class="auth-subtitle">Enter the code from your authenticator app.</p>
+        <p data-v-aadd5ba7="" class="auth-subtitle">Use your passkey or enter the code.</p>
       </div>
       <div data-v-aadd5ba7="" class="auth-body">
         <div data-v-aadd5ba7="" class="mb-3 passkey-option"><button data-v-aadd5ba7="" type="button" class="btn btn-primary w-100 passkey-btn"><i data-v-aadd5ba7="" class="fa fa-fingerprint"></i> Use a passkey</button>
