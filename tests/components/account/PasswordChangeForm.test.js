@@ -60,7 +60,8 @@ describe('PasswordChangeForm', () => {
         await flushPromises();
 
         expect(window.axios.post).not.toHaveBeenCalled();
-        expect(wrapper.find('input#password_confirmation').classes()).toContain('is-invalid');
+        expect(wrapper.find('input#password').classes()).toContain('is-invalid');
+        expect(wrapper.find('input#password_confirmation').classes()).not.toContain('is-invalid');
     });
 
     it('posts only the three fields when valid', async () => {

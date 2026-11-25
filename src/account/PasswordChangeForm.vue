@@ -41,8 +41,9 @@ const props = defineProps({
 const { form, submitting, errors, onSubmit } = useBaseForm(props, {
     validationSchema: {
         current_password: 'required',
-        password: 'required|min:8',
-        password_confirmation: 'required|confirmed:@password',
+        // On `password`, like Laravel's `confirmed`: the message reads "The password field confirmation…".
+        password: 'required|min:8|confirmed:@password_confirmation',
+        password_confirmation: 'required',
     },
 });
 

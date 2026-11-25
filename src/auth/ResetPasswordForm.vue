@@ -112,8 +112,9 @@ const { form, errors, submitting, onSubmit } = useBaseAuth(props, {
     },
     validationSchema: {
         email: 'required|email',
-        password: 'required|min:7',
-        password_confirmation: 'required|confirmed:@password',
+        // On `password`, like Laravel's `confirmed`: the message reads "The password field confirmation…".
+        password: 'required|min:7|confirmed:@password_confirmation',
+        password_confirmation: 'required',
     },
     onSuccess(data) {
         window.location.replace(data.redirect || props.redirectUrl);
