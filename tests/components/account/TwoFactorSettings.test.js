@@ -221,6 +221,40 @@ describe('TwoFactorSettings', () => {
         expect(wrapper.find('.alert-danger').text()).toBe('Something went wrong. Please try again.');
     });
 
+    it('clears the copy error when a retry succeeds or the codes are done', async () => {
+        const writeText = vi.fn().mockRejectedValueOnce(new Error('NotAllowedError')).mockResolvedValue();
+        Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true });
+        const wrapper = mount(TwoFactorSettings, { props: { ...baseProps, enabled: true } });
+        window.axios.post.mockResolvedValueOnce({ data: { recovery_codes: recoveryCodes } });
+        await wrapper.find('button.two-factor-regenerate').trigger('click');
+        await flushPromises();
+        await wrapper.find('button.two-factor-copy').trigger('click');
+        await flushPromises();
+        expect(wrapper.find('.alert-danger').exists()).toBe(true);
+
+        await wrapper.find('button.two-factor-copy').trigger('click');
+        await flushPromises();
+
+        expect(wrapper.find('button.two-factor-copy').text()).toBe('Copied');
+        expect(wrapper.find('.alert-danger').exists()).toBe(false);
+    });
+
+    it('does not carry the copy error into the enabled view', async () => {
+        const writeText = vi.fn().mockRejectedValue(new Error('NotAllowedError'));
+        Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true });
+        const wrapper = mount(TwoFactorSettings, { props: { ...baseProps, enabled: true } });
+        window.axios.post.mockResolvedValueOnce({ data: { recovery_codes: recoveryCodes } });
+        await wrapper.find('button.two-factor-regenerate').trigger('click');
+        await flushPromises();
+        await wrapper.find('button.two-factor-copy').trigger('click');
+        await flushPromises();
+
+        await wrapper.find('button.two-factor-done').trigger('click');
+
+        expect(wrapper.find('.two-factor-status').text()).toBe('On');
+        expect(wrapper.find('.alert-danger').exists()).toBe(false);
+    });
+
     it('offers only the download without the clipboard API', async () => {
         Object.defineProperty(navigator, 'clipboard', { value: undefined, configurable: true });
         const wrapper = mount(TwoFactorSettings, { props: { ...baseProps, enabled: true } });

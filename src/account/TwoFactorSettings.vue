@@ -68,7 +68,7 @@
                 <button type="button" class="btn btn-outline-secondary me-2 two-factor-download" @click="downloadCodes">
                     <i class="fa fa-download"></i> {{ translations.download }}
                 </button>
-                <button type="button" class="btn btn-primary two-factor-done" @click="state = 'on'">
+                <button type="button" class="btn btn-primary two-factor-done" @click="finishCodes">
                     {{ translations.done }}
                 </button>
             </template>
@@ -218,6 +218,11 @@ function showRecoveryCodes(codes) {
     state.value = 'codes';
 }
 
+function finishCodes() {
+    generalError.value = '';
+    state.value = 'on';
+}
+
 function codesAsText() {
     return `${recoveryCodes.value.join('\n')}\n`;
 }
@@ -225,6 +230,7 @@ function codesAsText() {
 const canCopy = typeof navigator !== 'undefined' && typeof navigator.clipboard?.writeText === 'function';
 
 async function copyCodes() {
+    generalError.value = '';
     try {
         await navigator.clipboard.writeText(codesAsText());
         copied.value = true;
