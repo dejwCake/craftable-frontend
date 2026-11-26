@@ -230,6 +230,7 @@ async function copyCodes() {
         copied.value = true;
     } catch {
         copied.value = false;
+        generalError.value = props.translations.failed || '';
     }
 }
 

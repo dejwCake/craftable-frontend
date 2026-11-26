@@ -218,6 +218,7 @@ describe('TwoFactorSettings', () => {
         await flushPromises();
 
         expect(wrapper.find('button.two-factor-copy').text()).toBe('Copy');
+        expect(wrapper.find('.alert-danger').text()).toBe('Something went wrong. Please try again.');
     });
 
     it('offers only the download without the clipboard API', async () => {

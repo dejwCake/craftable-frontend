@@ -18,7 +18,13 @@ const passkeysMock = {
     authenticate: vi.fn(),
     autofill: vi.fn(() => Promise.resolve(null)),
     cancel: vi.fn(),
-    isCancelled: vi.fn((error) => error?.name === 'NotAllowedError'),
+    // As usePasskeys: a closed dialog, or a ceremony aborted by a newer one.
+    isCancelled: vi.fn(
+        (error) =>
+            error?.name === 'AbortError' ||
+            error?.name === 'NotAllowedError' ||
+            error?.code === 'ERROR_CEREMONY_ABORTED',
+    ),
 };
 
 vi.mock('@craftable/composables/usePasskeys.js', () => ({
@@ -189,6 +195,32 @@ describe('LoginForm', () => {
             expect(passkeysMock.authenticate).toHaveBeenCalledTimes(1);
             expect(replace).toHaveBeenCalledWith('/admin');
             expect(passkeysMock.autofill).toHaveBeenCalledTimes(1);
+        });
+
+        it('keeps the button busy when its ceremony aborts the pending autofill', async () => {
+            let abortAutofill;
+            passkeysMock.autofill.mockReturnValueOnce(new Promise((resolve, reject) => (abortAutofill = reject)));
+            let finish;
+            passkeysMock.authenticate.mockImplementationOnce(() => {
+                // As in the browser: a new ceremony aborts the pending autofill request.
+                abortAutofill({ code: 'ERROR_CEREMONY_ABORTED', name: 'AbortError' });
+                return new Promise((resolve) => (finish = resolve));
+            });
+            window.axios.post.mockResolvedValueOnce({ status: 204, data: '' });
+            const wrapper = mount(LoginForm, { props: passkeyProps });
+            await flushPromises();
+
+            await wrapper.find('button.passkey-btn').trigger('click');
+            await flushPromises();
+
+            expect(wrapper.find('button.passkey-btn').attributes('disabled')).toBeDefined();
+            await wrapper.find('button.passkey-btn').trigger('click');
+            expect(passkeysMock.authenticate).toHaveBeenCalledTimes(1);
+            expect(wrapper.find('.passkey-error').exists()).toBe(false);
+
+            finish({ id: 'assertion' });
+            await flushPromises();
+            expect(replace).toHaveBeenCalledWith('/admin');
         });
 
         it('stays quiet when the dialog is closed', async () => {

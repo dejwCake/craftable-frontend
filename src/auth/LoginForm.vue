@@ -141,13 +141,15 @@ async function startAutofill() {
         if (credential) {
             passkeyError.value = '';
             passkeySubmitting.value = true;
-            await login(credential);
+            try {
+                await login(credential);
+            } finally {
+                passkeySubmitting.value = false;
+            }
         }
     } catch (error) {
         // Not restarted here: a failing options request would loop. The button restarts it.
         showError(error);
-    } finally {
-        passkeySubmitting.value = false;
     }
 }
 
