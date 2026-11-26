@@ -39,8 +39,10 @@ The `craftableOverrides()` Vite plugin (in the admin-ui install stub of `vite.co
 `@craftable/<path>` to `resources/js/admin/<path>` when that file exists, otherwise to this package's
 `src/<path>`. To customise a component, copy it to the same path in the project — by hand or with
 `npx craftable-publish-components <group>` (`account`, `auth`, `form`, `listing`, …) — and edit the
-copy. Package components import shared code only from `@dejwcake/craftable` or `@craftable/…`, so a
-copy builds unchanged. An overridden copy no longer receives package fixes. The passkey components
+copy. The `account` and `auth` components import shared code only from `@dejwcake/craftable` or
+`@craftable/…`, so a copy of them builds unchanged. Components of the other groups (e.g. `listing`,
+`form`, `translation`) also import their neighbours by relative path (`../ConfirmModal.vue`,
+`../../utils/notify.js`); publish the groups they import from (`components`, `utils`, …) too. An overridden copy no longer receives package fixes. The passkey components
 import `@craftable/composables/usePasskeys.js`, so a project can override the composable alone (e.g.
 a different autofill behaviour) and keep the package components.
 

@@ -173,6 +173,24 @@ describe('LoginForm', () => {
             expect(passkeysMock.autofill).toHaveBeenCalledTimes(2);
         });
 
+        it('starts one ceremony at a time', async () => {
+            let finish;
+            passkeysMock.authenticate.mockReturnValueOnce(new Promise((resolve) => (finish = resolve)));
+            window.axios.post.mockResolvedValueOnce({ status: 204, data: '' });
+            const wrapper = mount(LoginForm, { props: passkeyProps });
+            await flushPromises();
+
+            await wrapper.find('button.passkey-btn').trigger('click');
+            await wrapper.find('button.passkey-btn').trigger('click');
+            expect(wrapper.find('button.passkey-btn').attributes('disabled')).toBeDefined();
+            finish({ id: 'assertion' });
+            await flushPromises();
+
+            expect(passkeysMock.authenticate).toHaveBeenCalledTimes(1);
+            expect(replace).toHaveBeenCalledWith('/admin');
+            expect(passkeysMock.autofill).toHaveBeenCalledTimes(1);
+        });
+
         it('stays quiet when the dialog is closed', async () => {
             passkeysMock.authenticate.mockRejectedValueOnce({ name: 'NotAllowedError' });
             const wrapper = mount(LoginForm, { props: passkeyProps });

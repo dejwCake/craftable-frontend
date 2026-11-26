@@ -123,14 +123,8 @@ const passkeySubmitting = ref(false);
 const passkeyError = ref('');
 
 async function login(credential) {
-    passkeySubmitting.value = true;
-    try {
-        // The form always remembers the login, like its hidden `remember` field.
-        await axios.post(props.passkeyLoginUrl, { credential, remember: true });
-        window.location.replace(props.redirectUrl);
-    } finally {
-        passkeySubmitting.value = false;
-    }
+    await axios.post(props.passkeyLoginUrl, { credential, remember: true });
+    window.location.replace(props.redirectUrl);
 }
 
 function showError(error) {
@@ -146,21 +140,34 @@ async function startAutofill() {
         const credential = await autofill(props.passkeyOptionsUrl);
         if (credential) {
             passkeyError.value = '';
+            passkeySubmitting.value = true;
             await login(credential);
         }
     } catch (error) {
         // Not restarted here: a failing options request would loop. The button restarts it.
         showError(error);
+    } finally {
+        passkeySubmitting.value = false;
     }
 }
 
 async function signInWithPasskey() {
+    if (passkeySubmitting.value) {
+        return;
+    }
     passkeyError.value = '';
+    passkeySubmitting.value = true;
+    let failed = false;
     try {
         // Starting a new ceremony aborts the pending autofill request.
         await login(await authenticate(props.passkeyOptionsUrl));
     } catch (error) {
         showError(error);
+        failed = true;
+    } finally {
+        passkeySubmitting.value = false;
+    }
+    if (failed) {
         // The button's ceremony aborted the autofill request; offer passkeys in the field again.
         startAutofill();
     }

@@ -57,7 +57,12 @@
                 <ul class="two-factor-recovery-codes list-unstyled font-monospace">
                     <li v-for="recoveryCode in recoveryCodes" :key="recoveryCode">{{ recoveryCode }}</li>
                 </ul>
-                <button type="button" class="btn btn-outline-secondary me-2 two-factor-copy" @click="copyCodes">
+                <button
+                    v-if="canCopy"
+                    type="button"
+                    class="btn btn-outline-secondary me-2 two-factor-copy"
+                    @click="copyCodes"
+                >
                     <i class="fa fa-copy"></i> {{ copied ? translations.copied : translations.copy }}
                 </button>
                 <button type="button" class="btn btn-outline-secondary me-2 two-factor-download" @click="downloadCodes">
@@ -152,7 +157,7 @@ function send(request) {
             if (data.errors) {
                 errors.value = Object.fromEntries(Object.entries(data.errors).map(([key, value]) => [key, value[0]]));
             } else {
-                generalError.value = data.message || '';
+                generalError.value = data.message || props.translations.failed || '';
             }
 
             return null;
@@ -217,9 +222,15 @@ function codesAsText() {
     return `${recoveryCodes.value.join('\n')}\n`;
 }
 
+const canCopy = typeof navigator !== 'undefined' && typeof navigator.clipboard?.writeText === 'function';
+
 async function copyCodes() {
-    await navigator.clipboard.writeText(codesAsText());
-    copied.value = true;
+    try {
+        await navigator.clipboard.writeText(codesAsText());
+        copied.value = true;
+    } catch {
+        copied.value = false;
+    }
 }
 
 function downloadCodes() {

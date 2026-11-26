@@ -113,12 +113,10 @@ export function useBaseForm(props, options = {}) {
             for (const [field, rules] of Object.entries(options.validationSchema)) {
                 const result = await veeValidate(form.value[field], rules, {
                     name: field,
-                    // Messages name the field like Laravel does: "The current password field…".
-                    label: field.replaceAll('_', ' '),
                     values: form.value,
                 });
                 if (!result.valid) {
-                    fieldErrors[field] = result.errors[0];
+                    fieldErrors[field] = result.errors[0].replaceAll(field, field.replaceAll('_', ' '));
                 }
             }
 

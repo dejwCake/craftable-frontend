@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, afterEach, beforeAll } from 'vitest';
 import { flushPromises } from '@vue/test-utils';
-import { defineRule } from 'vee-validate';
+import { configure, defineRule } from 'vee-validate';
+import { localize } from '@vee-validate/i18n';
 import { required } from '@vee-validate/rules';
 
 vi.mock('@kyvg/vue3-notification', () => ({
@@ -194,6 +195,26 @@ describe('useBaseForm', () => {
             expect(window.axios.post).not.toHaveBeenCalled();
             // vee-validate's default message is "{field} is not valid."
             expect(result.errors.value.current_password).toBe('current password is not valid.');
+        });
+
+        it('keeps a field name translated through vee-validate i18n names', async () => {
+            configure({
+                generateMessage: localize('en', {
+                    messages: { required: 'The {field} field is required' },
+                    names: { current_password: 'Current password' },
+                }),
+            });
+            try {
+                const result = setup({ data: {} }, { validationSchema: { current_password: 'required' } });
+                result.form.value = { current_password: '' };
+
+                await result.onSubmit();
+                await flushPromises();
+
+                expect(result.errors.value.current_password).toBe('The Current password field is required');
+            } finally {
+                configure({ generateMessage: ({ field }) => `${field} is not valid.` });
+            }
         });
     });
 

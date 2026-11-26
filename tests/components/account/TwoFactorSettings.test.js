@@ -27,6 +27,7 @@ const baseProps = {
         recovery_codes_description: 'Store these codes safely.',
         copy: 'Copy',
         copied: 'Copied',
+        failed: 'Something went wrong. Please try again.',
         download: 'Download',
         done: 'Done',
         current_password: 'Current password',
@@ -203,5 +204,39 @@ describe('TwoFactorSettings', () => {
 
         expect(writeText).toHaveBeenCalledWith('aaaaa-bbbbb\nccccc-ddddd\n');
         expect(wrapper.find('button.two-factor-copy').text()).toBe('Copied');
+    });
+
+    it('keeps Copy when the browser refuses the clipboard', async () => {
+        const writeText = vi.fn().mockRejectedValue(new Error('NotAllowedError'));
+        Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true });
+        const wrapper = mount(TwoFactorSettings, { props: { ...baseProps, enabled: true } });
+        window.axios.post.mockResolvedValueOnce({ data: { recovery_codes: recoveryCodes } });
+        await wrapper.find('button.two-factor-regenerate').trigger('click');
+        await flushPromises();
+
+        await wrapper.find('button.two-factor-copy').trigger('click');
+        await flushPromises();
+
+        expect(wrapper.find('button.two-factor-copy').text()).toBe('Copy');
+    });
+
+    it('offers only the download without the clipboard API', async () => {
+        Object.defineProperty(navigator, 'clipboard', { value: undefined, configurable: true });
+        const wrapper = mount(TwoFactorSettings, { props: { ...baseProps, enabled: true } });
+        window.axios.post.mockResolvedValueOnce({ data: { recovery_codes: recoveryCodes } });
+        await wrapper.find('button.two-factor-regenerate').trigger('click');
+        await flushPromises();
+
+        expect(wrapper.find('button.two-factor-copy').exists()).toBe(false);
+        expect(wrapper.find('button.two-factor-download').exists()).toBe(true);
+    });
+
+    it('shows the failed text when a request fails without a message', async () => {
+        const wrapper = mount(TwoFactorSettings, { props: baseProps });
+        window.axios.post.mockRejectedValueOnce({ response: { status: 500, data: {} } });
+        await wrapper.find('button.two-factor-enable').trigger('click');
+        await flushPromises();
+
+        expect(wrapper.find('.alert-danger').text()).toBe('Something went wrong. Please try again.');
     });
 });

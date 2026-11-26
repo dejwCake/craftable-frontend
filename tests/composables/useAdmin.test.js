@@ -1,3 +1,4 @@
+import { flushPromises } from '@vue/test-utils';
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { withSetup } from '../helpers/withSetup.js';
 import { useAdmin } from '@/composables/useAdmin.js';
@@ -38,7 +39,12 @@ describe('useAdmin', () => {
             const assign = vi.spyOn(window.location, 'assign').mockImplementation(() => {});
             const error = { response: { status: 403, data: { redirect: '/admin/two-factor/challenge' } } };
 
-            await expect(errorInterceptor()(error)).rejects.toBe(error);
+            const settled = vi.fn();
+            errorInterceptor()(error).then(settled, settled);
+            await flushPromises();
+
+            // Left pending: the caller would report the 403 while the page navigates to the challenge.
+            expect(settled).not.toHaveBeenCalled();
             expect(assign).toHaveBeenCalledWith('/admin/two-factor/challenge');
             assign.mockRestore();
         });

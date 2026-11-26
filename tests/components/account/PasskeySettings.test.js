@@ -1,5 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeAll, beforeEach } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
+import { defineRule } from 'vee-validate';
+import { max, required } from '@vee-validate/rules';
 
 vi.mock('@kyvg/vue3-notification', () => ({
     notify: vi.fn(),
@@ -51,6 +53,11 @@ function mountSettings(props = {}) {
 }
 
 describe('PasskeySettings', () => {
+    beforeAll(() => {
+        defineRule('required', required);
+        defineRule('max', max);
+    });
+
     beforeEach(() => {
         passkeysMock.isSupported.mockReturnValue(true);
     });
@@ -116,6 +123,29 @@ describe('PasskeySettings', () => {
             expect(window.axios.post).toHaveBeenCalledWith('/admin/passkeys', { name: 'MacBook', credential });
             expect(wrapper.find('.passkeys-name').text()).toBe('MacBook');
             expect(wrapper.find('form.passkeys-add').exists()).toBe(false);
+        });
+
+        it('checks the name before the browser creates the passkey', async () => {
+            const wrapper = mountSettings();
+
+            await wrapper.find('button.passkeys-add-start').trigger('click');
+            await wrapper.find('input#name').setValue('   ');
+            await wrapper.find('form.passkeys-add').trigger('submit');
+            await flushPromises();
+
+            expect(passkeysMock.register).not.toHaveBeenCalled();
+            expect(wrapper.find('input#name').classes()).toContain('is-invalid');
+        });
+
+        it('refuses a name longer than the server accepts', async () => {
+            const wrapper = mountSettings();
+
+            await wrapper.find('button.passkeys-add-start').trigger('click');
+            await wrapper.find('input#name').setValue('x'.repeat(256));
+            await wrapper.find('form.passkeys-add').trigger('submit');
+            await flushPromises();
+
+            expect(passkeysMock.register).not.toHaveBeenCalled();
         });
 
         it('shows a wrong password on the field', async () => {

@@ -84,17 +84,20 @@
         align-items: center;
     }
 
-    &:not([class*='btn-outline-']) {
+    &:not([class*='btn-outline-'], .btn-link) {
         &:hover,
         &:active,
         &:focus,
-        &:visited {
+        &:visited,
+        &:disabled {
             color: white;
         }
-    }
 
-    &:disabled {
-        color: white;
+        i.fa,
+        i.fa-solid,
+        i.fa-regular {
+            color: white;
+        }
     }
 
     &:hover,
@@ -108,15 +111,6 @@
         .fa-trash-can {
             animation: swing 1s;
             transform-origin: top center;
-        }
-    }
-
-    // Outline and link buttons keep their own text colour (also on hover); their icons follow it.
-    &:not([class*='btn-outline-'], .btn-link) {
-        i.fa,
-        i.fa-solid,
-        i.fa-regular {
-            color: white;
         }
     }
 }

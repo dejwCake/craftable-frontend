@@ -124,7 +124,7 @@ const subtitle = computed(() => {
 // useBaseAuth reads the schema on each submit, so toggling swaps the validated field.
 const validationSchema = { code: 'required' };
 
-const { form, errors, submitting, onSubmit } = useBaseAuth(props, {
+const { form, errors, submitting, onSubmit, setErrors } = useBaseAuth(props, {
     formDefaults: { code: '', recovery_code: '' },
     validationSchema,
     onSuccess(data) {
@@ -158,6 +158,7 @@ async function verifyWithPasskey() {
 function toggle() {
     useRecoveryCode.value = !useRecoveryCode.value;
     form.value = { code: '', recovery_code: '' };
+    setErrors({ code: undefined, recovery_code: undefined });
     delete validationSchema.code;
     delete validationSchema.recovery_code;
     validationSchema[useRecoveryCode.value ? 'recovery_code' : 'code'] = 'required';

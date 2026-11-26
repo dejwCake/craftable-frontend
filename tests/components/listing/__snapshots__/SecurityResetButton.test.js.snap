@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`SecurityResetButton > renders the row button 1`] = `
-"<button type="button" class="btn btn-sm btn-info security-reset-btn" title="Reset two-factor"><i class="fa fa-shield"></i></button>
+"<button type="button" class="btn btn-sm btn-info security-reset-btn" title="Reset two-factor" aria-label="Reset two-factor"><i class="fa fa-shield"></i></button>
 <!--teleport start-->
 <!--teleport end-->"
 `;

@@ -1,6 +1,6 @@
 # Upgrading within v2
 
-## 2.6.0 (unreleased)
+## Upgrade to 2.6.0
 
 Nothing breaks; the steps below are only needed to use the new pages.
 
@@ -12,7 +12,7 @@ The package adds the components behind admin-auth's profile and password pages, 
   only when the e-mail changes.
 - `PasswordChangeForm` — current password, new password and its confirmation.
 
-Update `dejwcake/admin-auth` together with this package: its profile pages mount these components.
+They are mounted by the profile pages of `dejwcake/admin-auth` 2.2.0.
 Register them in `resources/js/admin/admin.js`, imported by path so a project copy can override them:
 
 ```js
@@ -40,8 +40,7 @@ Three components behind admin-auth's two-factor authentication pages:
 - `TwoFactorChallengeForm` (`src/auth/`) — the code asked for after the password login, with a
   switch to a recovery code.
 
-Update `dejwcake/admin-auth` together with this package: its two-factor pages mount these
-components. Register them in `resources/js/admin/admin.js`:
+They are mounted by the two-factor pages of `dejwcake/admin-auth` 2.2.0. Register them in `resources/js/admin/admin.js`:
 
 ```js
 import TwoFactorOverview from '@craftable/account/TwoFactorOverview.vue';
@@ -72,8 +71,7 @@ passkeys page. This package adds:
 - `TwoFactorSettings` gets the optional `canDisable`, so a forced admin with a passkey can turn off
   TOTP.
 
-Update `dejwcake/admin-auth` together with this package: its pages pass these props and mount
-`PasskeySettings`. Register it in `resources/js/admin/admin.js`:
+`dejwcake/admin-auth` 2.2.0 passes these props and mounts `PasskeySettings`. Register it in `resources/js/admin/admin.js`:
 
 ```js
 import PasskeySettings from '@craftable/account/PasskeySettings.vue';

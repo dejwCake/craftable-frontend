@@ -31,6 +31,7 @@ export function useAdmin() {
                 const redirect = error.response?.status === 403 ? error.response.data?.redirect : null;
                 if (redirect) {
                     window.location.assign(redirect);
+                    return new Promise(() => {});
                 }
                 return Promise.reject(error);
             },

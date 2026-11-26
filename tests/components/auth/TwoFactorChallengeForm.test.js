@@ -86,6 +86,17 @@ describe('TwoFactorChallengeForm', () => {
         expect(wrapper.find('input#code').classes()).toContain('is-invalid');
     });
 
+    it('clears the error of the code when switching to the recovery code and back', async () => {
+        const wrapper = mount(TwoFactorChallengeForm, { props: baseProps });
+        await wrapper.find('form').trigger('submit');
+        await flushPromises();
+
+        await wrapper.find('button.toggle-link').trigger('click');
+        await wrapper.find('button.toggle-link').trigger('click');
+
+        expect(wrapper.find('input#code').classes()).not.toContain('is-invalid');
+    });
+
     it('switches to the recovery code mode and posts the recovery code', async () => {
         const replace = vi.spyOn(window.location, 'replace').mockImplementation(() => {});
         window.axios.post.mockResolvedValueOnce({ data: {} });

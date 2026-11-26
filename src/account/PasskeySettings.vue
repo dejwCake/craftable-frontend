@@ -120,6 +120,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { validate } from 'vee-validate';
 import { FormInput, notifySuccess } from '@dejwcake/craftable';
 import { usePasskeys } from '@craftable/composables/usePasskeys.js';
 
@@ -207,8 +208,17 @@ async function run(action) {
     }
 }
 
+const NAME_RULES = 'required|max:255';
+
 function add() {
     return run(async () => {
+        const nameCheck = await validate(form.value.name.trim(), NAME_RULES, { name: 'name' });
+        if (!nameCheck.valid) {
+            errors.value = { name: nameCheck.errors[0] };
+
+            return;
+        }
+
         const credential = await register(props.optionsUrl, { current_password: form.value.current_password });
         const { data } = await axios.post(props.storeUrl, { name: form.value.name, credential });
         items.value.push(data.passkey);

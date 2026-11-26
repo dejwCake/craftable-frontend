@@ -1,5 +1,11 @@
 <template>
-    <button type="button" class="btn btn-sm btn-info security-reset-btn" :title="translations.reset_btn" @click="open">
+    <button
+        type="button"
+        class="btn btn-sm btn-info security-reset-btn"
+        :title="translations.reset_btn"
+        :aria-label="translations.reset_btn"
+        @click="open"
+    >
         <i class="fa fa-shield"></i>
     </button>
 
@@ -13,7 +19,12 @@
                             <i class="fa fa-triangle-exclamation text-warning me-2"></i>
                             {{ translations.confirm_title }}
                         </h5>
-                        <button type="button" class="btn-close" @click="close"></button>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            :aria-label="translations.cancel_btn"
+                            @click="close"
+                        ></button>
                     </div>
                     <div class="modal-body">
                         <p>{{ translations.confirm_text }}</p>
